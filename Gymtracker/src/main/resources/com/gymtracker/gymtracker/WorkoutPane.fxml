@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,8 +18,8 @@
             <Image url="@../../../images/black.png" />
          </image>
       </ImageView>
-      <Button layoutX="318.0" layoutY="341.0" mnemonicParsing="false" text="New Workout" />
-      <Label layoutX="37.0" layoutY="429.0" prefHeight="44.0" prefWidth="225.0" text="Saved Workouts">
+      <Button layoutX="95.0" layoutY="607.0" mnemonicParsing="false" text="Save workout" />
+      <Label layoutX="583.0" layoutY="230.0" prefHeight="44.0" prefWidth="225.0" text="Saved Workouts">
          <font>
             <Font size="29.0" />
          </font>
@@ -31,5 +34,19 @@
             <Image url="@../../../images/black.png" />
          </image>
       </ImageView>
+      <ChoiceBox layoutX="135.0" layoutY="416.0" prefWidth="150.0" />
+      <Label layoutX="46.0" layoutY="230.0" text="New Workout">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Label layoutX="52.0" layoutY="420.0" text="Exercise 1:" />
+      <Button layoutX="201.0" layoutY="519.0" mnemonicParsing="false" text="Add exercise" />
+      <ChoiceBox layoutX="135.0" layoutY="465.0" prefWidth="150.0" />
+      <Label layoutX="52.0" layoutY="469.0" text="Exercise 2:" />
+      <DatePicker layoutX="52.0" layoutY="370.0" promptText="Date" />
+      <TextField layoutX="52.0" layoutY="288.0" promptText="Workout name" />
+      <Label layoutX="54.0" layoutY="331.0" text="Category:" />
+      <ChoiceBox layoutX="116.0" layoutY="327.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
