@@ -12,6 +12,6 @@ public class Controller implements Initializable {
 private Label coolLabel;
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
-      coolLabel.setText("Hejsan");
+      ;
    }
 }
