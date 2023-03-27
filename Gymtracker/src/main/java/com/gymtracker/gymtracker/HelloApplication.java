@@ -14,6 +14,7 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MainFrame.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Gymtracker");
+        stage.getIcons().add(new Image("icon.png"));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
