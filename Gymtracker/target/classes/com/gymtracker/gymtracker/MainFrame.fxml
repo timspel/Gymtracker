@@ -96,7 +96,7 @@
                   </Label>
                   <Button fx:id="workoutsButton" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Workouts">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/buttonicons/2382633.png" />
                            </image>
@@ -107,7 +107,7 @@
                      </font></Button>
                   <Button layoutX="10.0" layoutY="89.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Exercises">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/buttonicons/2871284.png" />
                            </image>
@@ -118,7 +118,7 @@
                      </font></Button>
                   <Button layoutX="10.0" layoutY="201.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Calendar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/buttonicons/3703453.png" />
                            </image>
@@ -129,7 +129,7 @@
                      </font></Button>
                   <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Friends">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/buttonicons/6061630.png" />
                            </image>
@@ -140,7 +140,7 @@
                      </font></Button>
                   <Button layoutX="10.0" layoutY="425.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Profile">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/buttonicons/4053887.png" />
                            </image>
