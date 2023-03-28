@@ -28,6 +28,7 @@ public class CalendarController implements Initializable {
     private Text year;
     @FXML private Text month;
 
+    @FXML
     private FlowPane calendar;
 
 
@@ -108,7 +109,7 @@ public class CalendarController implements Initializable {
              }
          }
      }
-    /*private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
+    private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         for (int k = 0; k < calendarActivities.size(); k++) {
             if(k >= 2) {
@@ -132,7 +133,7 @@ public class CalendarController implements Initializable {
         calendarActivityBox.setMaxHeight(rectangleHeight * 0.65);
         calendarActivityBox.setStyle("-fx-background-color:GRAY");
         stackPane.getChildren().add(calendarActivityBox);
-    }*/
+    }
 
     private Map<Integer, List<CalendarActivity>> createCalendarMap(List<CalendarActivity> calendarActivities) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
