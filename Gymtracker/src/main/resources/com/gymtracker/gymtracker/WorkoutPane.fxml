@@ -80,5 +80,8 @@
       <Button layoutX="160.0" layoutY="727.0" mnemonicParsing="false" text="Edit exercise" />
       <Button layoutX="888.0" layoutY="727.0" mnemonicParsing="false" text="Remove template" />
       <Button layoutX="1023.0" layoutY="727.0" mnemonicParsing="false" text="Edit template" />
+      <Button layoutX="1134.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Load template" />
+      <Button layoutX="720.0" layoutY="334.0" mnemonicParsing="false" text="Edit set" />
+      <Button layoutX="720.0" layoutY="374.0" mnemonicParsing="false" text="Remove set" />
    </children>
 </AnchorPane>
