@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TempController {
+public class LoginController {
    private Stage stage;
    private Scene scene;
    @FXML
@@ -23,6 +23,8 @@ public class TempController {
       stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
       scene = new Scene(root);
       stage.setScene (scene);
+      stage.setX(0);
+      stage.setY(0);
       stage.show();
    }
 

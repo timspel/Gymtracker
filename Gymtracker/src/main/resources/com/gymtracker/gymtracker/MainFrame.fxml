@@ -17,9 +17,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1426.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.Controller">
    <children>
-      <StackPane layoutX="156.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stackPane" layoutX="156.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="welcomePane" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="890.0" fitWidth="1455.0" layoutX="-19.0" layoutY="-19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="-19.0">
                      <image>
@@ -89,12 +89,12 @@
             </Rectangle>
             <VBox layoutY="-1.0" prefHeight="648.0" prefWidth="150.0" spacing="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label prefHeight="79.0" prefWidth="160.0" style="-fx-background-color: black;" text="Gymtracker" textAlignment="CENTER" textFill="#fffdfd">
+                  <Label fx:id="gymtrackerLabel" prefHeight="79.0" prefWidth="160.0" style="-fx-background-color: black;" text="Gymtracker" textAlignment="CENTER" textFill="#fffdfd">
                      <font>
                         <Font name="K2D Regular" size="28.0" />
                      </font>
                   </Label>
-                  <Button fx:id="workoutsButton" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Workouts">
+                  <Button fx:id="workoutsButton" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Workouts">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -116,7 +116,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button layoutX="10.0" layoutY="201.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Calendar">
+                  <Button fx:id="calendarButton" layoutX="10.0" layoutY="201.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Calendar">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
