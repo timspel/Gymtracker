@@ -20,7 +20,7 @@
             <Image url="@../../../images/background.jpeg" />
          </image>
       </ImageView>
-      <Button fx:id="loginButton" layoutX="26.0" layoutY="332.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="26.0" prefWidth="160.0" text="Login" />
+      <Button fx:id="loginButton" layoutX="26.0" layoutY="332.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="160.0" text="Login" />
       <TextField fx:id="textField" layoutX="26.0" layoutY="219.0" promptText="Username" />
       <Label layoutX="27.0" layoutY="141.0" text="Gymtracker">
          <font>
