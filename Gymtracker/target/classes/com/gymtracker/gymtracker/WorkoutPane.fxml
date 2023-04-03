@@ -14,15 +14,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
    <children>
       <ImageView fitHeight="200.0" fitWidth="356.0" layoutX="942.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../images/black.png" />
          </image>
       </ImageView>
-      <Button layoutX="671.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Save workout" />
-      <Label layoutX="887.0" layoutY="208.0" prefHeight="44.0" prefWidth="225.0" text="Saved Templates">
+      <Button fx:id="saveWorkoutButton" layoutX="671.0" layoutY="727.0" mnemonicParsing="false" onAction="#actionPerformed" prefHeight="35.0" prefWidth="133.0" text="Save workout" />
+      <Label fx:id="savedTemplatesLabel" layoutX="887.0" layoutY="208.0" prefHeight="44.0" prefWidth="225.0" text="Saved Templates">
          <font>
             <Font size="29.0" />
          </font>
@@ -37,48 +37,51 @@
             <Image url="@../../../images/black.png" />
          </image>
       </ImageView>
-      <ChoiceBox layoutX="399.0" layoutY="264.0" prefWidth="150.0" />
-      <Label layoutX="38.0" layoutY="217.0" text="New Workout">
+      <ChoiceBox fx:id="exercisesChoiceBox" layoutX="399.0" layoutY="264.0" prefWidth="150.0" />
+      <Label fx:id="newWorkoutLabel" layoutX="38.0" layoutY="217.0" text="New Workout">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
-      <Label layoutX="336.0" layoutY="268.0" text="Exercise:" />
-      <Button layoutX="720.0" layoutY="428.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="105.0" text="Add exercise" />
-      <DatePicker layoutX="52.0" layoutY="336.0" promptText="Date" />
-      <TextField layoutX="52.0" layoutY="288.0" promptText="Workout name" />
-      <Label layoutX="52.0" layoutY="386.0" text="Category:" />
-      <ChoiceBox layoutX="114.0" layoutY="382.0" prefWidth="150.0" />
+      <Label fx:id="exerciseLabel" layoutX="336.0" layoutY="268.0" text="Exercise:" />
+      <Button fx:id="addExerciseButton" layoutX="720.0" layoutY="428.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="105.0" text="Add exercise" />
+      <DatePicker fx:id="workoutDatePicker" layoutX="52.0" layoutY="336.0" promptText="Date" />
+      <TextField fx:id="workoutNameTextField" layoutX="52.0" layoutY="288.0" promptText="Workout name" />
+      <Label fx:id="categoryLabel" layoutX="52.0" layoutY="386.0" text="Category:" />
+      <ChoiceBox fx:id="categoriesChoiceBox" layoutX="114.0" layoutY="382.0" prefWidth="150.0" />
       <Separator layoutX="849.0" layoutY="192.0" orientation="VERTICAL" prefHeight="605.0" prefWidth="15.0" />
       <Separator layoutX="1.0" layoutY="478.0" prefHeight="17.0" prefWidth="856.0" />
-      <Label layoutX="328.0" layoutY="217.0" text="Exercises">
+      <Label fx:id="exercisesLabel" layoutX="328.0" layoutY="217.0" text="Exercises">
          <font>
             <Font size="23.0" />
          </font>
       </Label>
-      <Button layoutX="32.0" layoutY="727.0" mnemonicParsing="false" text="Remove exercise" />
-      <TableView layoutX="32.0" layoutY="509.0" prefHeight="200.0" prefWidth="793.0">
+      <Button fx:id="removeExerciseButton" layoutX="32.0" layoutY="727.0" mnemonicParsing="false" text="Remove exercise" />
+      <TableView fx:id="exercisesTable" layoutX="32.0" layoutY="509.0" prefHeight="200.0" prefWidth="793.0">
         <columns>
-          <TableColumn prefWidth="760.0" text="Exercises" />
+          <TableColumn fx:id="exerciseColumn" prefWidth="760.0" text="Exercises" />
         </columns>
       </TableView>
-      <Spinner layoutX="418.0" layoutY="301.0" />
+      <Spinner fx:id="repetitionsSpinner" layoutX="418.0" layoutY="301.0" />
       <Separator layoutX="298.0" layoutY="196.0" orientation="VERTICAL" prefHeight="290.0" prefWidth="15.0" />
-      <Label layoutX="336.0" layoutY="305.0" text="Repetitions:" />
-      <Button layoutX="596.0" layoutY="301.0" mnemonicParsing="false" text="Add set" />
-      <TableView layoutX="336.0" layoutY="346.0" prefHeight="117.0" prefWidth="349.0">
+      <Label fx:id="repetitionsLabel" layoutX="336.0" layoutY="305.0" text="Repetitions:" />
+      <Button fx:id="addSetButton" layoutX="596.0" layoutY="301.0" mnemonicParsing="false" text="Add set" />
+      <TableView fx:id="setsTable" layoutX="336.0" layoutY="346.0" prefHeight="117.0" prefWidth="349.0">
         <columns>
-          <TableColumn prefWidth="348.0" text="Sets" />
+          <TableColumn fx:id="setColumn" prefWidth="348.0" text="Sets" />
         </columns>
       </TableView>
-      <Button layoutX="501.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Save as template" />
-      <TableView layoutX="888.0" layoutY="277.0" prefHeight="432.0" prefWidth="356.0">
+      <Button fx:id="saveAsTemplateButton" layoutX="501.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Save as template" />
+      <TableView fx:id="templatesTable" layoutX="888.0" layoutY="277.0" prefHeight="432.0" prefWidth="356.0">
         <columns>
-          <TableColumn prefWidth="355.0" text="Templates" />
+          <TableColumn fx:id="templateColumn" prefWidth="355.0" text="Templates" />
         </columns>
       </TableView>
-      <Button layoutX="160.0" layoutY="727.0" mnemonicParsing="false" text="Edit exercise" />
-      <Button layoutX="888.0" layoutY="727.0" mnemonicParsing="false" text="Remove template" />
-      <Button layoutX="1023.0" layoutY="727.0" mnemonicParsing="false" text="Edit template" />
+      <Button fx:id="editExerciseButton" layoutX="160.0" layoutY="727.0" mnemonicParsing="false" text="Edit exercise" />
+      <Button fx:id="removeTemplateButton" layoutX="888.0" layoutY="727.0" mnemonicParsing="false" text="Remove template" />
+      <Button fx:id="editTemplateButton" layoutX="1023.0" layoutY="727.0" mnemonicParsing="false" text="Edit template" />
+      <Button fx:id="loadTemplateButton" layoutX="1134.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Load template" />
+      <Button fx:id="editSetButton" layoutX="720.0" layoutY="334.0" mnemonicParsing="false" text="Edit set" />
+      <Button fx:id="removeSetButton" layoutX="720.0" layoutY="374.0" mnemonicParsing="false" text="Remove set" />
    </children>
 </AnchorPane>
