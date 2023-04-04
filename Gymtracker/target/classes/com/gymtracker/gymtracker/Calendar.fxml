@@ -112,6 +112,5 @@
          <effect>
             <ColorAdjust brightness="-0.12" saturation="-0.49" />
          </effect></FlowPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#145a9cda" layoutY="175.0" stroke="#8ba3f8" strokeType="OUTSIDE" width="1276.0" />
    </children>
 </AnchorPane>
