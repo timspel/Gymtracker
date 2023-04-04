@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1421.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.Controller">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5b5b5b" height="385.0" layoutX="78.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="470.0" />
+      <ImageView fitHeight="385.0" fitWidth="935.0" layoutX="548.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="150.5">
+         <image>
+            <Image url="@../../../images/mainimage.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="152.0" layoutY="103.0" text="Welcome" textFill="WHITE">
+         <font>
+            <Font size="69.0" />
+         </font>
+      </Label>
+      <Label layoutX="249.0" layoutY="246.0" text="To" textFill="WHITE">
+         <font>
+            <Font size="69.0" />
+         </font>
+      </Label>
+      <Label layoutX="110.0" layoutY="371.0" text="Gymtracker" textFill="WHITE">
+         <font>
+            <Font size="69.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="561.0" fitWidth="475.0" layoutX="751.5" layoutY="767.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="150.5">
+         <image>
+            <Image url="@../../../images/background.jpeg" />
+         </image>
+      </ImageView>
+      <VBox layoutX="104.0" layoutY="782.0" prefHeight="532.0" prefWidth="309.0">
+         <children>
+            <Label prefHeight="55.0" prefWidth="308.0" text="Credits:">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="300.0" text="Alex">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="292.0" text="Samuel - Java">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="152.0" text="Villie">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="175.0" prefHeight="55.0" prefWidth="152.0" text="Tim">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="230.0" prefHeight="55.0" prefWidth="152.0" text="Olof">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <ImageView fitHeight="99.0" fitWidth="106.0" layoutX="1153.0" layoutY="1313.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icon.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

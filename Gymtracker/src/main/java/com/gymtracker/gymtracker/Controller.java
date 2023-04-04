@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -28,14 +29,21 @@ public class Controller {
    private StackPane stackPane;
    @FXML
    private Label gymtrackerLabel;
+   @FXML
+   private ScrollPane scrollPane;
 
    private Parent workoutPane;
 
    private Parent calendarPane;
+
+   private Parent scrollContent;
    public Controller(){ //Loads in the other frames
       try {
          workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
          calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
+         scrollContent = FXMLLoader.load(getClass().getResource("WelcomePane.fxml"));
+
+
       }
       catch (IOException ioe){ioe.printStackTrace();}
 }
