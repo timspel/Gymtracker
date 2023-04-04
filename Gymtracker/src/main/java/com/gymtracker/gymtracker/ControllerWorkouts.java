@@ -4,11 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.Category;
-import model.Workout;
+import model.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ControllerWorkouts implements Initializable{
@@ -17,7 +17,7 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Label savedTemplatesLabel;
     @FXML
-    private ChoiceBox exercisesChoiceBox;
+    private ChoiceBox<ExerciseEnum> exercisesChoiceBox;
     @FXML
     private Label newWorkoutLabel;
     @FXML
@@ -41,7 +41,7 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private TableColumn exerciseColumn;
     @FXML
-    private Spinner repetitionsSpinner;
+    private Spinner<Integer> repetitionsSpinner;
     @FXML
     private Label repetitionsLabel;
     @FXML
@@ -68,9 +68,18 @@ public class ControllerWorkouts implements Initializable{
     private Button editSetButton;
     @FXML
     private Button removeSetButton;
+    @FXML
+    private Label weightLabel;
+    @FXML
+    private Spinner<Integer> weightSpinner;
+    private Workout workout;
+    private Set set;
+    private WorkoutManager workoutManager;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        workoutManager = new WorkoutManager();
         setUp();
     }
 
@@ -89,7 +98,7 @@ public class ControllerWorkouts implements Initializable{
 
         }
         if(e.getSource() == addSetButton){
-
+            addSet();
         }
         if(e.getSource() == editSetButton){
 
@@ -98,7 +107,7 @@ public class ControllerWorkouts implements Initializable{
 
         }
         if(e.getSource() == addExerciseButton){
-
+            addExercise();
         }
         if(e.getSource() == removeTemplateButton){
 
@@ -113,13 +122,20 @@ public class ControllerWorkouts implements Initializable{
 
     public void setUp(){
         categoriesChoiceBox.getItems().setAll(Category.values());
+        exercisesChoiceBox.getItems().setAll(ExerciseEnum.values());
     }
 
     public void saveWorkout(){
-        String workoutName = workoutNameTextField.getText();
-        LocalDate date = workoutDatePicker.getValue();
-        Category category = categoriesChoiceBox.getValue();
-        Workout workout = new Workout(workoutName, date, category);
+        workout = new Workout(workoutNameTextField.getText(), workoutDatePicker.getValue(), categoriesChoiceBox.getValue(), workoutManager.getExercises());
         System.out.println(workout);
+    }
+
+    public void addSet(){
+        set = new Set(repetitionsSpinner.getValue(), weightSpinner.getValue());
+        workoutManager.addSet(set);
+    }
+
+    public void addExercise(){
+        workoutManager.addExercise(exercisesChoiceBox.getValue(), workoutManager.getSets());
     }
 }

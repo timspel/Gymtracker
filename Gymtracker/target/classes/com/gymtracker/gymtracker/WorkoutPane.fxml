@@ -37,7 +37,7 @@
             <Image url="@../../../images/black.png" />
          </image>
       </ImageView>
-      <ChoiceBox fx:id="exercisesChoiceBox" layoutX="399.0" layoutY="264.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="exercisesChoiceBox" layoutX="418.0" layoutY="264.0" prefWidth="150.0" />
       <Label fx:id="newWorkoutLabel" layoutX="38.0" layoutY="217.0" text="New Workout">
          <font>
             <Font size="29.0" />
@@ -65,7 +65,7 @@
       <Spinner fx:id="repetitionsSpinner" layoutX="418.0" layoutY="301.0" />
       <Separator layoutX="298.0" layoutY="196.0" orientation="VERTICAL" prefHeight="290.0" prefWidth="15.0" />
       <Label fx:id="repetitionsLabel" layoutX="336.0" layoutY="305.0" text="Repetitions:" />
-      <Button fx:id="addSetButton" layoutX="596.0" layoutY="301.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add set" />
+      <Button fx:id="addSetButton" layoutX="599.0" layoutY="301.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add set" />
       <TableView fx:id="setsTable" layoutX="336.0" layoutY="346.0" prefHeight="117.0" prefWidth="349.0">
         <columns>
           <TableColumn fx:id="setColumn" prefWidth="348.0" text="Sets" />
@@ -81,7 +81,9 @@
       <Button fx:id="removeTemplateButton" layoutX="888.0" layoutY="727.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove template" />
       <Button fx:id="editTemplateButton" layoutX="1023.0" layoutY="727.0" mnemonicParsing="false" onAction="#buttonPressed" text="Edit template" />
       <Button fx:id="loadTemplateButton" layoutX="1134.0" layoutY="727.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="110.0" text="Load template" />
-      <Button fx:id="editSetButton" layoutX="720.0" layoutY="334.0" mnemonicParsing="false" onAction="#buttonPressed" text="Edit set" />
-      <Button fx:id="removeSetButton" layoutX="720.0" layoutY="374.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove set" />
+      <Button fx:id="editSetButton" layoutX="675.0" layoutY="301.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="25.0" prefWidth="57.0" text="Edit set" />
+      <Button fx:id="removeSetButton" layoutX="747.0" layoutY="301.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove set" />
+      <Spinner fx:id="weightSpinner" layoutX="694.0" layoutY="265.0" prefHeight="25.0" prefWidth="87.0" />
+      <Label fx:id="weightLabel" layoutX="599.0" layoutY="268.0" text="Weight (in kg):" />
    </children>
 </AnchorPane>
