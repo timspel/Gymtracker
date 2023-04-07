@@ -54,7 +54,7 @@
       </AnchorPane>
       <Button layoutX="40.0" layoutY="700.0" mnemonicParsing="false" text="Add exercise" />
       <Button layoutX="140.0" layoutY="700.0" mnemonicParsing="false" text="Edit exercise" />
-      <Button layoutX="235.0" layoutY="700.0" mnemonicParsing="false" text="Remove exercise" />
+      <Button layoutX="235.0" layoutY="700.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
    </children>
    <padding>
       <Insets top="1.0" />

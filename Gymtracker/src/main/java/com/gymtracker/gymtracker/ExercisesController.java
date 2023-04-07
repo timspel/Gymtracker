@@ -61,6 +61,13 @@ public class ExercisesController{
    }
 
    public void removeExercise(){
-      
+      int exerciseToRemove = getExercise().getId();
+
+      for(int i = 0; i < exercises.size(); i++){
+         if(exercises.get(i).getId() == exerciseToRemove){
+            exercises.remove(i);
+            break;
+         }
+      }
    }
 }
