@@ -22,7 +22,7 @@ public class ExercisesController{
 
    public void initialize() {
       populateExercisesList();
-      viewList.getItems().setAll(exercisesList);
+      viewList.setItems(exercisesList);
    }
 
    public void populateExercisesList(){
