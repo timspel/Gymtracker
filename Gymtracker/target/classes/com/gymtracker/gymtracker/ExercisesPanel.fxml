@@ -9,11 +9,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ExercisesController">
+<AnchorPane prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.Controller">
    <children>
       <Label layoutX="50.0" layoutY="110.0" text="Exercises:">
          <font>
-            <Font name="AppleGothic Regular" size="25.0" />
+            <Font size="25.0" />
          </font>
       </Label>
       <ListView fx:id="exercisesList" layoutX="40.0" layoutY="180.0" onMouseClicked="#getExercise" prefHeight="500.0" prefWidth="300.0" />
@@ -52,7 +52,7 @@
             <Line endX="100.0" layoutX="352.0" layoutY="58.0" startX="-100.0" />
          </children>
       </AnchorPane>
-      <Button layoutX="40.0" layoutY="700.0" mnemonicParsing="false" text="Add exercise" />
+      <Button layoutX="40.0" layoutY="700.0" mnemonicParsing="false" onAction="#openAddWindow" text="Add exercise" />
       <Button layoutX="140.0" layoutY="700.0" mnemonicParsing="false" text="Edit exercise" />
       <Button layoutX="235.0" layoutY="700.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
    </children>

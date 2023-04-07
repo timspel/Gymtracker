@@ -5,12 +5,17 @@ import com.gymtracker.gymtracker.model.MuscleGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
-public class ExercisesController{
+import java.io.IOException;
+
+public class Controller {
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
@@ -19,6 +24,7 @@ public class ExercisesController{
    private Label infoPanelDescription;
    @FXML
    private ImageView infoPanelImage;
+   private NewExercise newExercise;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
    public void initialize() {
@@ -33,7 +39,12 @@ public class ExercisesController{
    }
 
    public Exercise getExercise(){
-      int exerciseID = exercisesList.getSelectionModel().getSelectedItems().get(0).getId();
+      int exerciseID;
+      if(exercisesList.getSelectionModel().getSelectedItems().get(0) != null){
+         exerciseID = exercisesList.getSelectionModel().getSelectedItems().get(0).getId();
+      }else{
+         return null;
+      }
       Exercise selectedExercise;
       for(int i = 0; i < exercises.size(); i++){
          if(exercises.get(i).getId() == exerciseID){
@@ -52,8 +63,20 @@ public class ExercisesController{
       infoPanelImage.setImage(selectedExercise.getImage());
    }
 
-   public void addExercise(){
+   public void openAddWindow(){
+      try{
+         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EditWindow.fxml"));
+         Scene scene = new Scene(fxmlLoader.load());
+         Stage stage = new Stage();
+         stage.setTitle("Add Exercise");
+         stage.setScene(scene);
+         stage.setResizable(false);
+         stage.show();
+      }catch (IOException e){
+         System.out.println("Problem occurred opening Add window: " + e);
+      }
 
+      //newExercise = new NewExercise(exercises);
    }
 
    public void editExercise(){
