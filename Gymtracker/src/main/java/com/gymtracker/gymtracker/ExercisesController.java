@@ -1,40 +1,66 @@
 package com.gymtracker.gymtracker;
 
 import com.gymtracker.gymtracker.model.Exercise;
+import com.gymtracker.gymtracker.model.MuscleGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-
-import java.util.LinkedList;
+import javafx.scene.image.ImageView;
 
 public class ExercisesController{
    @FXML
-   private ListView viewList;
-
+   private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
-   private Button editButton;
-
-   private ObservableList<Exercise> exercisesList = FXCollections.observableArrayList();
+   private Label infoPanelName;
+   @FXML
+   private Label infoPanelDescription;
+   @FXML
+   private ImageView infoPanelImage;
+   private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
    public void initialize() {
       populateExercisesList();
-      viewList.setItems(exercisesList);
+      exercisesList.setItems(exercises);
    }
 
    public void populateExercisesList(){
       for(int i = 0; i < 5; i++){
-         exercisesList.add(new Exercise("Test " + 1, new Image("icon.png")));
+         exercises.add(new Exercise((i + 10), "Test " + (i + 1),"Description goes here", new Image("icon.png"), MuscleGroup.Arms));
       }
    }
 
+   public Exercise getExercise(){
+      int exerciseID = exercisesList.getSelectionModel().getSelectedItems().get(0).getId();
+      Exercise selectedExercise;
+      for(int i = 0; i < exercises.size(); i++){
+         if(exercises.get(i).getId() == exerciseID){
+            selectedExercise = exercises.get(i);
+            populateInfoPanel(selectedExercise);
+            return selectedExercise;
+         }
+      }
+      System.out.println("Can find matching ID for exercise. Returning null");
+      return null;
+   }
 
+   private void populateInfoPanel(Exercise selectedExercise) {
+      infoPanelName.setText(selectedExercise.getName());
+      infoPanelDescription.setText(selectedExercise.getDescription());
+      infoPanelImage.setImage(selectedExercise.getImage());
+   }
 
-   public void removeExercise(ActionEvent event){
-      System.out.println("Run method");
-      exercisesList.remove(0);
+   public void addExercise(){
+
+   }
+
+   public void editExercise(){
+
+   }
+
+   public void removeExercise(){
+      
    }
 }
