@@ -1,5 +1,6 @@
-package com.gymtracker.gymtracker;
+package com.gymtracker.gymtracker.controller;
 
+import com.gymtracker.gymtracker.HelloApplication;
 import com.gymtracker.gymtracker.model.Exercise;
 import com.gymtracker.gymtracker.model.MuscleGroup;
 import javafx.collections.FXCollections;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Controller {
+public class MainController {
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
@@ -24,7 +25,6 @@ public class Controller {
    private Label infoPanelDescription;
    @FXML
    private ImageView infoPanelImage;
-   private NewExercise newExercise;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
    public void initialize() {
@@ -65,7 +65,7 @@ public class Controller {
 
    public void openAddWindow(){
       try{
-         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EditWindow.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AddWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
@@ -75,8 +75,6 @@ public class Controller {
       }catch (IOException e){
          System.out.println("Problem occurred opening Add window: " + e);
       }
-
-      //newExercise = new NewExercise(exercises);
    }
 
    public void editExercise(){
