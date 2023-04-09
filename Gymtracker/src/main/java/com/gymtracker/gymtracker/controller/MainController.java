@@ -8,8 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainController {
+   //Instance variables for ExercisePanel
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
@@ -27,8 +27,20 @@ public class MainController {
    private ImageView infoPanelImage;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
+   //Instance variables for AddWindow
+   @FXML
+   private TextField addNameField;
+   @FXML
+   private ImageView addImageField;
+   @FXML
+   private ChoiceBox addMuscleGroups = new ChoiceBox();
+   @FXML
+   private TextArea addDescriptionField;
+
+   //Methods for ExercisePanel
    public void initialize() {
       populateExercisesList();
+      populateMuscleGroups();
       exercisesList.setItems(exercises);
    }
 
@@ -77,10 +89,6 @@ public class MainController {
       }
    }
 
-   public void editExercise(){
-
-   }
-
    public void removeExercise(){
       int exerciseToRemove = getExercise().getId();
 
@@ -90,5 +98,24 @@ public class MainController {
             break;
          }
       }
+   }
+
+   //Methods for AddWindow
+   public void populateMuscleGroups(){
+      for(MuscleGroup mg : MuscleGroup.values()){
+         addMuscleGroups.getItems().add(mg);
+      }
+   }
+
+   public Exercise AddNewExercise(){
+      Exercise newExercise;
+      String name = addNameField.getText();
+      Image image = addImageField.getImage();
+      MuscleGroup muscleGroup = (MuscleGroup) addMuscleGroups.getSelectionModel().getSelectedItem();
+      String description = addDescriptionField.getText();
+
+      newExercise = new Exercise((exercises.size() + 1 + 10),name, description, image, muscleGroup);
+
+      return newExercise;
    }
 }

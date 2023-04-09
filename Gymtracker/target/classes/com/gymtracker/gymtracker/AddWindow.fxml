@@ -19,15 +19,15 @@
       </Label>
       <AnchorPane layoutX="50.0" layoutY="110.0" prefHeight="300.0" prefWidth="700.0" style="-fx-border-color: black;">
          <children>
-            <TextField layoutX="72.0" layoutY="19.0" prefHeight="25.0" prefWidth="160.0" />
+            <TextField fx:id="addNameField" layoutX="72.0" layoutY="19.0" prefHeight="25.0" prefWidth="160.0" />
             <TextField layoutX="73.0" layoutY="60.0" prefHeight="25.0" prefWidth="160.0" />
             <Button layoutX="240.0" layoutY="60.0" mnemonicParsing="false" text="Choose" />
-            <ChoiceBox fx:id="muscleGroups" layoutX="483.0" layoutY="20.0" prefWidth="160.0" />
-            <TextArea layoutX="359.0" layoutY="87.0" prefHeight="196.0" prefWidth="300.0" />
+            <ChoiceBox fx:id="addMuscleGroups" layoutX="483.0" layoutY="20.0" prefWidth="160.0" />
+            <TextArea fx:id="addDescriptionField" layoutX="359.0" layoutY="87.0" prefHeight="196.0" prefWidth="300.0" />
             <Label alignment="CENTER_RIGHT" layoutX="359.0" layoutY="20.0" prefHeight="20.0" prefWidth="80.0" text="Muscle Group:" />
             <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="20.0" prefHeight="20.0" prefWidth="40.0" text="Name:" />
             <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="60.0" prefHeight="20.0" prefWidth="40.0" text="Image:" />
-            <ImageView fitHeight="180.0" fitWidth="259.0" layoutX="23.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="addImageField" fitHeight="180.0" fitWidth="259.0" layoutX="23.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" />
             <Line endX="-8.0" endY="178.0" layoutX="331.0" layoutY="124.0" startX="-8.0" startY="-123.0" />
             <Label layoutX="359.0" layoutY="64.0" text="Description:" />
             <Line endX="129.0" layoutX="153.0" layoutY="287.0" startX="-130.0" />
