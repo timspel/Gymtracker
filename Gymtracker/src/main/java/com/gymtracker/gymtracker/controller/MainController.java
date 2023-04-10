@@ -1,6 +1,6 @@
 package com.gymtracker.gymtracker.controller;
 
-import com.gymtracker.gymtracker.HelloApplication;
+import com.gymtracker.gymtracker.ExercisePanel;
 import com.gymtracker.gymtracker.model.Exercise;
 import com.gymtracker.gymtracker.model.MuscleGroup;
 import javafx.collections.FXCollections;
@@ -83,7 +83,7 @@ public class MainController {
 
    public void openAddWindow(){
       try{
-         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AddWindow.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(ExercisePanel.class.getResource("AddWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
