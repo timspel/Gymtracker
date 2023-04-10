@@ -20,8 +20,8 @@
       <AnchorPane layoutX="50.0" layoutY="110.0" prefHeight="300.0" prefWidth="700.0" style="-fx-border-color: black;">
          <children>
             <TextField fx:id="addNameField" layoutX="72.0" layoutY="19.0" prefHeight="25.0" prefWidth="160.0" />
-            <TextField layoutX="73.0" layoutY="60.0" prefHeight="25.0" prefWidth="160.0" />
-            <Button layoutX="240.0" layoutY="60.0" mnemonicParsing="false" text="Choose" />
+            <TextField fx:id="imageSourceField" layoutX="73.0" layoutY="60.0" prefHeight="25.0" prefWidth="160.0" />
+            <Button fx:id="chooseImageButton" layoutX="240.0" layoutY="60.0" mnemonicParsing="false" onAction="#chooseImage" text="Choose" />
             <ChoiceBox fx:id="addMuscleGroups" layoutX="483.0" layoutY="20.0" prefWidth="160.0" />
             <TextArea fx:id="addDescriptionField" layoutX="359.0" layoutY="87.0" prefHeight="196.0" prefWidth="300.0" />
             <Label alignment="CENTER_RIGHT" layoutX="359.0" layoutY="20.0" prefHeight="20.0" prefWidth="80.0" text="Muscle Group:" />
