@@ -6,6 +6,6 @@
 
 <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <AnchorPane fx:id="scrollAnchorPane" prefHeight="789.0" prefWidth="1276.0" />
+      <AnchorPane prefHeight="789.0" prefWidth="1276.0" />
    </content>
 </ScrollPane>

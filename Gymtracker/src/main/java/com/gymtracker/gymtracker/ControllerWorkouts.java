@@ -2,13 +2,18 @@ package com.gymtracker.gymtracker;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.*;
 
+import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ControllerWorkouts implements Initializable{
@@ -72,13 +77,25 @@ public class ControllerWorkouts implements Initializable{
     private Label weightLabel;
     @FXML
     private Spinner<Integer> weightSpinner;
-    private Workout workout;
     private Set set;
+    @FXML
+    private AnchorPane scrollAnchorPane;
+    @FXML
+    private Parent workoutPane;
+    @FXML
+    private Parent workoutScrollPane;
+    private Scene scene;
+    private Stage stage;
 
-
+    public ControllerWorkouts() throws IOException {
+        workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
+        scene = new Scene(workoutPane);
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUp();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
