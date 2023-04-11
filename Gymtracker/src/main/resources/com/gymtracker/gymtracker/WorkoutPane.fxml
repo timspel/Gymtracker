@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1578.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
    <children>
       <ImageView fitHeight="200.0" fitWidth="356.0" layoutX="942.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
          <image>

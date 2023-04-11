@@ -74,12 +74,10 @@ public class ControllerWorkouts implements Initializable{
     private Spinner<Integer> weightSpinner;
     private Workout workout;
     private Set set;
-    private WorkoutManager workoutManager;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        workoutManager = new WorkoutManager();
         setUp();
     }
 
@@ -126,16 +124,14 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void saveWorkout(){
-        workout = new Workout(workoutNameTextField.getText(), workoutDatePicker.getValue(), categoriesChoiceBox.getValue(), workoutManager.getExercises());
-        System.out.println(workout);
+
     }
 
     public void addSet(){
         set = new Set(repetitionsSpinner.getValue(), weightSpinner.getValue());
-        workoutManager.addSet(set);
     }
 
     public void addExercise(){
-        workoutManager.addExercise(exercisesChoiceBox.getValue(), workoutManager.getSets());
+        
     }
 }
