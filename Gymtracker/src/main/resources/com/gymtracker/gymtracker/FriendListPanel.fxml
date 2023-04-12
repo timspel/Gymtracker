@@ -33,19 +33,19 @@
                </font>
             </Label>
          </children></AnchorPane>
-      <VBox layoutX="-24.0" layoutY="68.0" prefHeight="723.0" prefWidth="1068.0">
-         <children>
-            <ImageView fitHeight="728.0" fitWidth="1067.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../Desktop/TestSkärmbild%202023-04-05%20123227.png" />
-               </image>
-            </ImageView>
-         </children>
-      </VBox>
       <VBox layoutX="86.0" layoutY="143.0" prefHeight="507.0" prefWidth="287.0" style="-fx-border-color: black; -fx-opacity: 0.5;">
          <children>
             <ListView fx:id="friendsList" prefHeight="691.0" prefWidth="285.0" />
          </children>
       </VBox>
+      <AnchorPane layoutX="-1.0" layoutY="65.0" prefHeight="723.0" prefWidth="970.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="126.0" layoutY="597.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="C:\Users\villi\OneDrive\Dokument\GitHub\Gymtracker\Gymtracker\src\main\resources\images\icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
