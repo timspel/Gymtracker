@@ -1,5 +1,11 @@
 package com.gymtracker.gymtracker;
 
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,12 +14,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
 import model.*;
-
+import model.Template;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerWorkouts implements Initializable{
@@ -58,9 +68,13 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Button saveAsTemplateButton;
     @FXML
-    private TableView templatesTable;
+    private TableView<Template> templatesTable;
     @FXML
-    private TableColumn templateColumn;
+    private TableColumn<Template, String> templateName;
+    @FXML
+    private TableColumn<Template, String> templateDate;
+    @FXML
+    private TableColumn<Template, String> templateCategory;
     @FXML
     private Button editExerciseButton;
     @FXML
@@ -82,20 +96,36 @@ public class ControllerWorkouts implements Initializable{
     private AnchorPane scrollAnchorPane;
     @FXML
     private Parent workoutPane;
-    @FXML
-    private Parent workoutScrollPane;
+
     private Scene scene;
     private Stage stage;
 
     public ControllerWorkouts() throws IOException {
-        workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
-        scene = new Scene(workoutPane);
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setUp();
-        stage.setScene(scene);
-        stage.show();
+        categoriesChoiceBox.getItems().setAll(Category.values());
+        exercisesChoiceBox.getItems().setAll(ExerciseEnum.values());
+
+        templateName.setCellValueFactory(new PropertyValueFactory<>("workoutName"));
+        templateDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        templateCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        templatesTable.setItems(getTemplates());
+
+        templatesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Template>() {
+            @Override
+            public void changed(ObservableValue<? extends Template> observableValue, Template oldValue, Template newValue) {
+                if(templatesTable.getSelectionModel().getSelectedItem() != null){
+                    TableView.TableViewSelectionModel selectionModel = templatesTable.getSelectionModel();
+                    ObservableList selectedCells = selectionModel.getSelectedCells();
+                    TablePosition tablePosition = (TablePosition) selectedCells.get(0);
+                    Object val = tablePosition.getTableColumn().getCellData(newValue);
+                    System.out.println("Selected value: " + val);
+                }
+            }
+        });
     }
 
     @FXML
@@ -135,9 +165,12 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
-    public void setUp(){
-        categoriesChoiceBox.getItems().setAll(Category.values());
-        exercisesChoiceBox.getItems().setAll(ExerciseEnum.values());
+    public ObservableList<Template> getTemplates(){
+        return FXCollections.observableArrayList(
+                new Template("Morning workout", "2023-04-04", "Push"),
+                new Template("Lunch workout", "2023-04-07", "Pull"),
+                new Template("Evening workout", "2023-04-11", "Legs")
+        );
     }
 
     public void saveWorkout(){

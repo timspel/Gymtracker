@@ -12,31 +12,17 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1578.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
    <children>
-      <ImageView fitHeight="200.0" fitWidth="356.0" layoutX="942.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../images/black.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="saveWorkoutButton" layoutX="671.0" layoutY="727.0" mnemonicParsing="false" onAction="#actionPerformed" prefHeight="35.0" prefWidth="133.0" text="Save workout" />
+      <Button fx:id="saveWorkoutButton" layoutX="671.0" layoutY="727.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="133.0" text="Save workout" />
       <Label fx:id="savedTemplatesLabel" layoutX="887.0" layoutY="208.0" prefHeight="44.0" prefWidth="225.0" text="Saved Templates">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
-      <ImageView fitHeight="193.0" fitWidth="626.0" layoutX="325.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../images/backposeEdit.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="367.0" layoutX="-28.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../images/black.png" />
-         </image>
-      </ImageView>
       <ChoiceBox fx:id="exercisesChoiceBox" layoutX="399.0" layoutY="264.0" prefWidth="150.0" />
       <Label fx:id="newWorkoutLabel" layoutX="38.0" layoutY="217.0" text="New Workout">
          <font>
@@ -49,7 +35,7 @@
       <TextField fx:id="workoutNameTextField" layoutX="52.0" layoutY="288.0" promptText="Workout name" />
       <Label fx:id="categoryLabel" layoutX="52.0" layoutY="386.0" text="Category:" />
       <ChoiceBox fx:id="categoriesChoiceBox" layoutX="114.0" layoutY="382.0" prefWidth="150.0" />
-      <Separator layoutX="849.0" layoutY="192.0" orientation="VERTICAL" prefHeight="605.0" prefWidth="15.0" />
+      <Separator layoutX="849.0" layoutY="192.0" orientation="VERTICAL" prefHeight="1387.0" prefWidth="15.0" />
       <Separator layoutX="1.0" layoutY="478.0" prefHeight="17.0" prefWidth="856.0" />
       <Label fx:id="exercisesLabel" layoutX="328.0" layoutY="217.0" text="Exercises">
          <font>
@@ -74,7 +60,9 @@
       <Button fx:id="saveAsTemplateButton" layoutX="501.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="133.0" text="Save as template" />
       <TableView fx:id="templatesTable" layoutX="888.0" layoutY="277.0" prefHeight="432.0" prefWidth="356.0">
         <columns>
-          <TableColumn fx:id="templateColumn" prefWidth="355.0" text="Templates" />
+          <TableColumn fx:id="templateName" prefWidth="122.0" text="Name" />
+            <TableColumn fx:id="templateDate" prefWidth="113.0" text="Date" />
+            <TableColumn fx:id="templateCategory" prefWidth="120.0" text="Category" />
         </columns>
       </TableView>
       <Button fx:id="editExerciseButton" layoutX="160.0" layoutY="727.0" mnemonicParsing="false" text="Edit exercise" />
@@ -83,5 +71,18 @@
       <Button fx:id="loadTemplateButton" layoutX="1134.0" layoutY="727.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Load template" />
       <Button fx:id="editSetButton" layoutX="720.0" layoutY="334.0" mnemonicParsing="false" text="Edit set" />
       <Button fx:id="removeSetButton" layoutX="720.0" layoutY="374.0" mnemonicParsing="false" text="Remove set" />
+      <HBox alignment="CENTER" prefHeight="154.0" prefWidth="1276.0">
+         <children>
+            <AnchorPane prefHeight="156.0" prefWidth="499.0">
+               <children>
+                  <ImageView fitHeight="170.0" fitWidth="499.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/backposeEdit.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
