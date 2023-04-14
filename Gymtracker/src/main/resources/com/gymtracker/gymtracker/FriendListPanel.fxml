@@ -17,11 +17,10 @@
       <Button layoutX="314.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="105.0" text="Search Friend" />
       <AnchorPane layoutX="976.0" layoutY="67.0" prefHeight="723.0" prefWidth="304.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="95.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="217.0" layoutX="77.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../Desktop/profilSkärmbild%202023-04-05%20124824.png" />
-               </image>
-            </ImageView>
+                  <Image url="C:\Users\villi\OneDrive\Dokument\GitHub\Gymtracker\Gymtracker\src\main\resources\images\RandomProfilepic.jpg" />
+               </image></ImageView>
             <Label layoutX="76.0" layoutY="320.0" prefHeight="55.0" prefWidth="185.0" text="ProfilName*">
                <font>
                   <Font name="Arial Bold" size="20.0" />
