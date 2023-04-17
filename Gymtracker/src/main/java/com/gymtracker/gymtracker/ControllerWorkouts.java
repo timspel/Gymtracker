@@ -19,12 +19,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
 import model.*;
+import model.Set;
 import model.Template;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ControllerWorkouts implements Initializable{
     @FXML
@@ -62,9 +61,13 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Button addSetButton;
     @FXML
-    private TableView setsTable;
+    private TableView<Set> setsTable;
     @FXML
-    private TableColumn setColumn;
+    private TableColumn<Set, Integer> setRepetitions;
+    @FXML
+    private TableColumn<Set, Integer> setWeight;
+    @FXML
+    private TableColumn<Set, Integer> setNumber;
     @FXML
     private Button saveAsTemplateButton;
     @FXML
@@ -90,15 +93,15 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Label weightLabel;
     @FXML
-    private Spinner<Integer> weightSpinner;
+    private TextField weightTextField;
+    @FXML
+    private Label kgLabel;
     private Set set;
-    @FXML
-    private AnchorPane scrollAnchorPane;
-    @FXML
-    private Parent workoutPane;
-
-    private Scene scene;
-    private Stage stage;
+    private int numberOfSets = 0;
+    private List<Set> sets;
+    private ObservableList<Set> dataSets;
+    private int selectedSetRow;
+    private int selectedTemplateRow;
 
     public ControllerWorkouts() throws IOException {
 
@@ -107,6 +110,11 @@ public class ControllerWorkouts implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         categoriesChoiceBox.getItems().setAll(Category.values());
         exercisesChoiceBox.getItems().setAll(ExerciseEnum.values());
+
+        sets = new ArrayList<>();
+
+        SpinnerValueFactory<Integer> repetitionsValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0);
+        repetitionsSpinner.setValueFactory(repetitionsValueFactory);
 
         templateName.setCellValueFactory(new PropertyValueFactory<>("workoutName"));
         templateDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -121,8 +129,25 @@ public class ControllerWorkouts implements Initializable{
                     TableView.TableViewSelectionModel selectionModel = templatesTable.getSelectionModel();
                     ObservableList selectedCells = selectionModel.getSelectedCells();
                     TablePosition tablePosition = (TablePosition) selectedCells.get(0);
-                    Object val = tablePosition.getTableColumn().getCellData(newValue);
-                    System.out.println("Selected value: " + val);
+                    selectedTemplateRow = tablePosition.getRow();
+                }
+            }
+        });
+
+        setNumber.setCellValueFactory(new PropertyValueFactory<>("setNumber"));
+        setWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        setRepetitions.setCellValueFactory(new PropertyValueFactory<>("repetitions"));
+
+        setsTable.setItems(getObservableSets());
+
+        setsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Set>() {
+            @Override
+            public void changed(ObservableValue<? extends Set> observableValue, Set oldValue, Set newValue) {
+                if(setsTable.getSelectionModel().getSelectedItem() != null){
+                    TableView.TableViewSelectionModel selectionModel = setsTable.getSelectionModel();
+                    ObservableList selectedCells = selectionModel.getSelectedCells();
+                    TablePosition tablePosition = (TablePosition) selectedCells.get(0);
+                    selectedSetRow = tablePosition.getRow();
                 }
             }
         });
@@ -149,7 +174,7 @@ public class ControllerWorkouts implements Initializable{
 
         }
         if(e.getSource() == removeSetButton){
-
+            removeSet();
         }
         if(e.getSource() == addExerciseButton){
             addExercise();
@@ -173,15 +198,48 @@ public class ControllerWorkouts implements Initializable{
         );
     }
 
+    public ObservableList<Set> getObservableSets(){
+        dataSets = FXCollections.observableArrayList(sets);
+        return dataSets;
+    }
+
     public void saveWorkout(){
 
     }
 
     public void addSet(){
-        set = new Set(repetitionsSpinner.getValue(), weightSpinner.getValue());
+        set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Integer.parseInt(weightTextField.getText()));
+        sets.add(set);
+        numberOfSets++;
+        setsTable.setItems(getObservableSets());
+    }
+
+    public void removeSet(){
+        sets.remove(selectedSetRow);
+        numberOfSets--;
+        sets.sort(new SetComparator());
+        updateSetsTable();
+    }
+
+    public void updateSetsTable(){
+        numberOfSets = 0;
+        for(int i = sets.size()-1; i >= 0; i--){
+            set = sets.get(i);
+            sets.remove(i);
+            sets.add(new Set(numberOfSets + 1, set.getRepetitions(), set.getWeight()));
+            numberOfSets++;
+        }
+        setsTable.setItems(getObservableSets());
     }
 
     public void addExercise(){
         
+    }
+}
+
+class SetComparator implements Comparator<Set>{
+    @Override
+    public int compare(Set a, Set b) {
+        return b.getSetNumber() - a.getSetNumber();
     }
 }
