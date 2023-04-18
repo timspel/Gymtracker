@@ -1,5 +1,6 @@
 package com.gymtracker.gymtracker;
 
+import javafx.stage.Window;
 import model.MuscleGroup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.List;
 
 public class AddExerciseController {
     @FXML
@@ -26,6 +28,8 @@ public class AddExerciseController {
     private ChoiceBox addMuscleGroups = new ChoiceBox();
     @FXML
     private TextArea addDescriptionField;
+    @FXML
+    private Button cancelButton;
 
     public void initialize() {
         populateMuscleGroups();
@@ -48,6 +52,11 @@ public class AddExerciseController {
         imageSourceField.setText(selectedFile.toURI().toString());
         Image exerciseImage = new Image(selectedFile.toURI().toString());
         addImageField.setImage(exerciseImage);
+    }
+
+    public void cancelOperation(){
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     /*public void AddNewExercise(){

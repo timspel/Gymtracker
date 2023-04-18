@@ -61,7 +61,7 @@ public class ExercisePanelController {
       infoPanelImage.setImage(selectedExercise.getImage());
    }
 
-   public void openAddWindow(){
+   public void openAddExerciseWindow(){
       try{
          FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExerciseWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
