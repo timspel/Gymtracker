@@ -30,30 +30,30 @@ public class MainController implements Initializable{
    private Button profileButton;
 
    private Parent workoutPane;
-
    private Parent calendarPane;
-
+   private Parent profilePane;
    private AnchorPane scrollContent;
    public MainController(){ //Loads in the other frames
       try {
          workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
          calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
          scrollContent = FXMLLoader.load(getClass().getResource("WelcomePane.fxml"));
+         profilePane = FXMLLoader.load(getClass().getResource("ProfilePane.fxml"));
       }
       catch (IOException ioe){ioe.printStackTrace();}
 }
 
    public void buttonPressed(ActionEvent event){ //Handles button presses
       if(event.getSource() == workoutsButton){
-         stackPane.getChildren().removeAll();
-         stackPane.getChildren().setAll(workoutPane);
+         scrollPane.setContent(workoutPane);
       }
       if(event.getSource() == calendarButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(calendarPane);
       }
       if(event.getSource() == profileButton){
-
+         stackPane.getChildren().removeAll();
+         stackPane.getChildren().setAll(profilePane);
       }
    }
 
