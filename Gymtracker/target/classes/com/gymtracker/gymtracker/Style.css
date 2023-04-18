@@ -1,0 +1,5 @@
+.button:hover {
+    -fx-scale-y: 1.1;
+    -fx-border-color: black;
+    -fx-skin: 'com.gymtracker.gymtracker.ButtonSkin';
+}

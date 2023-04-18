@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1647.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="868.0" fitWidth="1297.0" layoutX="-3.0" layoutY="785.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="785.0">
+         <image>
+            <Image url="@../../../images/mainimage.jpg" />
+         </image>
+      </ImageView>
+      <Line endX="1115.0" endY="-0.5" layoutX="161.0" layoutY="786.0" startX="-161.0" startY="-0.5" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="296.0" layoutX="338.0" layoutY="217.0" stroke="TRANSPARENT" strokeType="INSIDE" width="604.0" AnchorPane.leftAnchor="338.0" AnchorPane.rightAnchor="334.0" AnchorPane.topAnchor="217.0" />
+      <Text fx:id="welcomeText" layoutX="450.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" wrappingWidth="412.83338928222656">
+         <font>
+            <Font name="Avenir Book" size="96.0" />
+         </font>
+      </Text>
+      <Text layoutX="985.0" layoutY="746.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gymtracker" wrappingWidth="230.8035888671875">
+         <font>
+            <Font name="Arial Bold" size="38.0" />
+         </font>
+      </Text>
+      <HBox alignment="CENTER" layoutX="5.0" layoutY="671.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView fitHeight="115.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/buttonicons/scroll_icon_149393.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <ImageView fitHeight="61.0" fitWidth="138.0" layoutX="1203.0" layoutY="705.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="99.0" fitWidth="106.0" layoutX="1153.0" layoutY="1531.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icon.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER_LEFT" layoutX="779.0" layoutY="1033.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: Black;" AnchorPane.rightAnchor="150.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="55.0" prefWidth="369.0" text="Inspiration:" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Gym App" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="Gym thing" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="Influencer" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" layoutX="139.0" layoutY="1035.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: Black;" AnchorPane.leftAnchor="139.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="55.0" prefWidth="369.0" text="Credits:" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Alex - Develepor" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="Samuel - Developer" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="Villie - Developer" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="175.0" prefHeight="55.0" prefWidth="395.0" text="Tim - Developer" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="230.0" prefHeight="55.0" prefWidth="464.0" text="Olof - Developer" textFill="WHITE">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" layoutX="116.0" layoutY="43.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="193.0" fitWidth="542.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/backposeEdit.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

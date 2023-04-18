@@ -5,6 +5,5 @@ module com.gymtracker.gymtracker {
 
     opens com.gymtracker.gymtracker to javafx.fxml;
     exports com.gymtracker.gymtracker;
-    exports com.gymtracker.gymtracker.controller;
-    opens com.gymtracker.gymtracker.controller to javafx.fxml;
+    opens model to javafx.base;
 }
