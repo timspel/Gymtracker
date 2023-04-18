@@ -29,6 +29,7 @@ public class ExercisePanelController {
    private ImageView infoPanelImage;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
+   
    public void initialize() {
       populateExercisesList();
       exercisesList.setItems(exercises);
