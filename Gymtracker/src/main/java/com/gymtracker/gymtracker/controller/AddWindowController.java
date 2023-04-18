@@ -18,6 +18,8 @@ public class AddWindowController {
     @FXML
     private TextField addNameField;
     @FXML
+    private TextField testtest;
+    @FXML
     private ImageView addImageField;
     @FXML
     private TextField imageSourceField;
