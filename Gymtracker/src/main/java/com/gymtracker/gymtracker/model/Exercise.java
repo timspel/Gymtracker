@@ -9,6 +9,7 @@ public class Exercise {
     private Image image;
     private MuscleGroup muscleGroup;
 
+
     public Exercise(int id, String name, String description, Image exerciseImage, MuscleGroup muscleGroup){
         this.id = id;
         this.name = name;
