@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-public class MainController {
+public class ExercisePanelController {
    //Instance variables for ExercisePanel
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
@@ -29,24 +29,8 @@ public class MainController {
    private ImageView infoPanelImage;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
-   //Instance variables for AddWindow
-   @FXML
-   private TextField addNameField;
-   @FXML
-   private ImageView addImageField;
-   @FXML
-   private TextField imageSourceField;
-   @FXML
-   private Button chooseImageButton;
-   @FXML
-   private ChoiceBox addMuscleGroups = new ChoiceBox();
-   @FXML
-   private TextArea addDescriptionField;
-
-   //Methods for ExercisePanel
    public void initialize() {
       populateExercisesList();
-      populateMuscleGroups();
       exercisesList.setItems(exercises);
    }
 
@@ -104,38 +88,5 @@ public class MainController {
             break;
          }
       }
-   }
-
-   //Methods for AddWindow
-   public void populateMuscleGroups(){
-      for(MuscleGroup mg : MuscleGroup.values()){
-         addMuscleGroups.getItems().add(mg);
-      }
-   }
-
-   public void chooseImage(){
-      Stage stage = new Stage();
-      FileChooser fc = new FileChooser();
-      FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-      FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-      fc.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-
-      File selectedFile = fc.showOpenDialog(stage);
-      imageSourceField.setText(selectedFile.toURI().toString());
-      Image exerciseImage = new Image(selectedFile.toURI().toString());
-      addImageField.setImage(exerciseImage);
-   }
-
-   public void AddNewExercise(){
-      Exercise newExercise;
-      String name = addNameField.getText();
-      String description = addDescriptionField.getText();
-      Image image = addImageField.getImage();
-      MuscleGroup muscleGroup = (MuscleGroup) addMuscleGroups.getSelectionModel().getSelectedItem();
-
-      newExercise = new Exercise((exercises.size() + 1 + 10),name, description, image, muscleGroup);
-      System.out.println(newExercise);
-      exercises.add(newExercise);
-      exercisesList.setItems(exercises);
    }
 }
