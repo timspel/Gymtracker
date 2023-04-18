@@ -1,6 +1,5 @@
 package com.gymtracker.gymtracker;
 
-import com.gymtracker.gymtracker.ExercisePanel;
 import model.Exercise;
 import model.MuscleGroup;
 import javafx.collections.FXCollections;
@@ -62,7 +61,7 @@ public class ExercisePanelController {
       infoPanelImage.setImage(selectedExercise.getImage());
    }
 
-   public void openAddWindow(){
+   /*public void openAddWindow(){
       try{
          FXMLLoader fxmlLoader = new FXMLLoader(ExercisePanel.class.getResource("AddWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
@@ -74,7 +73,7 @@ public class ExercisePanelController {
       }catch (IOException e){
          System.out.println("Problem occurred opening Add window: " + e);
       }
-   }
+   }*/
 
    public void removeExercise(){
       int exerciseToRemove = getExercise().getId();
