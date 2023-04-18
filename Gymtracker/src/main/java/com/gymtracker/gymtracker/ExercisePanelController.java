@@ -61,9 +61,9 @@ public class ExercisePanelController {
       infoPanelImage.setImage(selectedExercise.getImage());
    }
 
-   /*public void openAddWindow(){
+   public void openAddWindow(){
       try{
-         FXMLLoader fxmlLoader = new FXMLLoader(ExercisePanel.class.getResource("AddExerciseWindow.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExerciseWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
@@ -73,7 +73,7 @@ public class ExercisePanelController {
       }catch (IOException e){
          System.out.println("Problem occurred opening Add window: " + e);
       }
-   }*/
+   }
 
    public void removeExercise(){
       int exerciseToRemove = getExercise().getId();

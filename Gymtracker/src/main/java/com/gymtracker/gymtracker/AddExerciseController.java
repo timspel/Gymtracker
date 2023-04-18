@@ -13,11 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-public class AddWindowController {
+public class AddExerciseController {
     @FXML
     private TextField addNameField;
-    @FXML
-    private TextField testtest;
     @FXML
     private ImageView addImageField;
     @FXML
