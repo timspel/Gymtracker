@@ -38,7 +38,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button layoutX="10.0" layoutY="89.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Exercises">
+                  <Button fx:id="exercisesButton" layoutX="10.0" layoutY="89.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Exercises">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -60,7 +60,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Friends">
+                  <Button fx:id="friendsButton" layoutX="10.0" layoutY="313.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Friends">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
