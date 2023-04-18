@@ -31,10 +31,10 @@
       </Label>
       <Label fx:id="exerciseLabel" layoutX="37.0" layoutY="347.0" text="Exercise:" />
       <Button fx:id="addExerciseButton" layoutX="290.0" layoutY="711.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="105.0" text="Add exercise" />
-      <DatePicker fx:id="workoutDatePicker" layoutX="258.0" layoutY="230.0" promptText="Date" />
+      <DatePicker fx:id="workoutDatePicker" layoutX="467.0" layoutY="231.0" promptText="Date" />
       <TextField fx:id="workoutNameTextField" layoutX="49.0" layoutY="230.0" promptText="Workout name" />
-      <Label fx:id="categoryLabel" layoutX="483.0" layoutY="235.0" text="Category:" />
-      <ChoiceBox fx:id="categoriesChoiceBox" layoutX="548.0" layoutY="230.0" prefWidth="150.0" />
+      <Label fx:id="categoryLabel" layoutX="700.0" layoutY="235.0" text="Category:" />
+      <ChoiceBox fx:id="categoriesChoiceBox" layoutX="765.0" layoutY="230.0" prefWidth="150.0" />
       <Separator layoutX="-4.0" layoutY="766.0" prefHeight="17.0" prefWidth="1285.0" />
       <Label fx:id="exercisesLabel" layoutX="33.0" layoutY="297.0" text="Exercises">
          <font>
@@ -42,9 +42,14 @@
          </font>
       </Label>
       <Button fx:id="removeExerciseButton" layoutX="466.0" layoutY="716.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
-      <TableView fx:id="exercisesTable" layoutX="467.0" layoutY="305.0" prefHeight="387.0" prefWidth="779.0">
+      <TableView fx:id="exercisesTable" layoutX="467.0" layoutY="305.0" prefHeight="387.0" prefWidth="774.0">
         <columns>
-          <TableColumn fx:id="exerciseColumn" prefWidth="778.0" text="Exercises" />
+          <TableColumn fx:id="exerciseName" prefWidth="129.0" text="Exercise" />
+            <TableColumn fx:id="exerciseSet1" prefWidth="129.0" text="Set 1" />
+            <TableColumn fx:id="exerciseSet2" prefWidth="129.0" text="Set 2" />
+            <TableColumn fx:id="exerciseSet3" prefWidth="129.0" text="Set 3" />
+            <TableColumn fx:id="exerciseSet4" prefWidth="129.0" text="Set 4" />
+            <TableColumn fx:id="exerciseSet5" prefWidth="129.0" text="Set 5" />
         </columns>
       </TableView>
       <Spinner fx:id="repetitionsSpinner" editable="true" layoutX="121.0" layoutY="383.0" prefHeight="25.0" prefWidth="150.0" />
@@ -52,9 +57,9 @@
       <Button fx:id="addSetButton" layoutX="318.0" layoutY="425.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add set" />
       <TableView fx:id="setsTable" layoutX="33.0" layoutY="475.0" prefHeight="217.0" prefWidth="364.0">
         <columns>
-          <TableColumn fx:id="setNumber" prefWidth="118.0" text="Set" />
-            <TableColumn fx:id="setWeight" prefWidth="126.0" text="Weight" />
-            <TableColumn fx:id="setRepetitions" prefWidth="119.0" text="Repetitions" />
+          <TableColumn fx:id="setNumber" prefWidth="121.0" text="Set" />
+            <TableColumn fx:id="setWeight" prefWidth="122.0" text="Weight" />
+            <TableColumn fx:id="setRepetitions" prefWidth="121.0" text="Repetitions" />
         </columns>
       </TableView>
       <Button fx:id="saveAsTemplateButton" layoutX="956.0" layoutY="711.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="133.0" text="Save as template" />
@@ -88,5 +93,6 @@
       <TextField fx:id="weightTextField" layoutX="121.0" layoutY="425.0" prefHeight="25.0" prefWidth="150.0" />
       <Label fx:id="kgLabel" layoutX="280.0" layoutY="429.0" text="kg" />
       <Separator layoutY="273.0" prefHeight="17.0" prefWidth="1276.0" />
+      <TextField layoutX="258.0" layoutY="231.0" promptText="Description" />
    </children>
 </AnchorPane>

@@ -1,23 +1,14 @@
 package com.gymtracker.gymtracker;
 
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.converter.LocalDateStringConverter;
 import model.*;
 import model.Set;
 import model.Template;
@@ -51,9 +42,19 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Button removeExerciseButton;
     @FXML
-    private TableView exercisesTable;
+    private TableView<ExerciseWorkoutTab> exercisesTable;
     @FXML
-    private TableColumn exerciseColumn;
+    private TableColumn<ExerciseWorkoutTab, String> exerciseName;
+    @FXML
+    private TableColumn<ExerciseWorkoutTab, Set> exerciseSet1;
+    @FXML
+    private TableColumn<ExerciseWorkoutTab, Set> exerciseSet2;
+    @FXML
+    private TableColumn<ExerciseWorkoutTab, Set> exerciseSet3;
+    @FXML
+    private TableColumn<ExerciseWorkoutTab, Set> exerciseSet4;
+    @FXML
+    private TableColumn<ExerciseWorkoutTab, Set> exerciseSet5;
     @FXML
     private Spinner<Integer> repetitionsSpinner;
     @FXML
@@ -100,8 +101,12 @@ public class ControllerWorkouts implements Initializable{
     private int numberOfSets = 0;
     private List<Set> sets;
     private ObservableList<Set> dataSets;
+    private List<ExerciseWorkoutTab> exercises;
+    private ObservableList<ExerciseWorkoutTab> dataExercises;
     private int selectedSetRow;
     private int selectedTemplateRow;
+    private int selectedExerciseRow;
+    private ExerciseWorkoutTab exercise;
 
     public ControllerWorkouts() throws IOException {
 
@@ -112,6 +117,7 @@ public class ControllerWorkouts implements Initializable{
         exercisesChoiceBox.getItems().setAll(ExerciseEnum.values());
 
         sets = new ArrayList<>();
+        exercises = new ArrayList<>();
 
         SpinnerValueFactory<Integer> repetitionsValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0);
         repetitionsSpinner.setValueFactory(repetitionsValueFactory);
@@ -151,6 +157,27 @@ public class ControllerWorkouts implements Initializable{
                 }
             }
         });
+
+        exerciseName.setCellValueFactory(new PropertyValueFactory<>("exerciseName"));
+        exerciseSet1.setCellValueFactory(new PropertyValueFactory<>("set1"));
+        exerciseSet2.setCellValueFactory(new PropertyValueFactory<>("set2"));
+        exerciseSet3.setCellValueFactory(new PropertyValueFactory<>("set3"));
+        exerciseSet4.setCellValueFactory(new PropertyValueFactory<>("set4"));
+        exerciseSet5.setCellValueFactory(new PropertyValueFactory<>("set5"));
+
+        exercisesTable.setItems(getObservableExercises());
+
+        exercisesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ExerciseWorkoutTab>() {
+            @Override
+            public void changed(ObservableValue<? extends ExerciseWorkoutTab> observableValue, ExerciseWorkoutTab exerciseWorkoutTab, ExerciseWorkoutTab t1) {
+                if(exercisesTable.getSelectionModel().getSelectedItem() != null){
+                    TableView.TableViewSelectionModel selectionModel = exercisesTable.getSelectionModel();
+                    ObservableList selectedCells = selectionModel.getSelectedCells();
+                    TablePosition tablePosition = (TablePosition) selectedCells.get(0);
+                    selectedExerciseRow = tablePosition.getRow();
+                }
+            }
+        });
     }
 
     @FXML
@@ -159,7 +186,7 @@ public class ControllerWorkouts implements Initializable{
             saveWorkout();
         }
         if(e.getSource() == removeExerciseButton){
-
+            removeExercise();
         }
         if(e.getSource() == editExerciseButton){
 
@@ -203,15 +230,22 @@ public class ControllerWorkouts implements Initializable{
         return dataSets;
     }
 
+    public ObservableList<ExerciseWorkoutTab> getObservableExercises(){
+        dataExercises = FXCollections.observableArrayList(exercises);
+        return dataExercises;
+    }
+
     public void saveWorkout(){
 
     }
 
     public void addSet(){
-        set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Integer.parseInt(weightTextField.getText()));
-        sets.add(set);
-        numberOfSets++;
-        setsTable.setItems(getObservableSets());
+        if(numberOfSets < 5){
+            set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Integer.parseInt(weightTextField.getText()));
+            sets.add(set);
+            numberOfSets++;
+            setsTable.setItems(getObservableSets());
+        }
     }
 
     public void removeSet(){
@@ -233,7 +267,29 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void addExercise(){
-        
+        if(numberOfSets == 1){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue().toString(), sets.get(0).toString());
+        }
+        if(numberOfSets == 2){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue().toString(), sets.get(0).toString(), sets.get(1).toString());
+        }
+        if(numberOfSets == 3){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue().toString(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString());
+        }
+        if(numberOfSets == 4){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue().toString(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString());
+        }
+        if(numberOfSets == 5){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue().toString(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets.get(4).toString());
+        }
+
+        exercises.add(exercise);
+        exercisesTable.setItems(getObservableExercises());
+    }
+
+    public void removeExercise(){
+        exercises.remove(selectedExerciseRow);
+        exercisesTable.setItems(getObservableExercises());
     }
 }
 
