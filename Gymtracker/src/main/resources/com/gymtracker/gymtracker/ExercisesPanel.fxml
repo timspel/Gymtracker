@@ -20,7 +20,7 @@
       <ListView fx:id="exercisesList" layoutX="40.0" layoutY="238.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="442.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="infoPanelName" layoutX="14.0" layoutY="20.0" text="Exercise name">
+            <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
                <font>
                   <Font name="AppleGothic Regular" size="25.0" />
                </font>
