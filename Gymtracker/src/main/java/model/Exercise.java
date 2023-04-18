@@ -1,4 +1,4 @@
-package com.gymtracker.gymtracker.model;
+package model;
 
 import javafx.scene.image.Image;
 
@@ -8,7 +8,6 @@ public class Exercise {
     private String description;
     private Image image;
     private MuscleGroup muscleGroup;
-
 
     public Exercise(int id, String name, String description, Image exerciseImage, MuscleGroup muscleGroup){
         this.id = id;

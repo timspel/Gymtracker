@@ -1,8 +1,8 @@
-package com.gymtracker.gymtracker.controller;
+package com.gymtracker.gymtracker;
 
 import com.gymtracker.gymtracker.ExercisePanel;
-import com.gymtracker.gymtracker.model.Exercise;
-import com.gymtracker.gymtracker.model.MuscleGroup;
+import model.Exercise;
+import model.MuscleGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,14 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 public class ExercisePanelController {
-   //Instance variables for ExercisePanel
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
@@ -29,7 +26,6 @@ public class ExercisePanelController {
    private ImageView infoPanelImage;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
-   
    public void initialize() {
       populateExercisesList();
       exercisesList.setItems(exercises);

@@ -1,7 +1,6 @@
-package com.gymtracker.gymtracker.model;
+package model;
 
 public enum MuscleGroup {
-    
     Chest,
     Back,
     Arms,

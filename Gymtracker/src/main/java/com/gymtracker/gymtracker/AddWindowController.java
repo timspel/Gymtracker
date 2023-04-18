@@ -1,7 +1,6 @@
-package com.gymtracker.gymtracker.controller;
+package com.gymtracker.gymtracker;
 
-import com.gymtracker.gymtracker.model.Exercise;
-import com.gymtracker.gymtracker.model.MuscleGroup;
+import model.MuscleGroup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
