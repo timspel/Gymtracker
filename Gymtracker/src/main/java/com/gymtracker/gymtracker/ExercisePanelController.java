@@ -63,7 +63,7 @@ public class ExercisePanelController {
 
    /*public void openAddWindow(){
       try{
-         FXMLLoader fxmlLoader = new FXMLLoader(ExercisePanel.class.getResource("AddWindow.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(ExercisePanel.class.getResource("AddExerciseWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
