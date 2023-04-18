@@ -30,4 +30,9 @@ public class Set {
     public int getWeight() {
         return weight;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s x %skg", repetitions, weight);
+    }
 }
