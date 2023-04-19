@@ -107,9 +107,9 @@
             </Label>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutX="116.0" layoutY="43.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" layoutX="116.0" layoutY="43.0" minHeight="-Infinity" prefHeight="79.0" prefWidth="200.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="193.0" fitWidth="542.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="79.0" fitWidth="542.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../images/backposeEdit.png" />
                </image>
