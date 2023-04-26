@@ -80,15 +80,9 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private TableColumn<Template, String> templateCategory;
     @FXML
-    private Button editExerciseButton;
-    @FXML
     private Button removeTemplateButton;
     @FXML
-    private Button editTemplateButton;
-    @FXML
     private Button loadTemplateButton;
-    @FXML
-    private Button editSetButton;
     @FXML
     private Button removeSetButton;
     @FXML
@@ -188,17 +182,11 @@ public class ControllerWorkouts implements Initializable{
         if(e.getSource() == removeExerciseButton){
             removeExercise();
         }
-        if(e.getSource() == editExerciseButton){
-
-        }
         if(e.getSource() == saveAsTemplateButton){
 
         }
         if(e.getSource() == addSetButton){
             addSet();
-        }
-        if(e.getSource() == editSetButton){
-
         }
         if(e.getSource() == removeSetButton){
             removeSet();
@@ -207,9 +195,6 @@ public class ControllerWorkouts implements Initializable{
             addExercise();
         }
         if(e.getSource() == removeTemplateButton){
-
-        }
-        if(e.getSource() == editTemplateButton){
 
         }
         if(e.getSource() == loadTemplateButton){
