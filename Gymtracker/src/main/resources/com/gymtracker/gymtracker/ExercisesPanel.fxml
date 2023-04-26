@@ -18,30 +18,30 @@
          </font>
       </Label>
       <ListView fx:id="exercisesList" layoutX="40.0" layoutY="238.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
-      <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="442.0" prefWidth="800.0" style="-fx-border-color: black;">
+      <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
             <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
                <font>
                   <Font name="AppleGothic Regular" size="25.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="30.0" layoutY="100.0" style="-fx-border-color: black;">
+            <AnchorPane layoutX="30.0" layoutY="100.0" prefHeight="350.0" prefWidth="310.0" style="-fx-border-color: black;">
                <children>
-                  <Label fx:id="infoPanelDescription" alignment="TOP_LEFT" layoutX="14.0" layoutY="1.0" prefHeight="300.0" prefWidth="300.0" text="Exercise info">
+                  <Label fx:id="infoPanelDescription" alignment="TOP_LEFT" layoutX="5.0" layoutY="2.0" prefHeight="350.0" prefWidth="300.0" text="Exercise info">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="435.0" layoutY="98.0" style="-fx-border-color: black;">
+            <AnchorPane layoutX="400.0" layoutY="100.0" style="-fx-border-color: black;">
                <children>
-                  <ImageView fx:id="infoPanelImage" fitHeight="300.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="infoPanelImage" fitHeight="350.0" fitWidth="369.0" layoutX="-4.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
          </children>
       </AnchorPane>
-      <Button layoutX="40.0" layoutY="716.0" mnemonicParsing="false" text="Add exercise" />
+      <Button layoutX="40.0" layoutY="716.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
       <Button layoutX="140.0" layoutY="716.0" mnemonicParsing="false" text="Edit exercise" />
       <Button layoutX="235.0" layoutY="716.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
       <HBox alignment="CENTER" prefHeight="154.0" prefWidth="1276.0" style="-fx-background-color: #000000;">
