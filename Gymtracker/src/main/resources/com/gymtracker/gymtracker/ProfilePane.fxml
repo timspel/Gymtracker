@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle height="79.0" layoutX="14.0" layoutY="-46.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1290.0" AnchorPane.leftAnchor="-10.0" AnchorPane.topAnchor="0.0" />
       <HBox alignment="CENTER" layoutX="-4.0" layoutY="85.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0">
@@ -30,10 +29,10 @@
                               <Image url="@../../../images/user.png" />
                            </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
+                        <Button fx:id="changeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
                      </children>
                   </VBox>
-                  <Label layoutX="473.0" layoutY="110.0" text="Name">
+                  <Label fx:id="lblName" layoutX="473.0" layoutY="110.0" text="Name">
                      <font>
                         <Font name="Arial" size="45.0" />
                      </font>
@@ -54,7 +53,7 @@
                               <Font size="23.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hieght:">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -69,8 +68,8 @@
                   <VBox alignment="CENTER_LEFT" layoutX="188.0" layoutY="75.0" prefHeight="182.0" prefWidth="100.0" spacing="20.0">
                      <children>
                         <Spinner />
-                        <TextField />
-                        <TextField layoutX="10.0" layoutY="88.0" />
+                        <TextField fx:id="heightField" />
+                        <TextField fx:id="weightField" layoutX="10.0" layoutY="88.0" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" layoutX="127.0" layoutY="57.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -82,6 +81,7 @@
                         </Text>
                      </children>
                   </HBox>
+                  <Button fx:id="editInfoButton" layoutX="289.0" layoutY="251.0" mnemonicParsing="false" text="Edit" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="9.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="473.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="351.0">
@@ -96,8 +96,8 @@
                         </Text>
                      </children>
                   </HBox>
-                  <TextArea layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
-                  <Button layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
+                  <TextArea fx:id="goalsText" layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
+                  <Button fx:id="editButton" layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
                   <Text layoutX="37.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your personal goals:" />
                </children>
             </AnchorPane>
@@ -113,11 +113,11 @@
                         </Text>
                      </children>
                   </HBox>
-                  <ToggleButton layoutX="193.0" layoutY="134.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" text="On">
+                  <Button fx:id="darkmodeButton" layoutX="193.0" layoutY="134.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" text="On">
                      <font>
                         <Font size="21.0" />
                      </font>
-                  </ToggleButton>
+                  </Button>
                   <Label layoutX="28.0" layoutY="136.0" text="Darkmode">
                      <font>
                         <Font name="Arial" size="32.0" />
