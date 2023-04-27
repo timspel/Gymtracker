@@ -34,6 +34,7 @@ public class ProfileController {
 
    private Parent profilePane;
    private MainController mainController;
+
    private int userId;
    private String username;
    private double height;
@@ -46,10 +47,6 @@ public class ProfileController {
 
       getUserInfo();
       initComponents();
-   }
-
-   public Parent getParent(){
-      return profilePane;
    }
 
    public void buttonHandler(ActionEvent event){
@@ -88,6 +85,11 @@ public class ProfileController {
          }
       }
    }
+
+   public Parent getParent(){
+      return profilePane;
+   }
+
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
       this.mainController = mainController;
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePane.fxml"));
