@@ -13,13 +13,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1426.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.MainController">
    <children>
-      <StackPane fx:id="stackPane" layoutX="156.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stackPane" layoutX="156.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" />
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minHeight="-Infinity" prefHeight="791.0" prefWidth="1278.0" />
          </children></StackPane>
       <AnchorPane layoutX="-28.0" layoutY="122.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1276.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0d0d0" height="983.0" layoutX="-61.0" layoutY="-150.0" stroke="TRANSPARENT" strokeType="INSIDE" width="215.0" AnchorPane.rightAnchor="0.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0d0d0" height="983.0" layoutX="-61.0" layoutY="-150.0" stroke="#121212" strokeType="INSIDE" width="215.0" AnchorPane.rightAnchor="0.0" />
             <VBox layoutY="-1.0" prefHeight="789.0" prefWidth="150.0" spacing="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label fx:id="gymtrackerLabel" prefHeight="79.0" prefWidth="160.0" style="-fx-background-color: black;" text="Gymtracker" textAlignment="CENTER" textFill="#fffdfd">
