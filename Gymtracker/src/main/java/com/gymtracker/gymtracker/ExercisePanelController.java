@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class ExercisePanelController {
    @FXML
@@ -33,6 +35,17 @@ public class ExercisePanelController {
    public void populateExercisesList(){
       for(int i = 0; i < 5; i++){
          exercises.add(new Exercise((i + 10), "Test " + (i + 1),"Description goes here", new Image("icon.png"), MuscleGroup.Arms));
+      }
+   }
+
+   public void populateExercisesListDB(){
+      Connection con = null;
+      PreparedStatement stmt = null;
+
+      try {con = Database.getDatabase();
+
+      } catch (Exception e) {
+         throw new RuntimeException(e);
       }
    }
 
