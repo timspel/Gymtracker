@@ -114,7 +114,7 @@ public class ProfileController {
             weight = result.getDouble("weight");
          }
          String query2 = ("SELECT height FROM \"User\" WHERE user_id = ?");
-         stmt = con.prepareStatement(query);
+         stmt = con.prepareStatement(query2);
          stmt.setInt(1, userId);
          result = stmt.executeQuery();
          if (result.next()){
