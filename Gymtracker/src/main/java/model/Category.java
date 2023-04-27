@@ -7,5 +7,6 @@ public enum Category {
     Back,
     Chest,
     Arms,
-    Shoulders
+    Shoulders,
+    Abs
 }

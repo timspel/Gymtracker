@@ -3,9 +3,9 @@ package model;
 public class Set {
     private int setNumber;
     private int repetitions;
-    private int weight;
+    private double weight;
 
-    public Set(int setNumber, int repetitions, int weight){
+    public Set(int setNumber, int repetitions, double weight){
         this.setNumber = setNumber;
         this.repetitions = repetitions;
         this.weight = weight;
@@ -27,7 +27,7 @@ public class Set {
     public int getRepetitions() {
         return repetitions;
     }
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
