@@ -42,6 +42,7 @@ public class ProfileController {
    private boolean toggle;
    private String defaultStyle;
    public ProfileController(MainController mainController) throws IOException {
+      this.mainController = mainController;
       loadFXML();
       userId = UserIdSingleton.getInstance().getUserId();
 
@@ -91,13 +92,12 @@ public class ProfileController {
    }
 
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
-      this.mainController = mainController;
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePane.fxml"));
       loader.setController(this);
       profilePane = loader.load();
    }
 
-   private void initComponents(){
+   private void initComponents(){ //Initializes the components such as buttons and text fields.
       goalsText.setEditable(false);
       weightField.setEditable(false);
       heightField.setEditable(false);
@@ -117,30 +117,19 @@ public class ProfileController {
       PreparedStatement stmt = null;
       try {con = Database.getDatabase();
          con.setAutoCommit(false);
-         System.out.println("Opened database successfully");
+         System.out.println("Database Connected.");
          System.out.println(userId);
-         String sql = ("SELECT username FROM \"User\" WHERE user_id = ?");
+         String sql = ("SELECT username, weight, height FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
 
          ResultSet result = stmt.executeQuery();
          if (result.next()){
             username = result.getString("username");
-         }
-         String query = ("SELECT weight FROM \"User\" WHERE user_id = ?");
-         stmt = con.prepareStatement(query);
-         stmt.setInt(1, userId);
-         result = stmt.executeQuery();
-         if (result.next()){
+            height = result.getDouble("height");
             weight = result.getDouble("weight");
          }
-         String query2 = ("SELECT height FROM \"User\" WHERE user_id = ?");
-         stmt = con.prepareStatement(query2);
-         stmt.setInt(1, userId);
-         result = stmt.executeQuery();
-         if (result.next()){
-            height = result.getDouble("height");
-         }
+
          stmt.close();
          con.commit();
          con.close();
