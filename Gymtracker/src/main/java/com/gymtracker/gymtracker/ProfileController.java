@@ -4,10 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,11 +22,15 @@ public class ProfileController {
    @FXML
    private Button editInfoButton;
    @FXML
+   private Button darkmodeButton;
+   @FXML
    private TextField weightField;
    @FXML
    private TextField heightField;
    @FXML
    private Label lblName;
+   @FXML
+   private AnchorPane backgroundPane;
 
    private Parent profilePane;
    private MainController mainController;
@@ -36,6 +38,8 @@ public class ProfileController {
    private String username;
    private double height;
    private double weight;
+   private boolean toggle;
+   private String defaultStyle;
    public ProfileController(MainController mainController) throws IOException {
       loadFXML();
       userId = UserIdSingleton.getInstance().getUserId();
@@ -71,6 +75,18 @@ public class ProfileController {
             weightField.setEditable(false);
          }
       }
+      if(event.getSource() == darkmodeButton){
+         if(toggle == true){
+            toggle = false;
+            backgroundPane.setStyle(defaultStyle);
+            darkmodeButton.setText("On");
+         }
+         else {
+            backgroundPane.setStyle("-fx-background-color: BLACK");
+            darkmodeButton.setText("Off");
+            toggle = true;
+         }
+      }
    }
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
       this.mainController = mainController;
@@ -86,9 +102,12 @@ public class ProfileController {
       editButton.setOnAction(l -> buttonHandler(l));
       editInfoButton.setOnAction(l -> buttonHandler(l));
       changeButton.setOnAction(l -> buttonHandler(l));
+      darkmodeButton.setOnAction(l -> buttonHandler(l));
+      toggle = false;
       lblName.setText(username);
       heightField.setText("" + height);
       weightField.setText("" + weight);
+      defaultStyle = backgroundPane.getStyle();
    }
 
    private void getUserInfo(){
