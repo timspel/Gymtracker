@@ -242,5 +242,21 @@
             </AnchorPane>
          </children>
       </HBox>
+      <Button fx:id="show" layoutX="1060.0" layoutY="427.0" mnemonicParsing="false" text="Show" />
+      <Button fx:id="hide" layoutX="1153.0" layoutY="427.0" mnemonicParsing="false" text="Hide" />
+      <AnchorPane fx:id="slider" layoutY="406.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="658.0" style="-fx-background-color: #cfcfcf;">
+         <children>
+            <ImageView fitHeight="47.0" fitWidth="52.0" layoutX="590.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="214.0" layoutY="10.0" text="Gymtracker rocks!">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

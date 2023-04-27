@@ -27,7 +27,7 @@
                         <Font name="K2D Regular" size="28.0" />
                      </font>
                   </Label>
-                  <Button fx:id="homeButton" contentDisplay="TOP" layoutX="10.0" layoutY="547.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Home">
+                  <Button fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="10.0" layoutY="547.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Home">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>

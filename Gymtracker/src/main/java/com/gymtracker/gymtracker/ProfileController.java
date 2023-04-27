@@ -1,11 +1,13 @@
 package com.gymtracker.gymtracker;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -31,6 +33,12 @@ public class ProfileController {
    private Label lblName;
    @FXML
    private AnchorPane backgroundPane;
+   @FXML
+   private Button show;
+   @FXML
+   private Button hide;
+   @FXML
+   private AnchorPane slider;
 
    private Parent profilePane;
    private MainController mainController;
@@ -110,6 +118,34 @@ public class ProfileController {
       heightField.setText("" + height);
       weightField.setText("" + weight);
       defaultStyle = backgroundPane.getStyle();
+      slider.setTranslateX(-658);
+      show.setOnAction(event -> {
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.4));
+         slide.setNode(slider);
+         slide.setToX(0);
+         slide.play();
+
+         slider.setTranslateX(-658);
+
+         slide.setOnFinished(event1 -> {
+            show.setVisible(false);
+            hide.setVisible(true);
+         });
+      });
+      hide.setOnAction(event -> {
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.4));
+         slide.setNode(slider);
+         slide.setToX(-658);
+         slide.play();
+         slider.setTranslateX(0);
+
+         slide.setOnFinished(event1 -> {
+            show.setVisible(true);
+            hide.setVisible(false);
+         });
+      });
    }
 
    private void getUserInfo(){
