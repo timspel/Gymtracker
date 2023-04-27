@@ -14,15 +14,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1600.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1821.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
    <children>
-      <AnchorPane layoutX="24.0" layoutY="942.0" prefHeight="636.0" prefWidth="1228.0" style="-fx-background-color: #D3D3D3;">
+      <AnchorPane layoutX="436.0" layoutY="954.0" prefHeight="711.0" prefWidth="816.0" style="-fx-background-color: #D3D3D3;">
          <children>
-            <TableView fx:id="templatesTable" layoutX="26.0" layoutY="76.0" prefHeight="479.0" prefWidth="1174.0">
+            <TableView fx:id="templatesTable" layoutX="25.0" layoutY="79.0" prefHeight="556.0" prefWidth="769.0">
               <columns>
-                <TableColumn fx:id="templateName" prefWidth="391.0" text="Name" />
-                  <TableColumn fx:id="templateDate" prefWidth="392.0" text="Date" />
-                  <TableColumn fx:id="templateCategory" prefWidth="391.0" text="Category" />
+                <TableColumn fx:id="templateName" prefWidth="256.0" text="Name" />
+                  <TableColumn fx:id="templateDescription" prefWidth="256.0" text="Description" />
+                  <TableColumn fx:id="templateCategory" prefWidth="257.0" text="Category" />
               </columns>
             </TableView>
             <Label fx:id="savedTemplatesLabel" layoutX="25.0" layoutY="14.0" prefHeight="44.0" prefWidth="225.0" text="Saved Templates">
@@ -30,8 +30,8 @@
                   <Font name="Arial Rounded MT Bold" size="26.0" />
                </font>
             </Label>
-            <Button fx:id="loadTemplateButton" layoutX="1090.0" layoutY="576.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="110.0" text="Load template" />
-            <Button fx:id="removeTemplateButton" layoutX="957.0" layoutY="581.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove template" />
+            <Button fx:id="loadTemplateButton" layoutX="684.0" layoutY="651.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="110.0" text="Load template" />
+            <Button fx:id="removeTemplateButton" layoutX="555.0" layoutY="656.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove template" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="399.0" prefHeight="520.0" prefWidth="1228.0" style="-fx-background-color: #D3D3D3;">
@@ -74,7 +74,6 @@
               </columns>
             </TableView>
             <Button fx:id="saveWorkoutButton" layoutX="1069.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="133.0" text="Save workout" />
-            <Button fx:id="saveAsTemplateButton" layoutX="910.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="133.0" text="Save as template" />
             <Button fx:id="removeExerciseButton" layoutX="440.0" layoutY="463.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
          </children>
       </AnchorPane>
@@ -86,10 +85,11 @@
                </font>
             </Label>
             <TextField fx:id="workoutNameTextField" layoutX="26.0" layoutY="66.0" promptText="Workout name" />
-            <TextField layoutX="228.0" layoutY="66.0" promptText="Description" />
+            <TextField fx:id="workoutDescriptionTextField" layoutX="228.0" layoutY="66.0" promptText="Description" />
             <DatePicker fx:id="workoutDatePicker" layoutX="432.0" layoutY="66.0" promptText="Date" />
             <Label fx:id="categoryLabel" layoutX="656.0" layoutY="70.0" text="Category:" />
             <ChoiceBox fx:id="categoriesChoiceBox" layoutX="724.0" layoutY="66.0" prefWidth="150.0" />
+            <Button fx:id="createWorkoutButton" layoutX="929.0" layoutY="66.0" mnemonicParsing="false" onAction="#buttonPressed" text="Create workout" />
          </children>
       </AnchorPane>
       <Label fx:id="exercisesLabel" layoutX="466.0" layoutY="456.0" text="Added exercises">
@@ -117,5 +117,36 @@
       </Label>
       <AnchorPane layoutX="145.0" layoutY="378.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
       <AnchorPane layoutX="1101.0" layoutY="378.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
+      <AnchorPane layoutX="24.0" layoutY="954.0" prefHeight="711.0" prefWidth="389.0" style="-fx-background-color: #D3D3D3;">
+         <children>
+            <Label fx:id="newWorkoutLabel1" layoutX="25.0" layoutY="20.0" text="New template">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="templateNameTextField" layoutX="26.0" layoutY="66.0" promptText="Template name" />
+            <TextField fx:id="templateDescriptionTextField" layoutX="213.0" layoutY="66.0" promptText="Description" />
+            <Label fx:id="categoryLabel1" layoutX="26.0" layoutY="111.0" text="Category:" />
+            <ChoiceBox fx:id="categoriesTemplateChoiceBox" layoutX="89.0" layoutY="107.0" prefWidth="150.0" />
+            <Button fx:id="createTemplateButton" layoutX="261.0" layoutY="107.0" mnemonicParsing="false" onAction="#buttonPressed" text="Create template" />
+            <ChoiceBox fx:id="exercisesTemplateChoiceBox" layoutX="89.0" layoutY="204.0" prefWidth="150.0" />
+            <Label fx:id="exerciseLabel1" layoutX="28.0" layoutY="208.0" text="Exercise:" />
+            <Label layoutX="25.0" layoutY="161.0" text="Exercises">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="19.0" />
+               </font>
+            </Label>
+            <TableView fx:id="exercisesTemplateTable" layoutX="28.0" layoutY="250.0" prefHeight="385.0" prefWidth="333.0">
+              <columns>
+                <TableColumn fx:id="templateExerciseNameColumn" prefWidth="333.0" text="Name" />
+              </columns>
+            </TableView>
+            <Button fx:id="templateAddExerciseButton" layoutX="278.0" layoutY="204.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add exercise" />
+            <Button fx:id="saveTemplateButton" layoutX="263.0" layoutY="650.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="98.0" text="Save template" />
+            <Button fx:id="templateRemoveExerciseButton" layoutX="142.0" layoutY="655.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="413.0" layoutY="1018.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
+      <AnchorPane layoutX="413.0" layoutY="1566.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
    </children>
 </AnchorPane>
