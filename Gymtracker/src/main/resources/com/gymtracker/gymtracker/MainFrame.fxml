@@ -20,13 +20,25 @@
       <AnchorPane layoutX="-28.0" layoutY="122.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1276.0" AnchorPane.topAnchor="0.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0d0d0" height="983.0" layoutX="-61.0" layoutY="-150.0" stroke="TRANSPARENT" strokeType="INSIDE" width="215.0" AnchorPane.rightAnchor="0.0" />
-            <VBox layoutY="-1.0" prefHeight="648.0" prefWidth="150.0" spacing="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox layoutY="-1.0" prefHeight="789.0" prefWidth="150.0" spacing="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label fx:id="gymtrackerLabel" prefHeight="79.0" prefWidth="160.0" style="-fx-background-color: black;" text="Gymtracker" textAlignment="CENTER" textFill="#fffdfd">
                      <font>
                         <Font name="K2D Regular" size="28.0" />
                      </font>
                   </Label>
+                  <Button fx:id="homeButton" layoutX="10.0" layoutY="547.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Home">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/buttonicons/home.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
                   <Button fx:id="workoutsButton" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Workouts">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -82,13 +94,20 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
+                  <Button fx:id="logoutButton" layoutX="10.0" layoutY="661.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Logout">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/buttonicons/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
                </children>
             </VBox>
-            <ImageView fitHeight="110.0" fitWidth="120.0" layoutX="21.0" layoutY="665.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../images/icon.png" />
-               </image>
-            </ImageView>
          </children>
       </AnchorPane>
    </children>

@@ -33,7 +33,7 @@
                         <Button fx:id="changeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
                      </children>
                   </VBox>
-                  <Label layoutX="473.0" layoutY="110.0" text="Name">
+                  <Label fx:id="lblName" layoutX="473.0" layoutY="110.0" text="Name">
                      <font>
                         <Font name="Arial" size="45.0" />
                      </font>
@@ -54,7 +54,7 @@
                               <Font size="23.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hieght:">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -69,8 +69,8 @@
                   <VBox alignment="CENTER_LEFT" layoutX="188.0" layoutY="75.0" prefHeight="182.0" prefWidth="100.0" spacing="20.0">
                      <children>
                         <Spinner />
-                        <TextField />
-                        <TextField layoutX="10.0" layoutY="88.0" />
+                        <TextField fx:id="heightField" />
+                        <TextField fx:id="weightField" layoutX="10.0" layoutY="88.0" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" layoutX="127.0" layoutY="57.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -82,6 +82,7 @@
                         </Text>
                      </children>
                   </HBox>
+                  <Button fx:id="editInfoButton" layoutX="289.0" layoutY="251.0" mnemonicParsing="false" text="Edit" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="9.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="473.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="351.0">

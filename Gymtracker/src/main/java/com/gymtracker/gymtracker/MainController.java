@@ -4,12 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +35,10 @@ public class MainController implements Initializable{
    private Button friendsButton;
    @FXML
    private Button exercisesButton;
+   @FXML
+   private Button homeButton;
+   @FXML
+   private Button logoutButton;
 
    private Parent workoutPane;
    private Parent calendarPane;
@@ -51,7 +58,7 @@ public class MainController implements Initializable{
       catch (IOException ioe){ioe.printStackTrace();}
 }
 
-   public void buttonPressed(ActionEvent event){ //Handles button presses
+   public void buttonPressed(ActionEvent event) throws IOException{ //Handles button presses
       if(event.getSource() == workoutsButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(scrollPane);
@@ -72,6 +79,20 @@ public class MainController implements Initializable{
       if(event.getSource() == exercisesButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(exercisePane);
+      }
+      if(event.getSource() == homeButton){
+         stackPane.getChildren().removeAll();
+         stackPane.getChildren().setAll(scrollPane);
+         scrollPane.setContent(scrollContent);
+      }
+      if(event.getSource() == logoutButton){
+         Parent root = FXMLLoader.load(getClass().getResource("LoginPanel.fxml"));
+         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+         Scene scene = new Scene(root);
+         stage.setScene (scene);
+         stage.setX(0);
+         stage.setY(0);
+         stage.show();
       }
    }
    public void setParent(Parent parent){
