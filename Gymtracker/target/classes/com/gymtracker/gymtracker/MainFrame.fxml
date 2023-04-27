@@ -27,7 +27,7 @@
                         <Font name="K2D Regular" size="28.0" />
                      </font>
                   </Label>
-                  <Button fx:id="homeButton" layoutX="10.0" layoutY="547.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Home">
+                  <Button fx:id="homeButton" contentDisplay="TOP" layoutX="10.0" layoutY="547.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Home">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -39,7 +39,7 @@
                         <Font size="17.0" />
                      </font>
                   </Button>
-                  <Button fx:id="workoutsButton" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Workouts">
+                  <Button fx:id="workoutsButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Workouts">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -50,7 +50,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button fx:id="exercisesButton" layoutX="10.0" layoutY="89.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Exercises">
+                  <Button fx:id="exercisesButton" contentDisplay="TOP" layoutX="10.0" layoutY="89.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Exercises">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -61,7 +61,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button fx:id="calendarButton" layoutX="10.0" layoutY="201.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Calendar">
+                  <Button fx:id="calendarButton" contentDisplay="TOP" layoutX="10.0" layoutY="201.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Calendar">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -72,7 +72,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button fx:id="friendsButton" layoutX="10.0" layoutY="313.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Friends">
+                  <Button fx:id="friendsButton" contentDisplay="TOP" layoutX="10.0" layoutY="313.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Friends">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -83,7 +83,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button fx:id="profileButton" layoutX="10.0" layoutY="425.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Profile">
+                  <Button fx:id="profileButton" contentDisplay="TOP" layoutX="10.0" layoutY="425.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Profile">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -94,7 +94,7 @@
                      <font>
                         <Font size="17.0" />
                      </font></Button>
-                  <Button fx:id="logoutButton" layoutX="10.0" layoutY="661.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" style="-fx-background-color: transparent;" stylesheets="@Style.css" text="Logout">
+                  <Button fx:id="logoutButton" contentDisplay="TOP" layoutX="10.0" layoutY="661.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="112.0" prefWidth="150.0" stylesheets="@Style.css" text="Logout">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>

@@ -95,9 +95,6 @@ public class MainController implements Initializable{
          stage.show();
       }
    }
-   public void setParent(Parent parent){
-
-   }
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       scrollPane.setContent(scrollContent);
