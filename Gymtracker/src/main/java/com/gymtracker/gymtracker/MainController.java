@@ -44,7 +44,7 @@ public class MainController implements Initializable{
          workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
          calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
          scrollContent = FXMLLoader.load(getClass().getResource("WelcomePane.fxml"));
-         profilePane = FXMLLoader.load(getClass().getResource("ProfilePane.fxml"));
+         profilePane = new ProfileController(this).getParent();
          friendlistPane = FXMLLoader.load(getClass().getResource("FriendListPanel.fxml"));
          exercisePane = FXMLLoader.load(getClass().getResource("ExercisesPanel.fxml"));
       }
@@ -74,7 +74,9 @@ public class MainController implements Initializable{
          stackPane.getChildren().setAll(exercisePane);
       }
    }
+   public void setParent(Parent parent){
 
+   }
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       scrollPane.setContent(scrollContent);

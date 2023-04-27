@@ -30,7 +30,7 @@
                               <Image url="@../../../images/user.png" />
                            </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
+                        <Button fx:id="changeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
                      </children>
                   </VBox>
                   <Label layoutX="473.0" layoutY="110.0" text="Name">
@@ -96,8 +96,8 @@
                         </Text>
                      </children>
                   </HBox>
-                  <TextArea layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
-                  <Button layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
+                  <TextArea fx:id="goalsText" layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
+                  <Button fx:id="editButton" layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
                   <Text layoutX="37.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your personal goals:" />
                </children>
             </AnchorPane>
