@@ -24,17 +24,17 @@
                </font>
             </Label>
          </children></AnchorPane>
-      <TextField layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="287.0" text="Friends Name....">
+      <TextField layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="287.0">
          <font>
             <Font size="21.0" />
          </font>
       </TextField>
       <Button layoutX="316.0" layoutY="21.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="105.0" text="Search Partner" />
-      <AnchorPane layoutX="935.0" layoutY="80.0" prefHeight="716.0" prefWidth="345.0" style="-fx-border-color: black;">
+      <AnchorPane layoutX="935.0" layoutY="77.0" prefHeight="719.0" prefWidth="345.0" style="-fx-border-color: black;">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="217.0" layoutX="97.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profiePicture" fitHeight="191.0" fitWidth="200.0" layoutX="76.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../images/RandomProfilepic.jpg" />
+                  <Image url="@../../../images/user.png" />
                </image></ImageView>
             <Label alignment="CENTER" layoutX="76.0" layoutY="320.0" prefHeight="55.0" prefWidth="185.0" text="ProfilName*">
                <font>
@@ -49,17 +49,25 @@
          </children></AnchorPane>
       <AnchorPane layoutX="-1.0" layoutY="80.0" prefHeight="709.0" prefWidth="936.0">
          <children>
-            <VBox layoutX="1.0" layoutY="48.0" prefHeight="630.0" prefWidth="287.0" style="-fx-border-color: black; -fx-opacity: 0.5;">
+            <VBox layoutX="21.0" layoutY="48.0" prefHeight="630.0" prefWidth="287.0" style="-fx-border-color: black; -fx-opacity: 0.5;">
                <children>
                   <ListView fx:id="friendsList" prefHeight="679.0" prefWidth="285.0" />
                </children>
             </VBox>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="602.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="2.0" prefHeight="48.0" prefWidth="287.0" text="FriendsList">
+            <Label layoutX="18.0" prefHeight="48.0" prefWidth="287.0" text="FriendsList">
                <font>
                   <Font name="Arial" size="33.0" />
                </font>
             </Label>
+            <AnchorPane layoutX="308.0" layoutY="-14.0" prefHeight="709.0" prefWidth="630.0">
+               <children>
+                  <ImageView fx:id="searchPicture" fitHeight="191.0" fitWidth="200.0" layoutX="200.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/user.png" />
+                     </image></ImageView>
+                  <Button fx:id="addFriend" layoutX="137.0" layoutY="615.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" text="Add Friend" translateZ="-1.0" />
+                  <Button fx:id="removeFriend" layoutX="384.0" layoutY="615.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" text="Remove Friend" />
+               </children></AnchorPane>
          </children>
       </AnchorPane>
    </children>
