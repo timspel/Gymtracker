@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -27,11 +26,12 @@
                   <Rectangle fill="#cfcfcfc7" height="315.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="920.0" />
                   <VBox alignment="CENTER" layoutX="42.0" prefHeight="315.0" prefWidth="206.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="191.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="profileImage" fitHeight="191.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/user.png" />
                            </image>
                         </ImageView>
+                        <TextField fx:id="pictureUrlField" />
                         <Button fx:id="changeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
                      </children>
                   </VBox>
@@ -68,6 +68,7 @@
                         </LinearGradient>
                      </fill>
                   </Rectangle>
+                  <Label fx:id="lblUrlTip" layoutX="260.0" layoutY="231.0" text="Enter Image URL" />
                </children>
             </AnchorPane>
          </children>
@@ -79,12 +80,7 @@
                   <Rectangle fill="#cfcfcfc7" height="285.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="351.0" />
                   <VBox alignment="CENTER_LEFT" layoutX="52.0" layoutY="75.0" prefHeight="182.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Age:">
-                           <font>
-                              <Font size="23.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Height:">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -98,7 +94,6 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" layoutX="188.0" layoutY="75.0" prefHeight="182.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <Spinner />
                         <TextField fx:id="heightField" />
                         <TextField fx:id="weightField" layoutX="10.0" layoutY="88.0" />
                      </children>
@@ -141,6 +136,8 @@
                         </LinearGradient>
                      </fill>
                   </Rectangle>
+                  <Label layoutX="289.0" layoutY="134.0" text="cm" />
+                  <Label layoutX="289.0" layoutY="181.0" text="kg" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="473.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="351.0">
@@ -242,7 +239,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <Button fx:id="show" layoutX="1060.0" layoutY="427.0" mnemonicParsing="false" text="Show" />
+      <Button fx:id="show" layoutX="1103.0" layoutY="427.0" mnemonicParsing="false" text="Show" />
       <Button fx:id="hide" layoutX="1153.0" layoutY="427.0" mnemonicParsing="false" text="Hide" />
       <AnchorPane fx:id="slider" layoutY="406.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="658.0" style="-fx-background-color: #cfcfcf;">
          <children>
