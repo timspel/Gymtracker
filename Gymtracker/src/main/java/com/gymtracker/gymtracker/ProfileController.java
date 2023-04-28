@@ -1,11 +1,13 @@
 package com.gymtracker.gymtracker;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -31,9 +33,16 @@ public class ProfileController {
    private Label lblName;
    @FXML
    private AnchorPane backgroundPane;
+   @FXML
+   private Button show;
+   @FXML
+   private Button hide;
+   @FXML
+   private AnchorPane slider;
 
    private Parent profilePane;
    private MainController mainController;
+
    private int userId;
    private String username;
    private double height;
@@ -41,15 +50,12 @@ public class ProfileController {
    private boolean toggle;
    private String defaultStyle;
    public ProfileController(MainController mainController) throws IOException {
+      this.mainController = mainController;
       loadFXML();
       userId = UserIdSingleton.getInstance().getUserId();
 
       getUserInfo();
       initComponents();
-   }
-
-   public Parent getParent(){
-      return profilePane;
    }
 
    public void buttonHandler(ActionEvent event){
@@ -88,14 +94,18 @@ public class ProfileController {
          }
       }
    }
+
+   public Parent getParent(){
+      return profilePane;
+   }
+
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
-      this.mainController = mainController;
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePane.fxml"));
       loader.setController(this);
       profilePane = loader.load();
    }
 
-   private void initComponents(){
+   private void initComponents(){ //Initializes the components such as buttons and text fields.
       goalsText.setEditable(false);
       weightField.setEditable(false);
       heightField.setEditable(false);
@@ -108,6 +118,34 @@ public class ProfileController {
       heightField.setText("" + height);
       weightField.setText("" + weight);
       defaultStyle = backgroundPane.getStyle();
+      slider.setTranslateX(-658);
+      show.setOnAction(event -> {
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.4));
+         slide.setNode(slider);
+         slide.setToX(0);
+         slide.play();
+
+         slider.setTranslateX(-658);
+
+         slide.setOnFinished(event1 -> {
+            show.setVisible(false);
+            hide.setVisible(true);
+         });
+      });
+      hide.setOnAction(event -> {
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.4));
+         slide.setNode(slider);
+         slide.setToX(-658);
+         slide.play();
+         slider.setTranslateX(0);
+
+         slide.setOnFinished(event1 -> {
+            show.setVisible(true);
+            hide.setVisible(false);
+         });
+      });
    }
 
    private void getUserInfo(){
@@ -115,30 +153,19 @@ public class ProfileController {
       PreparedStatement stmt = null;
       try {con = Database.getDatabase();
          con.setAutoCommit(false);
-         System.out.println("Opened database successfully");
+         System.out.println("Database Connected.");
          System.out.println(userId);
-         String sql = ("SELECT username FROM \"User\" WHERE user_id = ?");
+         String sql = ("SELECT username, weight, height FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
 
          ResultSet result = stmt.executeQuery();
          if (result.next()){
             username = result.getString("username");
-         }
-         String query = ("SELECT weight FROM \"User\" WHERE user_id = ?");
-         stmt = con.prepareStatement(query);
-         stmt.setInt(1, userId);
-         result = stmt.executeQuery();
-         if (result.next()){
+            height = result.getDouble("height");
             weight = result.getDouble("weight");
          }
-         String query2 = ("SELECT height FROM \"User\" WHERE user_id = ?");
-         stmt = con.prepareStatement(query2);
-         stmt.setInt(1, userId);
-         result = stmt.executeQuery();
-         if (result.next()){
-            height = result.getDouble("height");
-         }
+
          stmt.close();
          con.commit();
          con.close();
