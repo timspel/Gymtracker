@@ -5,24 +5,22 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle height="68.0" layoutX="14.0" layoutY="-46.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1290.0" AnchorPane.leftAnchor="-10.0" AnchorPane.topAnchor="0.0" />
+      <Rectangle height="79.0" layoutX="14.0" layoutY="-46.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1290.0" AnchorPane.leftAnchor="-10.0" AnchorPane.topAnchor="0.0" />
       <HBox alignment="CENTER" layoutX="-4.0" layoutY="85.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="283.0" prefWidth="800.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Rectangle fill="#cfcfcfc7" height="315.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="920.0" />
                   <VBox alignment="CENTER" layoutX="42.0" prefHeight="315.0" prefWidth="206.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,42 +30,14 @@
                               <Image url="@../../../images/user.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="changeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
+                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Change" />
                      </children>
                   </VBox>
-                  <Label fx:id="lblName" layoutX="473.0" layoutY="110.0" text="Name">
+                  <Label layoutX="473.0" layoutY="110.0" text="Name">
                      <font>
-                        <Font size="45.0" />
+                        <Font name="Arial" size="45.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="920.0">
-                     <fill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.006711409395973154">
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.3724832214765101">
-                                 <color>
-                                    <Color red="0.2144249528646469" green="0.5789473652839661" blue="0.5121182799339294" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="0.11720272898674011" green="0.2773797810077667" blue="0.4868420958518982" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill>
-                  </Rectangle>
                </children>
             </AnchorPane>
          </children>
@@ -84,7 +54,7 @@
                               <Font size="23.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hieght:">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -99,48 +69,19 @@
                   <VBox alignment="CENTER_LEFT" layoutX="188.0" layoutY="75.0" prefHeight="182.0" prefWidth="100.0" spacing="20.0">
                      <children>
                         <Spinner />
-                        <TextField fx:id="heightField" />
-                        <TextField fx:id="weightField" layoutX="10.0" layoutY="88.0" />
+                        <TextField />
+                        <TextField layoutX="10.0" layoutY="88.0" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" layoutX="127.0" layoutY="57.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Info">
                            <font>
-                              <Font name="System Font" size="41.0" />
+                              <Font name="Arial" size="41.0" />
                            </font>
                         </Text>
                      </children>
                   </HBox>
-                  <Button fx:id="editInfoButton" layoutX="289.0" layoutY="251.0" mnemonicParsing="false" text="Edit" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="9.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="351.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <fill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.006711409395973154">
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.3724832214765101">
-                                 <color>
-                                    <Color red="0.2144249528646469" green="0.5789473652839661" blue="0.5121182799339294" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="0.11720272898674011" green="0.2773797810077667" blue="0.4868420958518982" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill>
-                  </Rectangle>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="473.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="351.0">
@@ -150,42 +91,14 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Goals">
                            <font>
-                              <Font name="System Font" size="41.0" />
+                              <Font name="Arial" size="41.0" />
                            </font>
                         </Text>
                      </children>
                   </HBox>
-                  <TextArea fx:id="goalsText" layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
-                  <Button fx:id="editButton" layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
+                  <TextArea layoutX="36.0" layoutY="104.0" prefHeight="135.0" prefWidth="259.0" />
+                  <Button layoutX="297.0" layoutY="157.0" mnemonicParsing="false" text="Edit" />
                   <Text layoutX="37.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your personal goals:" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="351.0">
-                     <fill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.006711409395973154">
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.3724832214765101">
-                                 <color>
-                                    <Color red="0.2144249528646469" green="0.5789473652839661" blue="0.5121182799339294" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="0.11720272898674011" green="0.2773797810077667" blue="0.4868420958518982" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill>
-                  </Rectangle>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="688.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="351.0">
@@ -195,68 +108,29 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Application">
                            <font>
-                              <Font name="System Font" size="41.0" />
+                              <Font name="Arial" size="41.0" />
                            </font>
                         </Text>
                      </children>
                   </HBox>
-                  <Button fx:id="darkmodeButton" layoutX="193.0" layoutY="134.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" text="On">
+                  <ToggleButton layoutX="193.0" layoutY="134.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" text="On">
                      <font>
                         <Font size="21.0" />
                      </font>
-                  </Button>
+                  </ToggleButton>
                   <Label layoutX="28.0" layoutY="136.0" text="Darkmode">
                      <font>
-                        <Font name="System Bold" size="32.0" />
+                        <Font name="Arial" size="32.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="351.0">
-                     <fill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.006711409395973154">
-                                 <color>
-                                    <Color red="0.2647417187690735" green="0.6973684430122375" blue="0.5747908353805542" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.3724832214765101">
-                                 <color>
-                                    <Color red="0.2144249528646469" green="0.5789473652839661" blue="0.5121182799339294" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="0.11720272898674011" green="0.2773797810077667" blue="0.4868420958518982" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill>
-                  </Rectangle>
                </children>
             </AnchorPane>
          </children>
       </HBox>
-      <Button fx:id="show" layoutX="1060.0" layoutY="427.0" mnemonicParsing="false" text="Show" />
-      <Button fx:id="hide" layoutX="1153.0" layoutY="427.0" mnemonicParsing="false" text="Hide" />
-      <AnchorPane fx:id="slider" layoutY="406.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="658.0" style="-fx-background-color: #cfcfcf;">
-         <children>
-            <ImageView fitHeight="47.0" fitWidth="52.0" layoutX="590.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../icon.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="214.0" layoutY="10.0" text="Gymtracker rocks!">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1111.0" layoutY="136.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
