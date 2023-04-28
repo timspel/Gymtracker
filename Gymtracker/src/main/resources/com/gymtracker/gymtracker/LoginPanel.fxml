@@ -37,7 +37,7 @@
          </image>
       </ImageView>
       <Button fx:id="loginButton" layoutX="26.0" layoutY="332.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="26.0" prefWidth="160.0" text="Login" />
-      <TextField fx:id="loginUsernameTextField" layoutX="26.0" layoutY="219.0" promptText="Username" />
+      <TextField fx:id="loginUsernameTextField" layoutX="26.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="160.0" promptText="Username" />
       <PasswordField fx:id="loginPasswordField" layoutX="26.0" layoutY="270.0" prefHeight="26.0" prefWidth="160.0" promptText="Password" />
       <Button fx:id="registerButton" layoutX="26.0" layoutY="375.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="26.0" prefWidth="160.0" text="Register" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="60.0" layoutX="-9.0" layoutY="-9.0" stroke="BLACK" strokeType="INSIDE" width="490.0">

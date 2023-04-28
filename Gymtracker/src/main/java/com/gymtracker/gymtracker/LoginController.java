@@ -131,7 +131,7 @@ public class LoginController implements Initializable {
 
       if(registerPasswordField1.getText().equals(registerPasswordField2.getText())){
          
-          registered = newUserRegistered(registerUsernameTextField.getText(),registerPasswordField1.getText(),66, 170, "https://example.com/profile/john_doe.png");
+          registered = newUserRegistered(registerUsernameTextField.getText(),registerPasswordField1.getText(),0, 0, "");
       }else{
          System.out.println("password does not match");
       }
