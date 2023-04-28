@@ -7,15 +7,11 @@ public enum ExerciseEnum {
 
     @Override
     public String toString() {
-        switch (this){
-            case BenchPress:
-                return "Bench Press";
-            case Squats:
-                return "Squats";
-            case Deadlift:
-                return "Deadlift";
-            default:
-                return null;
-        }
+        return switch (this) {
+            case BenchPress -> "Bench Press";
+            case Squats -> "Squats";
+            case Deadlift -> "Deadlift";
+            default -> null;
+        };
     }
 }

@@ -43,6 +43,10 @@ public class ExerciseWorkoutTab {
         this.set1 = set1;
     }
 
+    public ExerciseWorkoutTab(String exerciseName){
+        this.exerciseName = exerciseName;
+    }
+
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
     }
