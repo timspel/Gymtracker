@@ -262,6 +262,7 @@ public class ControllerWorkouts implements Initializable{
     public void addExerciseToTemplate(){
         exercisesTemplate.add(new ExerciseWorkoutTab(exercisesTemplateChoiceBox.getValue()));
         exercisesTemplateTable.setItems(getObservableExercisesTemplate());
+        
     }
 
     public void saveTemplate(){
