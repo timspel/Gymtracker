@@ -83,11 +83,6 @@ public class AddExerciseController {
     }
 
     public void AddNewExercise(){
-        String name = nameField.getText();
-        String image = imageSourceField.getText();
-        String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
-        String description = descriptionField.getText();
-
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
@@ -95,24 +90,40 @@ public class AddExerciseController {
         try {
             con = Database.getDatabase();
             con.setAutoCommit(false);
-
-            String sql = ("SELECT MAX(exercise_id) FROM exercise;");
+            String sql = ("SELECT MAX(exercise_id) FROM exercise");
             stmt = con.prepareStatement(sql);
             result = stmt.executeQuery();
+            int higestID = -1;
 
-            int higestID;
             if(result.next()){
-                higestID = result.getInt("MAX(exercise_id)");
+                higestID = result.getInt(1);
             }
+
+            sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
+            stmt = con.prepareStatement(sql);
+            String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
+            stmt.setString(1, muscleGroup);
+            result = stmt.executeQuery();
+            int muscleGroupID = -1;
+
+            if(result.next()){
+                muscleGroupID = result.getInt("workout_type_id");
+            }
+
+            String name = nameField.getText();
+            String description = descriptionField.getText();
+            String image = imageSourceField.getText();
 
             sql = ("INSERT INTO exercise (exercise_id, exercise_name, exercise_description, exercise_picture, workout_type_id) VALUES (?, ?, ?, ?, ?)");
             stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
+            stmt.setInt(1, higestID + 1);
+            stmt.setString(2, name);
+            stmt.setString(3, description);
+            stmt.setString(4, image);
+            stmt.setInt(5, muscleGroupID);
+            stmt.executeUpdate();
 
-            if(result.next()){
-                
-            }
-
+            System.out.println("Successfully added new exercise");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
