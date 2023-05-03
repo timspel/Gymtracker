@@ -1,7 +1,6 @@
 package com.gymtracker.gymtracker;
 
 import model.Exercise;
-import model.MuscleGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,30 +16,54 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class ExercisePanelController {
+public class ExerciseController {
    @FXML
-   private ListView<String> exercisesList = new ListView<>();
+   private ListView<Exercise> exercisesList = new ListView<>();
    @FXML
    private Label infoPanelName;
    @FXML
    private Label infoPanelDescription;
    @FXML
    private ImageView infoPanelImage;
-   private ObservableList<String> exercises = FXCollections.observableArrayList();
+   private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
+
 
    public void initialize() {
       populateExercises();
       exercisesList.setItems(exercises);
    }
 
-   /*public void populateExercisesList(){
-      for(int i = 0; i < 5; i++){
-         exercises.add(new Exercise((i + 10), "Test " + (i + 1),"Description goes here", new Image("icon.png"), MuscleGroup.Arms));
-      }
-   }*/
-
    public void populateExercises(){
       Connection con = null;
+      PreparedStatement stmt = null;
+      ResultSet result = null;
+
+      try{
+         con = Database.getDatabase();
+         con.setAutoCommit(false);
+
+         String sql = ("SELECT exercise_id, exercise_name, exercise_description, exercise_picture, workout_type.workout_type_name FROM exercise, workout_type WHERE exercise.workout_type_id = workout_type.workout_type_id");
+         stmt = con.prepareStatement(sql);
+         result = stmt.executeQuery();
+
+         while(result.next()){
+            int id = result.getInt("exercise_id");
+            String name = result.getString("exercise_name");
+            String desc = result.getString("exercise_description");
+            String pic = result.getString("exercise_picture");
+            String muscleGroup = result.getString("workout_type_name");
+
+            Exercise exercise = new Exercise(id, name, desc, new Image(pic), muscleGroup);
+            exercises.add(exercise);
+         }
+         stmt.close();
+         con.commit();
+         con.close();
+
+      }catch (Exception e){
+         throw new RuntimeException(e);
+      }
+      /*Connection con = null;
 
       PreparedStatement stmt1 = null;
       PreparedStatement stmt2 = null;
@@ -74,7 +97,7 @@ public class ExercisePanelController {
             }
          }
 
-         /*String sql1 = ("SELECT COUNT(*) AS totalExercises FROM exercise");
+         String sql1 = ("SELECT COUNT(*) AS totalExercises FROM exercise");
          stmt = con.prepareStatement(sql1);
          ResultSet test = stmt.executeQuery();
          int testInt = -1;
@@ -86,19 +109,18 @@ public class ExercisePanelController {
          String sql2 = ("SELECT ");
          for(int i = 0; i < testInt; i++){
             //stmt = con
-         }*/
-         /*stmt.close();
+         }
+
+         stmt.close();
          con.commit();
-         con.close();*/
-
-
+         con.close();
 
       } catch (Exception e) {
          throw new RuntimeException(e);
-      }
+      }*/
    }
 
-   /*public Exercise getExercise(){
+   public Exercise getExercise(){
       int exerciseID;
       if(exercisesList.getSelectionModel().getSelectedItems().get(0) != null){
          exerciseID = exercisesList.getSelectionModel().getSelectedItems().get(0).getId();
@@ -115,18 +137,49 @@ public class ExercisePanelController {
       }
       System.out.println("Can find matching ID for exercise. Returning null");
       return null;
-   }*/
 
-   private void populateInfoPanel(Exercise selectedExercise) {
+      /*Exercise selectedExercise;
+      Connection con = null;
+      PreparedStatement stmt = null;
+      ResultSet res = null;
+
+      if(exercisesList.getSelectionModel().getSelectedItems().get(0) != null){
+         selectedExercise = exercisesList.getSelectionModel().getSelectedItems().get(0);
+         //System.out.println(selectedExercise);
+
+         try{
+            con = Database.getDatabase();
+            con.setAutoCommit(false);
+            String sql = ("SELECT exercise_description, exercise_picture FROM exercise WHERE exercise_name = ?");
+            stmt = con.prepareStatement(sql);
+            //stmt.setString(1, selectedExercise);
+            res = stmt.executeQuery();
+
+            if(res.next()){
+               String description = res.getString("exercise_description");
+               String pictureURL = res.getString("exercise_picture");
+               System.out.println(description);
+               System.out.println(pictureURL);
+            }
+
+         }catch (Exception e) {
+            throw new RuntimeException(e);
+         }
+      }*/
+   }
+
+   public void populateInfoPanel(Exercise selectedExercise) {
       infoPanelName.setText(selectedExercise.getName());
       infoPanelDescription.setText(selectedExercise.getDescription());
-      infoPanelImage.setImage(selectedExercise.getImage());
+      infoPanelImage.setImage(selectedExercise.getPicture());
    }
 
    public void openAddExerciseWindow(){
       try{
          FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExerciseWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
+         AddExerciseController aec = fxmlLoader.getController();
+         aec.setExerciseController(this);
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
          stage.setScene(scene);
