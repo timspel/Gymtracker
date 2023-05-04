@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import model.Exercise;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,7 +54,9 @@ public class AddExerciseController {
                 String workoutType = result.getString("workout_type_name");
                 muscleGroups.getItems().add(workoutType);
             }
-
+            stmt.close();
+            con.commit();
+            con.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +64,6 @@ public class AddExerciseController {
 
     public void chooseImage(){
         if(imageSourceField != null){
-            //System.out.println(imageSourceField.getText());
             Image image = new Image(imageSourceField.getText());
             imagePreview.setImage(image);
         }
@@ -82,7 +84,7 @@ public class AddExerciseController {
         stage.close();
     }
 
-    public void AddNewExercise(){
+    public void addNewExercise(){
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
@@ -96,7 +98,7 @@ public class AddExerciseController {
             int higestID = -1;
 
             if(result.next()){
-                higestID = result.getInt(1);
+                higestID = (result.getInt(1)) + 1;
             }
 
             sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
@@ -116,14 +118,21 @@ public class AddExerciseController {
 
             sql = ("INSERT INTO exercise (exercise_id, exercise_name, exercise_description, exercise_picture, workout_type_id) VALUES (?, ?, ?, ?, ?)");
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1, higestID + 1);
+            stmt.setInt(1, higestID);
             stmt.setString(2, name);
             stmt.setString(3, description);
             stmt.setString(4, image);
             stmt.setInt(5, muscleGroupID);
             stmt.executeUpdate();
+            stmt.close();
+            con.commit();
+            con.close();
 
             System.out.println("Successfully added new exercise");
+
+            Exercise newExercise = new Exercise(higestID, name, description, new Image(image), muscleGroup);
+            exerciseController.readInNewExercise(newExercise);
+            cancelOperation();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

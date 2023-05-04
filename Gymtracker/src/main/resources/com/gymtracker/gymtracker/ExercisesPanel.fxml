@@ -43,7 +43,7 @@
       </AnchorPane>
       <Button layoutX="40.0" layoutY="716.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
       <Button layoutX="140.0" layoutY="716.0" mnemonicParsing="false" text="Edit exercise" />
-      <Button layoutX="235.0" layoutY="716.0" mnemonicParsing="false" text="Remove exercise" />
+      <Button layoutX="235.0" layoutY="716.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
       <HBox alignment="CENTER" prefHeight="154.0" prefWidth="1276.0" style="-fx-background-color: #000000;">
          <children>
             <AnchorPane prefHeight="156.0" prefWidth="499.0">

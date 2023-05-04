@@ -21,12 +21,12 @@
          <children>
             <TextField fx:id="nameField" layoutX="80.0" layoutY="20.0" prefHeight="20.0" prefWidth="180.0" />
             <TextField fx:id="imageSourceField" layoutX="80.0" layoutY="60.0" prefHeight="25.0" prefWidth="180.0" />
-            <Button layoutX="270.0" layoutY="60.0" mnemonicParsing="false" onAction="#chooseImage" text="Upload" />
+            <Button fx:id="chooseImageButton" layoutX="270.0" layoutY="60.0" mnemonicParsing="false" onAction="#chooseImage" text="Choose" />
             <ChoiceBox fx:id="muscleGroups" layoutX="482.0" layoutY="20.0" prefHeight="25.0" prefWidth="180.0" />
             <TextArea fx:id="descriptionField" layoutX="392.0" layoutY="85.0" prefHeight="200.0" prefWidth="270.0" wrapText="true" />
             <Label alignment="CENTER_RIGHT" layoutX="392.0" layoutY="23.0" prefHeight="20.0" prefWidth="80.0" text="Muscle Group:" />
-            <Label alignment="CENTER_RIGHT" layoutX="15.0" layoutY="20.0" prefHeight="20.0" prefWidth="60.0" text="Name:" />
-            <Label alignment="CENTER_RIGHT" layoutX="15.0" layoutY="60.0" prefHeight="20.0" prefWidth="60.0" text="Image URL:" />
+            <Label alignment="CENTER_RIGHT" layoutX="25.0" layoutY="20.0" prefHeight="20.0" prefWidth="40.0" text="Name:" />
+            <Label alignment="CENTER_RIGHT" layoutX="25.0" layoutY="60.0" prefHeight="20.0" prefWidth="40.0" text="Image:" />
             <ImageView fx:id="imagePreview" fitHeight="180.0" fitWidth="300.0" layoutX="23.0" layoutY="103.0" pickOnBounds="true" />
             <Line endX="-8.0" endY="178.0" layoutX="358.0" layoutY="125.0" startX="-8.0" startY="-123.0" />
             <Label layoutX="392.0" layoutY="62.0" text="Description:" />
@@ -36,8 +36,7 @@
             <Line endX="-101.0" endY="-106.0" layoutX="424.0" layoutY="208.0" startX="-101.0" startY="75.0" />
          </children>
       </AnchorPane>
-      <Button layoutX="304.0" layoutY="446.0" mnemonicParsing="false" onAction="#AddNewExercise" prefWidth="80.0" text="Add" />
+      <Button layoutX="304.0" layoutY="446.0" mnemonicParsing="false" onAction="#addNewExercise" prefWidth="80.0" text="Add" />
       <Button fx:id="cancelButton" layoutX="417.0" layoutY="446.0" mnemonicParsing="false" onAction="#cancelOperation" prefWidth="80.0" text="Cancel" />
-      <Button layoutX="698.0" layoutY="446.0" mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>

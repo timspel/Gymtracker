@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 public class ExerciseController {
    @FXML
@@ -120,6 +122,10 @@ public class ExerciseController {
       }*/
    }
 
+   public void readInNewExercise(Exercise exercise){
+      exercises.add(exercise);
+   }
+
    public Exercise getExercise(){
       int exerciseID;
       if(exercisesList.getSelectionModel().getSelectedItems().get(0) != null){
@@ -190,14 +196,36 @@ public class ExerciseController {
       }
    }
 
-   /*public void removeExercise(){
-      int exerciseToRemove = getExercise().getId();
+   public void removeExercise(){
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Delete exercise?");
+      alert.setHeaderText(null);
+      alert.setContentText("Are you sure you want to delete this exercise?");
 
-      for(int i = 0; i < exercises.size(); i++){
-         if(exercises.get(i).getId() == exerciseToRemove){
-            exercises.remove(i);
-            break;
+      Optional<ButtonType> buttonResult = alert.showAndWait();
+      if (buttonResult.get() == ButtonType.OK){
+         exercises.remove(getExercise());
+
+         Connection con = null;
+         PreparedStatement stmt = null;
+
+         try {
+            con = Database.getDatabase();
+            con.setAutoCommit(false);
+
+            String sql = ("DELETE FROM exercise WHERE exercise_id = ?");
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, getExercise().getId());
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.commit();
+            con.close();
+         } catch (SQLException e) {
+            throw new RuntimeException(e);
          }
+      } else {
+         System.out.println("Closed or canceled");
       }
-   }*/
+   }
 }
