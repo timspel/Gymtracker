@@ -123,12 +123,13 @@ public class ControllerWorkouts implements Initializable{
     private List<ExerciseWorkoutTab> exercises;
     private ObservableList<ExerciseWorkoutTab> dataExercises;
     private int selectedSetRow;
-    private int selectedTemplateRow;
+    private int selectedTemplateRow = -1;
     private int selectedExerciseRow;
     private int selectedExerciseTemplateRow;
     private ExerciseWorkoutTab exercise;
     private int workoutId;
     private List<ExerciseWorkoutTab> exercisesTemplate;
+    private List<Template> templates;
 
     public ControllerWorkouts() throws IOException {
 
@@ -142,6 +143,7 @@ public class ControllerWorkouts implements Initializable{
         sets = new ArrayList<>();
         exercises = new ArrayList<>();
         exercisesTemplate = new ArrayList<>();
+        templates = new ArrayList<>();
 
         SpinnerValueFactory<Integer> repetitionsValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0);
         repetitionsSpinner.setValueFactory(repetitionsValueFactory);
@@ -150,7 +152,8 @@ public class ControllerWorkouts implements Initializable{
         templateDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         templateCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-        templatesTable.setItems(getTemplates());
+        setTemplates(UserIdSingleton.getInstance().getUserId());
+        templatesTable.setItems(getObservableTemplates());
 
         templatesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Template>() {
             @Override
@@ -240,7 +243,7 @@ public class ControllerWorkouts implements Initializable{
             addExercise();
         }
         if(e.getSource() == removeTemplateButton){
-
+            removeTemplate();
         }
         if(e.getSource() == loadTemplateButton){
 
@@ -267,6 +270,7 @@ public class ControllerWorkouts implements Initializable{
 
     public void saveTemplate(){
         boolean registered = false;
+        boolean setTemplates = false;
         if(exercisesTemplate.size() > 0){
             for(int i = 0; i < exercisesTemplate.size(); i++){
                 registered = templateRegistered(workoutId, exercisesTemplate.get(i).getExerciseName());
@@ -275,6 +279,101 @@ public class ControllerWorkouts implements Initializable{
                 System.out.println("could not save template");
             }
         }
+
+        templates = new ArrayList<>();
+        setTemplates = setTemplates(UserIdSingleton.getInstance().getUserId());
+
+        if(setTemplates){
+            templatesTable.setItems(getObservableTemplates());
+        }
+        else{
+            System.out.println("could not set templates");
+        }
+
+    }
+
+    public void removeTemplate(){
+        boolean deleted = false;
+        boolean setTemplates = false;
+
+        if(selectedTemplateRow != -1) {
+            exercisesTemplate = getSelectedTemplateExercises(templates.get(selectedTemplateRow).getWorkoutName(), UserIdSingleton.getInstance().getUserId());
+
+            if(exercisesTemplate.size() > 0){
+                for(int i = 0; i < exercisesTemplate.size(); i++){
+                    deleted = templateDeleted(workoutId);
+                }
+                if(!deleted){
+                    System.out.println("could not remove template");
+                }
+            }
+
+            templates = new ArrayList<>();
+            setTemplates = setTemplates(UserIdSingleton.getInstance().getUserId());
+
+            if(setTemplates){
+                templatesTable.setItems(getObservableTemplates());
+            }
+            else{
+                System.out.println("could not set templates");
+            }
+        }
+    }
+
+    public ArrayList<ExerciseWorkoutTab> getSelectedTemplateExercises(String templateName, int userId){
+        ArrayList<ExerciseWorkoutTab> exercises = new ArrayList<>();
+        PreparedStatement stmt = null;
+
+        try(Connection conn = Database.getDatabase()){
+            String sql = "SELECT w.workout_id, e.exercise_name\n" +
+                    "FROM public.workout w\n" +
+                    "JOIN public.workout_exercise we ON w.workout_id = we.workout_id\n" +
+                    "JOIN public.exercise e ON we.exercise_id = e.exercise_id\n" +
+                    "WHERE w.workout_name = ? AND w.user_id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, templateName);
+            stmt.setInt(2, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                exercises.add(new ExerciseWorkoutTab(rs.getString("exercise_name")));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("could not get template exercises");
+            e.printStackTrace();
+        }
+        return exercises;
+    }
+
+    public boolean setTemplates(int userId){
+        try (Connection conn = Database.getDatabase()){
+            // Prepare the SQL query with a parameter for the user ID
+            String sql = "SELECT Workout.workout_name, Workout.workout_description, Workout_Type.workout_type_name " +
+                    "FROM Workout " +
+                    "JOIN Workout_Type ON Workout.workout_type_id = Workout_Type.workout_type_id " +
+                    "WHERE Workout.user_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            // Set the parameter for the user ID in the query
+            statement.setInt(1, userId);
+
+            // Execute the query and iterate over the results
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                templates.add(new Template(rs.getString("workout_name"), rs.getString("workout_description"), rs.getString("workout_type_name")));
+            }
+
+            // Close the statement and result set
+            rs.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public boolean templateRegistered(int workoutId, String exerciseName) {
@@ -297,6 +396,31 @@ public class ControllerWorkouts implements Initializable{
                 insertStmt.executeUpdate();
                 System.out.println("Exercise added to workout successfully");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean templateDeleted(int workoutId){
+        try (Connection con = Database.getDatabase()) {
+
+            String sql = "DELETE FROM workout WHERE workout_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, workoutId);
+            pstmt.executeUpdate();
+
+            // delete the corresponding records from the workout_exercise table
+            sql = "DELETE FROM workout_exercise WHERE workout_id = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, workoutId);
+            pstmt.executeUpdate();
+
+            // Close the statement and connection objects
+            pstmt.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -388,7 +512,7 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
-    public boolean newTemplateRegistered(int userId, String workoutName, String workoutDescription, int categoryId){
+    public boolean newTemplateRegistered(int userId, String workoutName, String workoutDescription, int categoryId) {
         try (Connection con = Database.getDatabase()) {
             // Insert a new workout
             try (PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Workout (user_id, workout_name, workout_description, workout_type_id) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
@@ -415,22 +539,17 @@ public class ControllerWorkouts implements Initializable{
         }
         return true;
     }
-    public ObservableList<Template> getTemplates(){
-        return FXCollections.observableArrayList(
-                new Template("Morning workout", "2023-04-04", "Push"),
-                new Template("Lunch workout", "2023-04-07", "Pull"),
-                new Template("Evening workout", "2023-04-11", "Legs")
-        );
-    }
 
     public ObservableList<Set> getObservableSets(){
-        dataSets = FXCollections.observableArrayList(sets);
-        return dataSets;
+        return FXCollections.observableArrayList(sets);
+    }
+
+    public ObservableList<Template> getObservableTemplates(){
+        return FXCollections.observableArrayList(templates);
     }
 
     public ObservableList<ExerciseWorkoutTab> getObservableExercises(){
-        dataExercises = FXCollections.observableArrayList(exercises);
-        return dataExercises;
+        return FXCollections.observableArrayList(exercises);
     }
 
     public ObservableList<ExerciseWorkoutTab> getObservableExercisesTemplate(){

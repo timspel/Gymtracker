@@ -38,7 +38,7 @@ public class Database {
 
             Class.forName("org.postgresql.Driver");
             con  = DriverManager
-                    .getConnection("jdbc:postgresql://pgserver.mau.se:5432/gymtracker", "an5527", "ss242937");
+                    .getConnection("jdbc:postgresql://pgserver.mau.se:5432/gymtracker", "an8345", "7zazym0c");
 
         } catch (Exception e) {
             e.printStackTrace();
