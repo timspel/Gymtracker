@@ -71,7 +71,7 @@ public class LoginController implements Initializable {
          registerPane.setVisible(true);
          registerPane.setTranslateX(-204);
          TranslateTransition slide = new TranslateTransition();
-         slide.setDuration(Duration.seconds(0.4));
+         slide.setDuration(Duration.seconds(0.2));
          slide.setNode(registerPane);
          slide.setToX(0);
          slide.play();
@@ -79,18 +79,18 @@ public class LoginController implements Initializable {
          registerPane.setTranslateX(-204);
       }
       if(event.getSource() == regUserButton){
+         addUser();
          TranslateTransition slide = new TranslateTransition();
-         slide.setDuration(Duration.seconds(0.4));
+         slide.setDuration(Duration.seconds(0.2));
          slide.setNode(registerPane);
          slide.setToX(-204);
          slide.play();
          registerPane.setTranslateX(0);
          //registerPane.setVisible(false);
-         addUser();
       }
       if(event.getSource() == cancelButton){
          TranslateTransition slide = new TranslateTransition();
-         slide.setDuration(Duration.seconds(0.4));
+         slide.setDuration(Duration.seconds(0.2));
          slide.setNode(registerPane);
          slide.setToX(-204);
          slide.play();
