@@ -204,18 +204,18 @@ public class ExerciseController {
 
       Optional<ButtonType> buttonResult = alert.showAndWait();
       if (buttonResult.get() == ButtonType.OK){
-         exercises.remove(getExercise());
+         Exercise exerciseToRemove = getExercise();
+         exercises.remove(exerciseToRemove);
 
          Connection con = null;
          PreparedStatement stmt = null;
-
          try {
             con = Database.getDatabase();
             con.setAutoCommit(false);
 
             String sql = ("DELETE FROM exercise WHERE exercise_id = ?");
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1, getExercise().getId());
+            stmt.setInt(1, exerciseToRemove.getId());
             stmt.executeUpdate();
 
             stmt.close();
