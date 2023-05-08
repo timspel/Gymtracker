@@ -1,16 +1,19 @@
 package com.gymtracker.gymtracker;
 
-import java.time.ZonedDateTime;
+import java.sql.*;
+import java.time.*;
+import java.util.*;
 
 public class CalendarActivity {
-    private ZonedDateTime date;
-    private String clientName;
-    private Integer serviceNo;
 
-    public CalendarActivity(ZonedDateTime date, String clientName, Integer serviceNo) {
+    private String username;
+    private ZonedDateTime date;
+    private String workoutName;
+
+    public CalendarActivity(String username, ZonedDateTime date, String workoutName) {
+        this.username = username;
         this.date = date;
-        this.clientName = clientName;
-        this.serviceNo = serviceNo;
+        this.workoutName = workoutName;
     }
 
     public ZonedDateTime getDate() {
@@ -21,28 +24,27 @@ public class CalendarActivity {
         this.date = date;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Integer getServiceNo() {
-        return serviceNo;
+    public String getWorkoutName() {
+        return workoutName;
     }
 
-    public void setServiceNo(Integer serviceNo) {
-        this.serviceNo = serviceNo;
+    public void setWorkoutName(String workoutName) {
+        this.workoutName = workoutName;
     }
 
     @Override
     public String toString() {
-        return "CalenderActivity{" +
+        return "CalendarActivity{" +
                 "date=" + date +
-                ", clientName='" + clientName + '\'' +
-                ", serviceNo=" + serviceNo +
+                ", WorkoutName='" + workoutName + '\'' +
                 '}';
     }
 }

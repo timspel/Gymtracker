@@ -39,7 +39,6 @@ public class MainController implements Initializable{
    private Button homeButton;
    @FXML
    private Button logoutButton;
-
    private Parent workoutPane;
    private Parent calendarPane;
    private Parent profilePane;
