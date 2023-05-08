@@ -81,6 +81,16 @@ public class ProfileController {
          else {
             goalsText.setEditable(false);
             editButton.setText("Edit");
+            Connection conn = null;
+            try{
+               conn = Database.getDatabase();
+               PreparedStatement stmt = conn.prepareStatement("UPDATE \"User\" SET personal_goal = ? WHERE user_id = ? ");
+               stmt.setString(1, goalsText.getText());
+               stmt.setInt(2, userId);
+               stmt.executeUpdate();
+               stmt.close();
+               conn.close();
+            }catch (Exception e){e.printStackTrace();}
          }
       }
       if(event.getSource() == editInfoButton){
@@ -113,7 +123,6 @@ public class ProfileController {
                   stmt.setDouble(1, Double.parseDouble(heightField.getText()));
                   stmt.setDouble(2, Double.parseDouble(weightField.getText()));
                   stmt.setInt(3, userId);
-
 
                   stmt.executeUpdate();
                   stmt.close();

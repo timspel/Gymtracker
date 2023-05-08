@@ -19,7 +19,7 @@
          </children></StackPane>
       <AnchorPane layoutX="-28.0" layoutY="122.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1276.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0d0d0" height="983.0" layoutX="-61.0" layoutY="-150.0" stroke="#121212" strokeType="INSIDE" width="215.0" AnchorPane.rightAnchor="0.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0d0d0" height="983.0" layoutX="-61.0" layoutY="-150.0" stroke="#121212" strokeType="INSIDE" strokeWidth="0.0" width="215.0" AnchorPane.rightAnchor="0.0" />
             <VBox layoutY="-1.0" prefHeight="789.0" prefWidth="150.0" spacing="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label fx:id="gymtrackerLabel" prefHeight="79.0" prefWidth="160.0" style="-fx-background-color: black;" text="Gymtracker" textAlignment="CENTER" textFill="#fffdfd">
