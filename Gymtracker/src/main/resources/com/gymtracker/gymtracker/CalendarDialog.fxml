@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER" layoutX="376.0" layoutY="7.0" prefHeight="67.0" prefWidth="256.0">
          <children>
-            <Text fx:id="SelectedWorkout" strokeType="OUTSIDE" strokeWidth="0.0" text="SelectedWorkoutName" textAlignment="CENTER">
+            <Text fx:id="selectedWorkoutName" strokeType="OUTSIDE" strokeWidth="0.0" text="selectedWorkoutName" textAlignment="CENTER">
                <font>
                   <Font size="25.0" />
                </font>

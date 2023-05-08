@@ -2,13 +2,18 @@ package com.gymtracker.gymtracker;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.CalendarActivity;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -137,6 +142,17 @@ public class CalendarController implements Initializable {
 
                 // Store the selected activity's data in a variable
                 selectedActivity = calendarActivity;
+
+                // Load the dialog box
+                // Assume you have an activity object called "selectedActivity"
+                String workoutName = selectedActivity.getWorkoutName();
+                Dialog<ButtonType> dialog = CalendarDialog.loadDialog(workoutName);
+
+                // Display the dialog box
+                Optional<ButtonType> result = dialog.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // Handle OK button click
+                }
             });
 
             if (k >= 2) { // check if there are more than 2 activities
