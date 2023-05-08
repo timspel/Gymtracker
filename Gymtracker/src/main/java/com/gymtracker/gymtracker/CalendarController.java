@@ -2,20 +2,13 @@ package com.gymtracker.gymtracker;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import model.CalendarActivity;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -120,58 +113,6 @@ public class CalendarController implements Initializable {
     }
 
 
-
-    /*private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
-        VBox calendarActivityBox = new VBox();
-        double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
-        double maxWidth = 0.0;
-
-        for (int k = 0; k < calendarActivities.size(); k++) {
-            CalendarActivity calendarActivity = calendarActivities.get(k);
-            Text text = new Text(calendarActivity.getUsername() + ", " + calendarActivity.getDate().toLocalTime() + ", " + calendarActivity.getWorkoutName());
-            text.setWrappingWidth(rectangleWidth); // set the wrapping width to the width of the rectangle
-            maxWidth = Math.max(maxWidth, text.getBoundsInLocal().getWidth());
-            text.setMouseTransparent(false); // Set the Text object to receive mouse events
-
-            // Add an OnMouseClicked event handler to the Text object
-            text.setOnMouseClicked(event -> {
-                // Highlight the selected activity
-                text.setFill(Color.RED);
-
-                // Store the selected activity's data in a variable
-                selectedActivity = calendarActivity;
-            });
-
-            if (text.getText().length() > 20) { // check if the text is too long to fit in the box
-                String truncatedText = text.getText().substring(0, 17) + "..."; // truncate the text and append the ellipsis character
-                Text truncatedTextNode = new Text(truncatedText);
-                truncatedTextNode.setWrappingWidth(boxWidth); // set the wrapping width of the truncated text node
-                truncatedTextNode.setOnMouseClicked(event -> {
-                    // On truncated text click print full text
-                    System.out.println(text.getText());
-                });
-                calendarActivityBox.getChildren().add(truncatedTextNode); // add the truncated text node to the VBox
-            } else {
-                calendarActivityBox.getChildren().add(text); // add the text node to the VBox
-            }
-
-            if (k >= 2) {
-                Text moreActivities = new Text("...");
-                calendarActivityBox.getChildren().add(moreActivities);
-                moreActivities.setOnMouseClicked(mouseEvent -> {
-                    //On ... click print all activities for given date
-                    System.out.println(calendarActivities);
-                });
-                break;
-            }
-        }
-        calendarActivityBox.setPrefWidth(maxWidth); // set the width of the VBox
-        //calendarActivityBox.setStyle("-fx-padding: " + 2 + "px 0 0 " + 2 + "px");
-
-        // Add the VBox to the StackPane
-        stackPane.getChildren().add(calendarActivityBox);
-    }*/
-/*
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
@@ -198,84 +139,37 @@ public class CalendarController implements Initializable {
                 selectedActivity = calendarActivity;
             });
 
-            if (text.getText().length() > 20) { // check if the text is too long to fit in the box
-                String truncatedText = text.getText().substring(0, 17) + "..."; // truncate the text and append the ellipsis character
-                Text truncatedTextNode = new Text(truncatedText);
-                truncatedTextNode.setWrappingWidth(boxWidth); // set the wrapping width of the truncated text node
-                truncatedTextNode.setOnMouseClicked(event -> {
-                    // On truncated text click print full text
-                    System.out.println(text.getText());
-                });
-                calendarActivityBox.getChildren().add(truncatedTextNode); // add the truncated text node to the VBox
-            } else {
-                calendarActivityBox.getChildren().add(text); // add the text node to the VBox
-            }
-
-            if (k >= 2) {
-                Text moreActivities = new Text("...");
+            if (k >= 2) { // check if there are more than 2 activities
+                Text moreActivities = new Text("Show More");
                 calendarActivityBox.getChildren().add(moreActivities);
                 moreActivities.setOnMouseClicked(mouseEvent -> {
-                    //On ... click print all activities for given date
-                    System.out.println(calendarActivities);
+                    // On "Show More" click expand the text box to show all activities
+                    calendarActivityBox.getChildren().clear(); // remove the truncated text node and "Show More" link
+                    for (CalendarActivity activity : calendarActivities) {
+                        Text fullText = new Text(activity.getUsername() + ", " + activity.getDate().toLocalTime() + ", " + activity.getWorkoutName());
+                        fullText.setWrappingWidth(rectangleWidth); // set the wrapping width to the width of the rectangle
+                        fullText.setMouseTransparent(false); // Set the Text object to receive mouse events
+                        fullText.setOnMouseClicked(e -> {
+                            // Un-highlight the previously selected activity
+                            if (selectedActivity != null) {
+                                Text prevText = (Text) calendarActivityBox.getChildren().get(calendarActivities.indexOf(selectedActivity));
+                                prevText.setFill(Color.BLACK);
+                            }
+                            // Highlight the selected activity
+                            fullText.setFill(Color.RED);
+
+                            // Store the selected activity's data in a variable
+                            selectedActivity = activity;
+                        });
+                        calendarActivityBox.getChildren().add(fullText); // add the full text node to the VBox
+                    }
                 });
                 break;
             }
+
+            calendarActivityBox.getChildren().add(text); // add the text node to the VBox
         }
-        calendarActivityBox.setPrefWidth(maxWidth); // set the width of the VBox
-        //calendarActivityBox.setStyle("-fx-padding: " + 2 + "px 0 0 " + 2 + "px");
 
-        // Add the VBox to the StackPane
-        stackPane.getChildren().add(calendarActivityBox);
-    }*/
-    private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
-        VBox calendarActivityBox = new VBox();
-        double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
-        double maxWidth = 0.0;
-
-        for (int k = 0; k < calendarActivities.size(); k++) {
-            CalendarActivity calendarActivity = calendarActivities.get(k);
-            Text text = new Text(calendarActivity.getUsername() + ", " + calendarActivity.getDate().toLocalTime() + ", " + calendarActivity.getWorkoutName());
-            text.setWrappingWidth(rectangleWidth); // set the wrapping width to the width of the rectangle
-            maxWidth = Math.max(maxWidth, text.getBoundsInLocal().getWidth());
-            text.setMouseTransparent(false); // Set the Text object to receive mouse events
-
-            // Add an OnMouseClicked event handler to the Text object
-            text.setOnMouseClicked(event -> {
-                // Un-highlight the previously selected activity
-                if (selectedActivity != null) {
-                    Text prevText = (Text) calendarActivityBox.getChildren().get(calendarActivities.indexOf(selectedActivity));
-                    prevText.setFill(Color.BLACK);
-                }
-                // Highlight the selected activity
-                text.setFill(Color.RED);
-
-                // Store the selected activity's data in a variable
-                selectedActivity = calendarActivity;
-            });
-
-            if (text.getText().length() > 20) { // check if the text is too long to fit in the box
-                String truncatedText = text.getText().substring(0, 17) + "..."; // truncate the text and append the ellipsis character
-                Text truncatedTextNode = new Text(truncatedText);
-                truncatedTextNode.setWrappingWidth(boxWidth); // set the wrapping width of the truncated text node
-                truncatedTextNode.setOnMouseClicked(event -> {
-                    // On truncated text click print full text
-                    System.out.println(text.getText());
-                });
-                calendarActivityBox.getChildren().add(truncatedTextNode); // add the truncated text node to the VBox
-            } else {
-                calendarActivityBox.getChildren().add(text); // add the text node to the VBox
-            }
-
-            if (k >= 2) {
-                Text moreActivities = new Text("...");
-                calendarActivityBox.getChildren().add(moreActivities);
-                moreActivities.setOnMouseClicked(mouseEvent -> {
-                    //On ... click print all activities for given date
-                    System.out.println(calendarActivities);
-                });
-                break;
-            }
-        }
         calendarActivityBox.setPrefWidth(maxWidth); // set the width of the VBox
         calendarActivityBox.setStyle("-fx-padding: " + 14 + "px 0 0 0"); // set the top padding of the VBox
 
@@ -283,21 +177,6 @@ public class CalendarController implements Initializable {
         stackPane.getChildren().add(calendarActivityBox);
     }
 
-
-
-
-    /*private Map<Integer, List<CalendarActivity>> createCalendarMap(ZonedDateTime date) {
-        Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
-        // create some dummy data
-        for (int i = 1; i <= date.getMonth().maxLength(); i++) {
-            List<CalendarActivity> activities = new ArrayList<>();
-            activities.add(new CalendarActivity("Alice", ZonedDateTime.of(date.getYear(), date.getMonthValue(), i, 10, 0, 0, 0, ZoneId.systemDefault()), "Cycling"));
-            activities.add(new CalendarActivity("Bob", ZonedDateTime.of(date.getYear(), date.getMonthValue(), i, 14, 0, 0, 0, ZoneId.systemDefault()), "Weightlifting"));
-            activities.add(new CalendarActivity("Charlie", ZonedDateTime.of(date.getYear(), date.getMonthValue(), i, 17, 0, 0, 0, ZoneId.systemDefault()), "Running"));
-            calendarActivityMap.put(i, activities);
-        }
-        return calendarActivityMap;
-    }*/
 
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
