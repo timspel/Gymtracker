@@ -1,19 +1,19 @@
 package com.gymtracker.gymtracker;
 
-import java.sql.*;
-import java.time.*;
-import java.util.*;
+import java.time.ZonedDateTime;
 
 public class CalendarActivity {
 
     private String username;
     private ZonedDateTime date;
     private String workoutName;
+    private int index;
 
     public CalendarActivity(String username, ZonedDateTime date, String workoutName) {
         this.username = username;
         this.date = date;
         this.workoutName = workoutName;
+        //this.index = index;
     }
 
     public ZonedDateTime getDate() {
@@ -40,11 +40,22 @@ public class CalendarActivity {
         this.workoutName = workoutName;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     @Override
     public String toString() {
         return "CalendarActivity{" +
-                "date=" + date +
-                ", WorkoutName='" + workoutName + '\'' +
+                "username='" + username + '\'' +
+                ", date=" + date +
+                ", workoutName='" + workoutName + '\'' +
+                ", index=" + index +
                 '}';
     }
+
 }
