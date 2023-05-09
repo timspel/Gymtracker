@@ -161,6 +161,10 @@ public class CalendarController implements Initializable {
         // Add the VBox to the StackPane
         calendarActivityBox.setPrefWidth(boxWidth);
         calendarActivityBox.setMaxWidth(maxWidth);
+
+
+        calendarActivityBox.setStyle("-fx-padding: " + 16 + "px 0 0 0"); // set the top padding of the VBox
+
         calendarActivityBox.setFillWidth(true);
         stackPane.getChildren().add(calendarActivityBox);
     }
@@ -200,7 +204,47 @@ public class CalendarController implements Initializable {
         return null;
     }
 
+    private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
+        Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
 
+        int userId = UserIdSingleton.getInstance().getUserId();
+        try (Connection conn = Database.getDatabase()) {
+            String sql = "SELECT w.date, u.username, w.workout_name, w.workout_id " +
+                    "FROM workout w " +
+                    "JOIN \"User\" u ON w.user_id = u.user_id " +
+                    "LEFT JOIN friendship f ON (w.user_id = f.user2_id OR w.user_id = f.user1_id) AND f.status != 'pending' AND (f.user1_id = ? OR f.user2_id = ?) " +
+                    "WHERE (w.user_id = ? OR f.user1_id = ? OR f.user2_id = ?) " +
+                    "AND EXTRACT(YEAR FROM w.date) = ? " +
+                    "AND EXTRACT(MONTH FROM w.date) = ? " +
+                    "AND w.is_original = true " +
+                    "ORDER BY w.date";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, userId);
+            stmt.setInt(4, userId);
+            stmt.setInt(5, userId);
+            stmt.setInt(6, date.getYear());
+            stmt.setInt(7, date.getMonthValue());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ZonedDateTime activityDate = rs.getTimestamp("date").toLocalDateTime().atZone(ZoneId.systemDefault());
+                String username = rs.getString("username");
+                String workoutName = rs.getString("workout_name");
+                int workoutId = rs.getInt("workout_id");
+                int dayOfMonth = activityDate.getDayOfMonth();
+                List<CalendarActivity> activities = calendarActivityMap.getOrDefault(dayOfMonth, new ArrayList<>());
+                activities.add(new CalendarActivity(username, activityDate, workoutName, workoutId));
+                calendarActivityMap.put(dayOfMonth, activities);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return calendarActivityMap;
+    }
+
+/*
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
         try (Connection conn = Database.getDatabase()) {
@@ -230,7 +274,7 @@ public class CalendarController implements Initializable {
             ex.printStackTrace();
         }
         return calendarActivityMap;
-    }
+    }*/
 
 
 }
