@@ -59,7 +59,6 @@ public class CalendarController implements Initializable {
         drawCalendar();
     }
 
-
     private void drawCalendar(){
         year.setText(String.valueOf(dateFocus.getYear()));
         month.setText(dateFocus.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
@@ -141,7 +140,8 @@ public class CalendarController implements Initializable {
                 // Load the dialog box
                 // Assume you have an activity object called "selectedActivity"
                 String workoutName = calendarActivity.getWorkoutName();
-                Dialog<ButtonType> dialog = loadDialog(workoutName);
+                int workoutId = calendarActivity.getWorkoutId();
+                Dialog<ButtonType> dialog = loadDialog(workoutName, workoutId);
 
                 // Show the dialog box and handle the user's response
                 Optional<ButtonType> result = dialog.showAndWait();
@@ -165,8 +165,7 @@ public class CalendarController implements Initializable {
         stackPane.getChildren().add(calendarActivityBox);
     }
 
-
-    static Dialog<ButtonType> loadDialog(String workoutName) {
+    static Dialog<ButtonType> loadDialog(String workoutName, int workoutId) {
         try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(CalendarDialog.class.getResource("CalendarDialog.fxml"));
@@ -177,9 +176,11 @@ public class CalendarController implements Initializable {
 
             // Set the selected workout name
             controller.setSelectedWorkoutName(workoutName);
+            controller.setWorkoutId(workoutId);
 
             // Populate the exercise table
-            controller.populateExerciseTable(workoutName);
+            controller.populateExerciseTable(workoutId);
+            controller.populateWorkoutParticipant(workoutId);
 
             // Create a new dialog with the root node
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -203,7 +204,7 @@ public class CalendarController implements Initializable {
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
         try (Connection conn = Database.getDatabase()) {
-            String sql = "SELECT w.date, u.username, w.workout_name " +
+            String sql = "SELECT w.date, u.username, w.workout_name, w.workout_id " +
                     "FROM workout w " +
                     "JOIN \"User\" u ON w.user_id = u.user_id " +
                     "WHERE EXTRACT(YEAR FROM w.date) = ? " +
@@ -219,9 +220,10 @@ public class CalendarController implements Initializable {
                 ZonedDateTime activityDate = rs.getTimestamp("date").toLocalDateTime().atZone(ZoneId.systemDefault());
                 String username = rs.getString("username");
                 String workoutName = rs.getString("workout_name");
+                int workoutId = rs.getInt("workout_id");
                 int dayOfMonth = activityDate.getDayOfMonth();
                 List<CalendarActivity> activities = calendarActivityMap.getOrDefault(dayOfMonth, new ArrayList<>());
-                activities.add(new CalendarActivity(username, activityDate, workoutName));
+                activities.add(new CalendarActivity(username, activityDate, workoutName, workoutId));
                 calendarActivityMap.put(dayOfMonth, activities);
             }
         } catch (SQLException ex) {

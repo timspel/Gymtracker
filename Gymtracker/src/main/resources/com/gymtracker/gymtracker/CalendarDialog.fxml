@@ -24,14 +24,14 @@
          <children>
             <SplitPane dividerPositions="0.5221518987341772" layoutX="7.0" prefHeight="487.0" prefWidth="950.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="271.0">
+                <AnchorPane fx:id="join" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="271.0">
                      <children>
-                        <TableView prefHeight="487.0" prefWidth="130.0">
+                        <TableView fx:id="participantsTable" prefHeight="487.0" prefWidth="130.0">
                           <columns>
-                            <TableColumn prefWidth="129.0" text="Workout Participants" />
+                            <TableColumn fx:id="participantName" prefWidth="129.0" text="Workout Participants" />
                           </columns>
                         </TableView>
-                        <Button layoutX="246.0" layoutY="425.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Join Workout" />
+                        <Button layoutX="246.0" layoutY="425.0" mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="103.0" text="Join Workout" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

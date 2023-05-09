@@ -1,23 +1,14 @@
 package com.gymtracker.gymtracker;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import model.ExerciseWorkoutTab;
-import model.Set;
 
-import java.io.IOException;
+import model.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarDialog {
+    @FXML
+    private TableView<WorkoutParticipant> participantsTable;
+
+    @FXML
+    private TableColumn<WorkoutParticipant, String> participantName;
+
 
     @FXML
     private TableView<ExerciseWorkoutTab> exerciseTable;
@@ -51,55 +48,40 @@ public class CalendarDialog {
     @FXML
     private Text selectedWorkoutName;
 
+    int workoutId;
+
     private List<ExerciseWorkoutTab> exercises;
+    private List<WorkoutParticipant> workoutParticipants;
 
+    public void populateWorkoutParticipant(int workoutId) {
+        workoutParticipants = new ArrayList<>();
 
+        participantName.setCellValueFactory(new PropertyValueFactory<>("participantName"));
 
-    /*static Dialog<ButtonType> loadDialog(String workoutName) {
-        try {
+        String sql = "SELECT DISTINCT u.username " +
+                "FROM workout_participants wp " +
+                "JOIN \"User\" u ON wp.user_id = u.user_id " +
+                "WHERE wp.workout_id = (SELECT workout_id FROM workout WHERE workout_id = ?)";
 
+        try (Connection conn = Database.getDatabase()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, workoutId);
 
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(CalendarDialog.class.getResource("CalendarDialog.fxml"));
-            Parent root = loader.load();
-
-            // Get the controller for the FXML file
-            CalendarDialog controller = loader.getController();
-
-            // Set the selected workout name
-            controller.setSelectedWorkoutName(workoutName);
-
-            // Populate the exercise table
-            controller.populateExerciseTable(workoutName);
-
-
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.getDialogPane().setContent(root);
-
-            // Add the OK button to the dialog pane and return the dialog
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-
-            // Show the dialog only if it is not null
-            if (dialog != null) {
-                dialog.showAndWait();
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String participantName = rs.getString("username");
+                    workoutParticipants.add(new WorkoutParticipant(participantName));
+                }
             }
 
-            // Create a new scene with the root node and show the dialog
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-        } catch (IOException e) {
+            participantsTable.setItems(FXCollections.observableList(workoutParticipants));
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
-    }*/
+    }
 
 
-
-
-    public void populateExerciseTable(String workoutName) {
+    public void populateExerciseTable(int workoutId) {
 
         exercises = new ArrayList<>();
 
@@ -110,19 +92,17 @@ public class CalendarDialog {
         exerciseSet4.setCellValueFactory(new PropertyValueFactory<>("set4"));
         exerciseSet5.setCellValueFactory(new PropertyValueFactory<>("set5"));
 
-
-
         String sql = "SELECT exercise.exercise_name, exercise_set.set_number, exercise_set.reps " +
                 "FROM workout " +
                 "JOIN workout_exercise ON workout.workout_id = workout_exercise.workout_id " +
                 "JOIN exercise ON workout_exercise.exercise_id = exercise.exercise_id " +
                 "JOIN exercise_set ON exercise_set.workout_id = workout.workout_id AND exercise_set.exercise_id = exercise.exercise_id " +
-                "WHERE workout.workout_name = ?";
+                "WHERE workout.workout_id = ?";
 
         try (Connection conn = Database.getDatabase()){
 
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, workoutName);
+            stmt.setInt(1, workoutId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -164,55 +144,48 @@ public class CalendarDialog {
         }
 
         // Convert the exercise list to an observable list and set it in the table
-        ObservableList<ExerciseWorkoutTab> observableExercises = FXCollections.observableArrayList(exercises);
-        exerciseTable.setItems(observableExercises);
+        exerciseTable.setItems(FXCollections.observableArrayList(exercises));
     }
 
 
-    /*public void populateExerciseTable(String workoutName) {
 
-        exercises = new ArrayList<>();
+    public void joinWorkout(){
 
-        exerciseName.setCellValueFactory(new PropertyValueFactory<>("exerciseName"));
-        exerciseSet1.setCellValueFactory(new PropertyValueFactory<>("set1"));
-        exerciseSet2.setCellValueFactory(new PropertyValueFactory<>("set2"));
-        exerciseSet3.setCellValueFactory(new PropertyValueFactory<>("set3"));
-        exerciseSet4.setCellValueFactory(new PropertyValueFactory<>("set4"));
-        exerciseSet5.setCellValueFactory(new PropertyValueFactory<>("set5"));
+        int userId = UserIdSingleton.getInstance().getUserId();
 
-        exerciseTable.setItems(getObservableExercises());
-
-        // Clear any existing data from the table
-        exerciseTable.getItems().clear();
-
-        String sql = "SELECT exercise.exercise_name, exercise_set.set_number, exercise_set.reps " +
-                "FROM workout " +
-                "JOIN workout_exercise ON workout.workout_id = workout_exercise.workout_id " +
-                "JOIN exercise ON workout_exercise.exercise_id = exercise.exercise_id " +
-                "JOIN exercise_set ON exercise_set.workout_id = workout.workout_id AND exercise_set.exercise_id = exercise.exercise_id " +
-                "WHERE workout.workout_name = ?";
-
-        try (Connection conn = Database.getDatabase()){
-
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            // Set the parameter for the workout name
-            stmt.setString(1, workoutName);
-
-            // Execute the query and process the results
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-
-                    String exerciseName = rs.getString("exercise_name");
-                    exercises.add(new ExerciseWorkoutTab(exerciseName));
-
+            try (Connection conn = Database.getDatabase()) {
+                // Check if the user is already a participant of the workout
+                String sqlCheck = "SELECT * FROM workout_participants WHERE workout_id = ? AND user_id = ?";
+                PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
+                stmtCheck.setInt(1, workoutId);
+                stmtCheck.setInt(2, userId);
+                ResultSet rs = stmtCheck.executeQuery();
+                if (rs.next()) {
+                    // The user is already a participant of the workout
+                    System.out.println("The user is already a participant of the workout.");
+                    return;
                 }
+
+                // Insert a new row in the workout_participants table
+                String sql = "INSERT INTO workout_participants (workout_id, user_id) VALUES (?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, workoutId);
+                stmt.setInt(2, userId);
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows == 1) {
+                    System.out.println("The user has joined the workout.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-    }*/
 
 
+
+
+        public void setWorkoutId(int workoutId){
+        this.workoutId = workoutId;
+    }
 
     public void setSelectedWorkoutName(String workoutName) {
         selectedWorkoutName.setText(workoutName);

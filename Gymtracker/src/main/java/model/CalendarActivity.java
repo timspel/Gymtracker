@@ -9,11 +9,15 @@ public class CalendarActivity {
     private String workoutName;
 
 
-    public CalendarActivity(String username, ZonedDateTime date, String workoutName) {
+
+    private int workoutId;
+
+
+    public CalendarActivity(String username, ZonedDateTime date, String workoutName, int workoutId) {
         this.username = username;
         this.date = date;
         this.workoutName = workoutName;
-
+        this.workoutId = workoutId;
     }
 
     public ZonedDateTime getDate() {
@@ -39,6 +43,16 @@ public class CalendarActivity {
     public void setWorkoutName(String workoutName) {
         this.workoutName = workoutName;
     }
+
+
+    public int getWorkoutId() {
+        return workoutId;
+    }
+
+    public void setWorkoutId(int workoutId) {
+        this.workoutId = workoutId;
+    }
+
 
     @Override
     public String toString() {
