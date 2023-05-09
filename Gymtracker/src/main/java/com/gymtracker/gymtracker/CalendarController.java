@@ -116,12 +116,13 @@ public class CalendarController implements Initializable {
             }
         }
     }
-
-
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
         double maxWidth = 0.0;
+
+        // Create a list to hold the selected activity for each activity box
+        List<CalendarActivity> selectedActivities = new ArrayList<>();
 
         for (int k = 0; k < calendarActivities.size(); k++) {
             CalendarActivity calendarActivity = calendarActivities.get(k);
@@ -131,79 +132,84 @@ public class CalendarController implements Initializable {
             text.setMouseTransparent(false); // Set the Text object to receive mouse events
 
             // Add an OnMouseClicked event handler to the Text object
+            int activityBoxIndex = k; // Index of the current activity box
             text.setOnMouseClicked(event -> {
-                // Un-highlight the previously selected activity
-                if (selectedActivity != null) {
-                    Text prevText = (Text) calendarActivityBox.getChildren().get(calendarActivities.indexOf(selectedActivity));
-                    prevText.setFill(Color.BLACK);
-                }
-                // Highlight the selected activity
-                text.setFill(Color.RED);
 
-                // Store the selected activity's data in a variable
-                selectedActivity = calendarActivity;
+                // Store the selected activity's data in the list for the current activity box
+                selectedActivities.set(activityBoxIndex, calendarActivity);
 
                 // Load the dialog box
                 // Assume you have an activity object called "selectedActivity"
-                String workoutName = selectedActivity.getWorkoutName();
-                Dialog<ButtonType> dialog = CalendarDialog.loadDialog(workoutName);
+                String workoutName = calendarActivity.getWorkoutName();
+                Dialog<ButtonType> dialog = loadDialog(workoutName);
 
-                // Display the dialog box
+                // Show the dialog box and handle the user's response
                 Optional<ButtonType> result = dialog.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    // Handle OK button click
+                    // The user clicked OK
+                    // Do something with the activity data
                 }
             });
 
-            if (k >= 2) { // check if there are more than 2 activities
-                Text moreActivities = new Text("Show More");
-                calendarActivityBox.getChildren().add(moreActivities);
-                moreActivities.setOnMouseClicked(mouseEvent -> {
-                    // On "Show More" click expand the text box to show all activities
-                    calendarActivityBox.getChildren().clear(); // remove the truncated text node and "Show More" link
-                    for (CalendarActivity activity : calendarActivities) {
-                        Text fullText = new Text(activity.getUsername() + ", " + activity.getDate().toLocalTime() + ", " + activity.getWorkoutName());
-                        fullText.setWrappingWidth(rectangleWidth); // set the wrapping width to the width of the rectangle
-                        fullText.setMouseTransparent(false); // Set the Text object to receive mouse events
-                        fullText.setOnMouseClicked(e -> {
-                            // Un-highlight the previously selected activity
-                            if (selectedActivity != null) {
-                                Text prevText = (Text) calendarActivityBox.getChildren().get(calendarActivities.indexOf(selectedActivity));
-                                prevText.setFill(Color.BLACK);
-                            }
-                            // Highlight the selected activity
-                            fullText.setFill(Color.RED);
+            // Add the text object to the VBox
+            calendarActivityBox.getChildren().add(text);
 
-                            // Store the selected activity's data in a variable
-                            selectedActivity = activity;
-                        });
-                        calendarActivityBox.getChildren().add(fullText); // add the full text node to the VBox
-                    }
-                });
-                break;
-            }
-
-            calendarActivityBox.getChildren().add(text); // add the text node to the VBox
+            // Add a null element to the list for the current activity box
+            selectedActivities.add(null);
         }
 
-        calendarActivityBox.setPrefWidth(maxWidth); // set the width of the VBox
-        calendarActivityBox.setStyle("-fx-padding: " + 14 + "px 0 0 0"); // set the top padding of the VBox
-
         // Add the VBox to the StackPane
+        calendarActivityBox.setPrefWidth(boxWidth);
+        calendarActivityBox.setMaxWidth(maxWidth);
+        calendarActivityBox.setFillWidth(true);
         stackPane.getChildren().add(calendarActivityBox);
+    }
+
+
+    static Dialog<ButtonType> loadDialog(String workoutName) {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(CalendarDialog.class.getResource("CalendarDialog.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller for the FXML file
+            CalendarDialog controller = loader.getController();
+
+            // Set the selected workout name
+            controller.setSelectedWorkoutName(workoutName);
+
+            // Populate the exercise table
+            controller.populateExerciseTable(workoutName);
+
+            // Create a new dialog with the root node
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.getDialogPane().setContent(root);
+
+            // Add the OK button to the dialog pane and return the dialog
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+            // Show the dialog only if it is not null
+            if (dialog != null) {
+                dialog.showAndWait();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
         try (Connection conn = Database.getDatabase()) {
-            String sql = "SELECT uwh.date, u.username, w.workout_name\n" +
-                    "FROM user_workout_history uwh\n" +
-                    "JOIN \"User\" u ON uwh.user_id = u.user_id\n" +
-                    "JOIN workout w ON uwh.workout_id = w.workout_id\n" +
-                    "WHERE EXTRACT(YEAR FROM uwh.date) = ?\n" +
-                    "AND EXTRACT(MONTH FROM uwh.date) = ?\n" +
-                    "ORDER BY uwh.date\n";
+            String sql = "SELECT w.date, u.username, w.workout_name " +
+                    "FROM workout w " +
+                    "JOIN \"User\" u ON w.user_id = u.user_id " +
+                    "WHERE EXTRACT(YEAR FROM w.date) = ? " +
+                    "AND EXTRACT(MONTH FROM w.date) = ? " +
+                    "AND w.is_original = true " +
+                    "ORDER BY w.date";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, date.getYear());
@@ -223,6 +229,7 @@ public class CalendarController implements Initializable {
         }
         return calendarActivityMap;
     }
+
 
 }
 
