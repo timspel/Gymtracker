@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,36 +19,30 @@
             </Text>
          </children>
       </HBox>
-      <AnchorPane layoutX="25.0" layoutY="76.0" prefHeight="487.0" prefWidth="950.0">
+      <AnchorPane layoutX="29.0" layoutY="68.0" prefHeight="490.0" prefWidth="940.0">
          <children>
-            <SplitPane dividerPositions="0.5221518987341772" layoutX="7.0" prefHeight="487.0" prefWidth="950.0">
-              <items>
-                <AnchorPane fx:id="join" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="271.0">
-                     <children>
-                        <TableView fx:id="participantsTable" prefHeight="487.0" prefWidth="130.0">
-                          <columns>
-                            <TableColumn fx:id="participantName" prefWidth="129.0" text="Workout Participants" />
-                          </columns>
-                        </TableView>
-                        <Button layoutX="246.0" layoutY="425.0" mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="103.0" text="Join Workout" />
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                     <children>
-                        <TableView fx:id="exerciseTable" layoutX="-1.0" prefHeight="485.0" prefWidth="450.0">
-                          <columns>
-                            <TableColumn fx:id="exerciseName" prefWidth="75.0" text="Exercise" />
-                              <TableColumn fx:id="exerciseSet1" prefWidth="75.0" text="Set 1" />
-                              <TableColumn fx:id="exerciseSet2" prefWidth="75.0" text="Set 2" />
-                            <TableColumn fx:id="exerciseSet3" prefWidth="75.0" text="Set 3" />
-                              <TableColumn fx:id="exerciseSet4" prefWidth="75.0" text="Set 4" />
-                              <TableColumn fx:id="exerciseSet5" prefWidth="75.0" text="Set 5" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
+          <AnchorPane fx:id="join" layoutY="-2.0" minHeight="0.0" minWidth="0.0" prefHeight="487.0" prefWidth="450.0">
+               <children>
+                  <TableView fx:id="participantsTable" prefHeight="487.0" prefWidth="131.0">
+                    <columns>
+                      <TableColumn fx:id="participantName" prefWidth="129.0" text="Workout Participants" />
+                    </columns>
+                  </TableView>
+                  <Button layoutX="157.0" layoutY="425.0" mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="103.0" text="Join Workout" />
+                  <Button fx:id="backButton" layoutX="325.0" layoutY="425.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Back" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+               </children>
+            </AnchorPane>
+            <TableView fx:id="exerciseTable" layoutX="447.0" prefHeight="487.0" prefWidth="496.0">
+              <columns>
+                <TableColumn fx:id="exerciseName" prefWidth="98.0" text="Exercise" />
+                  <TableColumn fx:id="exerciseSet1" text="Set 1" />
+                  <TableColumn fx:id="exerciseSet2" text="Set 2" />
+                <TableColumn fx:id="exerciseSet3" text="Set 3" />
+                  <TableColumn fx:id="exerciseSet4" text="Set 4" />
+                  <TableColumn fx:id="exerciseSet5" text="Set 5" />
+              </columns>
+            </TableView>
          </children>
       </AnchorPane>
    </children>

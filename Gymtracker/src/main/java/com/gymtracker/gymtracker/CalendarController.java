@@ -7,10 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.CalendarActivity;
 
 import java.io.IOException;
@@ -144,11 +147,8 @@ public class CalendarController implements Initializable {
                 Dialog<ButtonType> dialog = loadDialog(workoutName, workoutId);
 
                 // Show the dialog box and handle the user's response
-                Optional<ButtonType> result = dialog.showAndWait();
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    // The user clicked OK
-                    // Do something with the activity data
-                }
+                //Optional<ButtonType> result = dialog.showAndWait();
+
             });
 
             // Add the text object to the VBox
@@ -163,7 +163,7 @@ public class CalendarController implements Initializable {
         calendarActivityBox.setMaxWidth(maxWidth);
 
 
-        calendarActivityBox.setStyle("-fx-padding: " + 16 + "px 0 0 0"); // set the top padding of the VBox
+        calendarActivityBox.setStyle("-fx-padding: " + 18 + "px 0 0 0"); // set the top padding of the VBox
 
         calendarActivityBox.setFillWidth(true);
         stackPane.getChildren().add(calendarActivityBox);
@@ -191,8 +191,10 @@ public class CalendarController implements Initializable {
             dialog.getDialogPane().setContent(root);
 
             // Add the OK button to the dialog pane and return the dialog
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-
+            //dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            Image icon = new Image("icon.png");
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(icon);
             // Show the dialog only if it is not null
             if (dialog != null) {
                 dialog.showAndWait();
@@ -244,37 +246,6 @@ public class CalendarController implements Initializable {
         return calendarActivityMap;
     }
 
-/*
-    private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
-        Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
-        try (Connection conn = Database.getDatabase()) {
-            String sql = "SELECT w.date, u.username, w.workout_name, w.workout_id " +
-                    "FROM workout w " +
-                    "JOIN \"User\" u ON w.user_id = u.user_id " +
-                    "WHERE EXTRACT(YEAR FROM w.date) = ? " +
-                    "AND EXTRACT(MONTH FROM w.date) = ? " +
-                    "AND w.is_original = true " +
-                    "ORDER BY w.date";
-
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, date.getYear());
-            stmt.setInt(2, date.getMonthValue());
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                ZonedDateTime activityDate = rs.getTimestamp("date").toLocalDateTime().atZone(ZoneId.systemDefault());
-                String username = rs.getString("username");
-                String workoutName = rs.getString("workout_name");
-                int workoutId = rs.getInt("workout_id");
-                int dayOfMonth = activityDate.getDayOfMonth();
-                List<CalendarActivity> activities = calendarActivityMap.getOrDefault(dayOfMonth, new ArrayList<>());
-                activities.add(new CalendarActivity(username, activityDate, workoutName, workoutId));
-                calendarActivityMap.put(dayOfMonth, activities);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return calendarActivityMap;
-    }*/
 
 
 }

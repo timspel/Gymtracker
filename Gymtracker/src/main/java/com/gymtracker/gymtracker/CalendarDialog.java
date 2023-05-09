@@ -1,12 +1,16 @@
 package com.gymtracker.gymtracker;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import javafx.stage.Stage;
 import model.*;
 
 import java.sql.Connection;
@@ -22,7 +26,6 @@ public class CalendarDialog {
 
     @FXML
     private TableColumn<WorkoutParticipant, String> participantName;
-
 
     @FXML
     private TableView<ExerciseWorkoutTab> exerciseTable;
@@ -52,6 +55,12 @@ public class CalendarDialog {
 
     private List<ExerciseWorkoutTab> exercises;
     private List<WorkoutParticipant> workoutParticipants;
+    @FXML
+    private Button backButton;
+
+    public void initialize() {
+        backButton.setOnAction(this::handleBackButtonClick);
+    }
 
     public void populateWorkoutParticipant(int workoutId) {
         workoutParticipants = new ArrayList<>();
@@ -161,7 +170,12 @@ public class CalendarDialog {
             ResultSet rs = stmtCheck.executeQuery();
             if (rs.next()) {
                 // The user is already a participant of the workout
-                System.out.println("The user is already a participant of the workout.");
+                Alert alreadyJoined = new Alert(Alert.AlertType.INFORMATION);
+                alreadyJoined.setTitle("Already Joined");
+                alreadyJoined.setHeaderText("Already Joined");
+                alreadyJoined.setContentText("You have already joined " + selectedWorkoutName.getText() + "!");
+                alreadyJoined.showAndWait();
+
                 return;
             }
 
@@ -173,6 +187,12 @@ public class CalendarDialog {
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 1) {
                 System.out.println("The user has joined the workout.");
+                Alert joined = new Alert(Alert.AlertType.INFORMATION);
+                joined.setTitle("Joined");
+                joined.setHeaderText("Joined");
+                joined.setContentText("You have joined the " + selectedWorkoutName.getText() + "!");
+                joined.showAndWait();
+
             }
 
             // Insert a new row in the workout table
@@ -198,6 +218,11 @@ public class CalendarDialog {
             e.printStackTrace();
         }
     }
+    private void handleBackButtonClick(ActionEvent event) {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
+
+    }
 
 
 
@@ -208,50 +233,5 @@ public class CalendarDialog {
     public void setSelectedWorkoutName(String workoutName) {
         selectedWorkoutName.setText(workoutName);
     }
-
-    /*public void joinWorkout(){
-        int userId = UserIdSingleton.getInstance().getUserId();
-
-        try (Connection conn = Database.getDatabase()) {
-            // Check if the user is already a participant of the workout
-            String sqlCheck = "SELECT * FROM workout_participants WHERE workout_id = ? AND user_id = ?";
-            PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
-            stmtCheck.setInt(1, workoutId);
-            stmtCheck.setInt(2, userId);
-            ResultSet rs = stmtCheck.executeQuery();
-            if (rs.next()) {
-                // The user is already a participant of the workout
-                System.out.println("The user is already a participant of the workout.");
-                return;
-            }
-
-            // Insert a new row in the workout_participants table
-            String sql = "INSERT INTO workout_participants (workout_id, user_id) VALUES (?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, workoutId);
-            stmt.setInt(2, userId);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 1) {
-                System.out.println("The user has joined the workout.");
-            }
-
-            // Insert a new row in the workout table
-            String insertSql = "INSERT INTO workout (user_id, workout_name, workout_description, workout_type_id, is_original) " +
-                    "SELECT ?, workout_name, workout_description, workout_type_id, false FROM workout WHERE workout_id = ?";
-            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-            insertStmt.setInt(1, userId);
-            insertStmt.setInt(2, workoutId);
-            int insertAffectedRows = insertStmt.executeUpdate();
-            if (insertAffectedRows == 1) {
-                System.out.println("New workout added successfully");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-
-
 
 }
