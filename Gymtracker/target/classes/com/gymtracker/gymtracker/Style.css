@@ -4,7 +4,10 @@
 }
 .button:hover {
     -fx-text-fill: BLACK;
-    -fx-scale-y: 1.1;
     -fx-border-color: black;
     -fx-background-color: #0000006a;
+}
+.button:focused {
+    -fx-text-fill: BLACK;
+    -fx-background-color: #F4F4F4;
 }

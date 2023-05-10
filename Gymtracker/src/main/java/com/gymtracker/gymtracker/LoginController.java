@@ -1,5 +1,6 @@
 package com.gymtracker.gymtracker;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,13 +69,32 @@ public class LoginController implements Initializable {
       }
       if(event.getSource() == registerButton){
          registerPane.setVisible(true);
+         registerPane.setTranslateX(-204);
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.2));
+         slide.setNode(registerPane);
+         slide.setToX(0);
+         slide.play();
+
+         registerPane.setTranslateX(-204);
       }
       if(event.getSource() == regUserButton){
-         registerPane.setVisible(false);
          addUser();
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.2));
+         slide.setNode(registerPane);
+         slide.setToX(-204);
+         slide.play();
+         registerPane.setTranslateX(0);
+         //registerPane.setVisible(false);
       }
       if(event.getSource() == cancelButton){
-         registerPane.setVisible(false);
+         TranslateTransition slide = new TranslateTransition();
+         slide.setDuration(Duration.seconds(0.2));
+         slide.setNode(registerPane);
+         slide.setToX(-204);
+         slide.play();
+         registerPane.setTranslateX(0);
       }
    }
 
