@@ -497,13 +497,13 @@ public class ControllerWorkouts implements Initializable{
     public boolean templateDeleted(int templateId){
         try (Connection con = Database.getDatabase()) {
 
-            String sql = "DELETE FROM template WHERE template_id = ?";
+            // delete the corresponding records from the workout_exercise table
+            String sql = "DELETE FROM template_exercise WHERE template_id = ?";
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, templateId);
             pstmt.executeUpdate();
 
-            // delete the corresponding records from the workout_exercise table
-            sql = "DELETE FROM template_exercise WHERE template_id = ?";
+            sql = "DELETE FROM template WHERE template_id = ?";
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, templateId);
             pstmt.executeUpdate();
