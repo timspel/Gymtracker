@@ -264,7 +264,7 @@ public class ProfileController {
          con.setAutoCommit(false);
          System.out.println("Database Connected.");
          System.out.println(userId);
-         String sql = ("SELECT username, weight, height, profile_picture FROM \"User\" WHERE user_id = ?");
+         String sql = ("SELECT username, weight, height, profile_picture, personal_goal FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
 
@@ -274,6 +274,7 @@ public class ProfileController {
             height = result.getDouble("height");
             weight = result.getDouble("weight");
             profilePicture = result.getString("profile_picture");
+            goalsText.setText(result.getString("personal_goal"));
          }
 
          stmt.close();
