@@ -6,14 +6,14 @@ public class Exercise {
     private int id;
     private String name;
     private String description;
-    private Image image;
-    private MuscleGroup muscleGroup;
+    private Image picture;
+    private String muscleGroup;
 
-    public Exercise(int id, String name, String description, Image exerciseImage, MuscleGroup muscleGroup){
+    public Exercise(int id, String name, String description, Image exercisePicture, String muscleGroup){
         this.id = id;
         this.name = name;
         this.description = description;
-        this.image = exerciseImage;
+        this.picture = exercisePicture;
         this.muscleGroup = muscleGroup;
     }
 
@@ -41,24 +41,24 @@ public class Exercise {
         this.description = description;
     }
 
-    public Image getImage() {
-        return image;
+    public Image getPicture() {
+        return picture;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setPicture(Image picture) {
+        this.picture = picture;
     }
 
-    public MuscleGroup getMuscleGroup() {
+    public String getMuscleGroup() {
         return muscleGroup;
     }
 
-    public void setMuscleGroup(MuscleGroup muscleGroup) {
+    public void setMuscleGroup(String muscleGroup) {
         this.muscleGroup = muscleGroup;
     }
 
     @Override
     public String toString() {
-        return String.format("Muscle Group: %s | Exercise name: %s", muscleGroup, name);
+        return String.format("%s | %s", muscleGroup, name);
     }
 }

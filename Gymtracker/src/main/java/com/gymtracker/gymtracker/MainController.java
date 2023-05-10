@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable{
@@ -40,8 +39,6 @@ public class MainController implements Initializable{
    private Button homeButton;
    @FXML
    private Button logoutButton;
-
-   private ArrayList<Button> menuButtons = new ArrayList<>();
    private Parent workoutPane;
    private Parent calendarPane;
    private Parent profilePane;
@@ -86,10 +83,6 @@ public class MainController implements Initializable{
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(scrollPane);
          scrollPane.setContent(scrollContent);
-         boolean pressed = false;
-         for (Button b : menuButtons){
-            
-         }
       }
       if(event.getSource() == logoutButton){
          Parent root = FXMLLoader.load(getClass().getResource("LoginPanel.fxml"));
@@ -104,11 +97,5 @@ public class MainController implements Initializable{
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       scrollPane.setContent(scrollContent);
-      menuButtons.add(workoutsButton);
-      menuButtons.add(homeButton);
-      menuButtons.add(exercisesButton);
-      menuButtons.add(friendsButton);
-      menuButtons.add(profileButton);
-      menuButtons.add(calendarButton);
    }
 }
