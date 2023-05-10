@@ -21,7 +21,7 @@
                <image>
                   <Image url="@../../../images/Gympic.jpg" />
                </image></ImageView>
-            <Label layoutX="484.0" layoutY="5.0" prefHeight="64.0" prefWidth="339.0" text="GymPartners" textFill="WHITE">
+            <Label layoutX="484.0" layoutY="5.0" prefHeight="64.0" prefWidth="339.0" text="Gym Partners" textFill="WHITE">
                <font>
                   <Font size="46.0" />
                </font>
