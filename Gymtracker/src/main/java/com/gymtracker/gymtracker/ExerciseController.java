@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class ExerciseController {
@@ -24,15 +25,16 @@ public class ExerciseController {
    @FXML
    private Label infoPanelName;
    @FXML
-   private Label infoPanelDescription;
+   private TextArea infoPanelDescription;
    @FXML
    private ImageView infoPanelImage;
-   private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
+   private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
 
    public void initialize() {
       populateExercises();
       exercisesList.setItems(exercises);
+      populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
    }
 
    public void populateExercises(){
@@ -123,7 +125,9 @@ public class ExerciseController {
    }
 
    public void readInNewExercise(Exercise exercise){
+      Comparator<Exercise> comp = Comparator.comparingInt(Exercise::getId);
       exercises.add(exercise);
+      //exercises.sort(exercises.get(0).getId(), comp);
    }
 
    public Exercise getExercise(){
