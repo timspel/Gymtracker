@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1821.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1827.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ControllerWorkouts">
    <children>
-      <AnchorPane layoutX="436.0" layoutY="954.0" prefHeight="711.0" prefWidth="816.0" style="-fx-background-color: #D3D3D3;">
+      <AnchorPane layoutX="436.0" layoutY="1090.0" prefHeight="711.0" prefWidth="816.0" style="-fx-background-color: #D3D3D3;">
          <children>
             <TableView fx:id="templatesTable" layoutX="25.0" layoutY="79.0" prefHeight="556.0" prefWidth="769.0">
               <columns>
@@ -87,9 +87,10 @@
             <TextField fx:id="workoutNameTextField" layoutX="26.0" layoutY="66.0" promptText="Workout name" />
             <TextField fx:id="workoutDescriptionTextField" layoutX="228.0" layoutY="66.0" promptText="Description" />
             <DatePicker fx:id="workoutDatePicker" layoutX="432.0" layoutY="66.0" promptText="Date" />
-            <Label fx:id="categoryLabel" layoutX="656.0" layoutY="70.0" text="Category:" />
-            <ChoiceBox fx:id="categoriesChoiceBox" layoutX="724.0" layoutY="66.0" prefWidth="150.0" />
-            <Button fx:id="createWorkoutButton" layoutX="929.0" layoutY="66.0" mnemonicParsing="false" onAction="#buttonPressed" text="Create workout" />
+            <Label fx:id="categoryLabel" layoutX="858.0" layoutY="70.0" text="Category:" />
+            <ChoiceBox fx:id="categoriesChoiceBox" layoutX="926.0" layoutY="66.0" prefWidth="150.0" />
+            <Button fx:id="createWorkoutButton" layoutX="1103.0" layoutY="66.0" mnemonicParsing="false" onAction="#buttonPressed" text="Create workout" />
+            <TextField fx:id="workoutTimeTextField" layoutX="658.0" layoutY="66.0" promptText="Time (HH:mm)" />
          </children>
       </AnchorPane>
       <Label fx:id="exercisesLabel" layoutX="466.0" layoutY="456.0" text="Added exercises">
@@ -117,7 +118,7 @@
       </Label>
       <AnchorPane layoutX="145.0" layoutY="378.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
       <AnchorPane layoutX="1101.0" layoutY="378.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
-      <AnchorPane layoutX="24.0" layoutY="954.0" prefHeight="711.0" prefWidth="389.0" style="-fx-background-color: #D3D3D3;">
+      <AnchorPane layoutX="24.0" layoutY="1090.0" prefHeight="711.0" prefWidth="389.0" style="-fx-background-color: #D3D3D3;">
          <children>
             <Label fx:id="newWorkoutLabel1" layoutX="25.0" layoutY="20.0" text="New template">
                <font>
@@ -146,7 +147,20 @@
             <Button fx:id="templateRemoveExerciseButton" layoutX="142.0" layoutY="655.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="413.0" layoutY="1018.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
-      <AnchorPane layoutX="413.0" layoutY="1566.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
+      <AnchorPane layoutX="413.0" layoutY="1154.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
+      <AnchorPane layoutX="413.0" layoutY="1702.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
+      <AnchorPane layoutX="24.0" layoutY="946.0" prefHeight="116.0" prefWidth="519.0" style="-fx-background-color: #D3D3D3;">
+         <children>
+            <Label layoutX="21.0" layoutY="14.0" text="Update workout">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="workoutChoiceBox" layoutX="92.0" layoutY="59.0" prefWidth="150.0" />
+            <Label layoutX="29.0" layoutY="63.0" text="Workout:" />
+            <Button fx:id="loadWorkoutButton" layoutX="267.0" layoutY="59.0" mnemonicParsing="false" text="Load workout" />
+            <Button fx:id="removeWorkoutButton" layoutX="382.0" layoutY="59.0" mnemonicParsing="false" text="Remove workout" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

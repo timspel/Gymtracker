@@ -1,18 +1,18 @@
 package model;
 
 public class Template {
-    private String workoutName;
+    private String templateName;
     private String description;
     private String category;
 
     public Template(String workoutName, String description, String category){
-        this.workoutName = workoutName;
+        this.templateName = workoutName;
         this.description = description;
         this.category = category;
     }
 
-    public void setWorkoutName(String workoutName){
-        this.workoutName = workoutName;
+    public void setTemplateName(String workoutName){
+        this.templateName = workoutName;
     }
     public void setDescription(String description){
         this.description = description;
@@ -21,8 +21,8 @@ public class Template {
         this.category = category;
     }
 
-    public String getWorkoutName(){
-        return workoutName;
+    public String getTemplateName(){
+        return templateName;
     }
     public String getDescription(){
         return description;
