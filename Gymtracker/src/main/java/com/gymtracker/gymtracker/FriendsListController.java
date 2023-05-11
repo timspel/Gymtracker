@@ -4,34 +4,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Exercise;
 import model.Friend;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class FriendsListController{
+public class FriendsListController implements Initializable {
 
 
     @FXML
-    private TableView<String> friendsList = new TableView<>();
-
-    private ObservableList<String> friends = FXCollections.observableArrayList();
+    private TableView<Friend> friendsList = new TableView<>();
+    @FXML
+    private TableColumn<Friend,String> friendsColumn;
+    private List<Friend> friendsArrayList = new ArrayList<>();
     @FXML
     private TableView<Friend> pendingList = new TableView<>();
     @FXML
-    private Text profileNameAdd;
+    private TableColumn<Friend,String> pendingColumn;
+    private List<Friend>  pendingArrayList = new ArrayList<>();
+    @FXML
+    private Label profileNameAdd;
     @FXML
     private ImageView searchPicture;
     @FXML
@@ -48,6 +54,18 @@ public class FriendsListController{
     private int userId;
     private int userIdFriend;
     private String  userFriendPicture;
+    private  String friendUsername;
+    private List<Friend> friendRequests = new ArrayList<>();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        getPendingFriendRequests(UserIdSingleton.getInstance().getUserId());
+        System.out.println("Hello2");
+        friendsColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
+
+    }
 
     public void searchButtonClicked(ActionEvent event) throws IOException{
         if (event.getSource() == searchButton){
@@ -73,13 +91,12 @@ public class FriendsListController{
                 stmt.setString(1, search); // Set the first parameter of the prepared statement to the search string + a wildcard
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    String friendUsername = rs.getString("username");
+                    friendUsername = rs.getString("username");
                     System.out.println(friendUsername);
-                    //populateFriendsList(username);
                     userIdFriend = rs.getInt("user_id");
                     System.out.println(userIdFriend);
                     userFriendPicture =  rs.getString("profile_picture");
-                    setFriendInformation(userIdFriend, friendUsername, userFriendPicture);
+                    setFriendInformation(friendUsername, userFriendPicture);
 
                 }
                 stmt.close();
@@ -91,9 +108,9 @@ public class FriendsListController{
         }
     }
 
-    public void setFriendInformation(int userIdFriend, String friendUsername, String userFriendPicture  ){
-        profileNameAdd.replaceWholeText(friendUsername);
-        searchPicture.setImage(userFriendPicture);
+    public void setFriendInformation(String friendUsername, String userFriendPicture  ){
+        profileNameAdd.setText(friendUsername);
+        searchPicture.setImage(new Image(userFriendPicture));
     }
 
     public boolean addFriendship(int user1Id, int user2Id) {
@@ -105,6 +122,8 @@ public class FriendsListController{
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Friend request sent successfully");
+                Friend friend = new Friend(friendUsername);
+                populatePendingList(friend);
                 return true;
             } else {
                 System.out.println("Friend request already exists or an error occurred");
@@ -115,6 +134,13 @@ public class FriendsListController{
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
+    }
+    public void populatePendingList(Friend friend){
+        pendingArrayList.add(friend);
+        pendingList.setItems(FXCollections.observableArrayList(pendingArrayList));
+    }
+    public void populateAtStart(){
+
     }
 
     public boolean acceptFriendRequest(int friendshipId) {
@@ -137,8 +163,9 @@ public class FriendsListController{
         }
     }
 
-    public List<String> getPendingFriendRequests(int userId) {
-        List<String> friendRequests = new ArrayList<>();
+    public void getPendingFriendRequests(int userId) {
+        pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        System.out.println("!hello");
         try (Connection con = Database.getDatabase();
              PreparedStatement pstmt = con.prepareStatement("SELECT f.friendship_id, u.username " +
                      "FROM Friendship f " +
@@ -148,13 +175,13 @@ public class FriendsListController{
             while (rs.next()) {
                 int friendshipId = rs.getInt("friendship_id");
                 String username = rs.getString("username");
-                friendRequests.add("Friendship ID: " + friendshipId + ", From user: " + username);
+                friendRequests.add(new Friend(username));
+
             }
+            pendingList.setItems(FXCollections.observableArrayList(pendingArrayList));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return friendRequests;
     }
 
 }
