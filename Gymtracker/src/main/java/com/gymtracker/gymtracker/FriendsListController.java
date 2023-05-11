@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import model.Exercise;
 import model.Friend;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,6 +31,10 @@ public class FriendsListController{
     @FXML
     private TableView<Friend> pendingList = new TableView<>();
     @FXML
+    private Text profileNameAdd;
+    @FXML
+    private ImageView searchPicture;
+    @FXML
     private Button searchButton;
     @FXML
     private TextField searchField;
@@ -39,11 +44,10 @@ public class FriendsListController{
     private Button addFriend;
     @FXML
     private ImageView profilePicture;
-    @FXML
-    private ImageView searchPicture;
     private String search;
     private int userId;
     private int userIdFriend;
+    private String  userFriendPicture;
 
     public void searchButtonClicked(ActionEvent event) throws IOException{
         if (event.getSource() == searchButton){
@@ -65,15 +69,17 @@ public class FriendsListController{
         Connection con = null;
         try {con = Database.getDatabase();
             //con.setAutoCommit(false);
-            PreparedStatement stmt = con.prepareStatement("SELECT user_id, username FROM \"User\" WHERE username = ?"); {
+            PreparedStatement stmt = con.prepareStatement("SELECT user_id, username, profile_picture FROM \"User\" WHERE username = ?"); {
                 stmt.setString(1, search); // Set the first parameter of the prepared statement to the search string + a wildcard
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    String username = rs.getString("username");
-                    System.out.println(username);
+                    String friendUsername = rs.getString("username");
+                    System.out.println(friendUsername);
                     //populateFriendsList(username);
                     userIdFriend = rs.getInt("user_id");
                     System.out.println(userIdFriend);
+                    userFriendPicture =  rs.getString("profile_picture");
+                    setFriendInformation(userIdFriend, friendUsername, userFriendPicture);
 
                 }
                 stmt.close();
@@ -84,6 +90,12 @@ public class FriendsListController{
             System.out.println(e.getMessage());
         }
     }
+
+    public void setFriendInformation(int userIdFriend, String friendUsername, String userFriendPicture  ){
+        profileNameAdd.replaceWholeText(friendUsername);
+        searchPicture.setImage(userFriendPicture);
+    }
+
     public boolean addFriendship(int user1Id, int user2Id) {
         try (Connection con = Database.getDatabase();
              PreparedStatement pstmt = con.prepareStatement("INSERT INTO Friendship (user1_id, user2_id, status) VALUES (?, ?, 'pending') ON CONFLICT (user1_id, user2_id) DO NOTHING")) {
