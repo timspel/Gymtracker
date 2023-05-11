@@ -1,15 +1,15 @@
 package com.gymtracker.gymtracker;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Exercise;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +28,13 @@ public class AddExerciseController {
     private TextArea descriptionField;
     @FXML
     private Button cancelButton;
+    @FXML
+    private Label invalidURLMessage;
+    @FXML
+    private Label missingImageMessage;
     private ExerciseController exerciseController;
+    private URL imageURL;
+    private boolean imageChosen = false;
 
     public void initialize() {
         populateMuscleGroups();
@@ -63,9 +69,23 @@ public class AddExerciseController {
     }
 
     public void chooseImage(){
+        Image image2 = new Image("https://www.youtube.com/");
+        System.out.println(image2);
         if(imageSourceField != null){
-            Image image = new Image(imageSourceField.getText());
-            imagePreview.setImage(image);
+            try{
+                imageURL = new URL(imageSourceField.getText()); //Set to URL-variable to verify input as URL
+                if(invalidURLMessage.isVisible()){
+                    invalidURLMessage.setVisible(false);
+                }
+                if(missingImageMessage.isVisible()){
+                    missingImageMessage.setVisible(false);
+                }
+                imagePreview.setImage(new Image(String.valueOf(imageURL.toURI())));
+                imageChosen = true;
+            } catch (MalformedURLException | URISyntaxException e) {
+                //throw new RuntimeException(e);
+                invalidURLMessage.setVisible(true);
+            }
         }
         /*Stage stage = new Stage();
         FileChooser fc = new FileChooser();
@@ -85,56 +105,60 @@ public class AddExerciseController {
     }
 
     public void addNewExercise(){
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
+        if(imageChosen){
+            Connection con = null;
+            PreparedStatement stmt = null;
+            ResultSet result = null;
 
-        try {
-            con = Database.getDatabase();
-            con.setAutoCommit(false);
-            String sql = ("SELECT MAX(exercise_id) FROM exercise");
-            stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
-            int higestID = -1;
+            try {
+                con = Database.getDatabase();
+                con.setAutoCommit(false);
+                String sql = ("SELECT MAX(exercise_id) FROM exercise");
+                stmt = con.prepareStatement(sql);
+                result = stmt.executeQuery();
+                int higestID = -1;
 
-            if(result.next()){
-                higestID = (result.getInt(1)) + 1;
+                if(result.next()){
+                    higestID = (result.getInt(1)) + 1;
+                }
+
+                sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
+                stmt = con.prepareStatement(sql);
+                String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
+                stmt.setString(1, muscleGroup);
+                result = stmt.executeQuery();
+                int muscleGroupID = -1;
+
+                if(result.next()){
+                    muscleGroupID = result.getInt("workout_type_id");
+                }
+
+                String name = nameField.getText();
+                String description = descriptionField.getText();
+                String image = String.valueOf(imageURL.toURI());
+
+                sql = ("INSERT INTO exercise (exercise_id, exercise_name, exercise_description, exercise_picture, workout_type_id) VALUES (?, ?, ?, ?, ?)");
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, higestID);
+                stmt.setString(2, name);
+                stmt.setString(3, description);
+                stmt.setString(4, image);
+                stmt.setInt(5, muscleGroupID);
+                stmt.executeUpdate();
+                stmt.close();
+                con.commit();
+                con.close();
+
+                System.out.println("Successfully added new exercise");
+
+                Exercise newExercise = new Exercise(higestID, name, description, new Image(image), muscleGroup);
+                exerciseController.readInNewExercise(newExercise);
+                cancelOperation();
+            } catch (SQLException | URISyntaxException e) {
+                throw new RuntimeException(e);
             }
-
-            sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
-            stmt = con.prepareStatement(sql);
-            String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
-            stmt.setString(1, muscleGroup);
-            result = stmt.executeQuery();
-            int muscleGroupID = -1;
-
-            if(result.next()){
-                muscleGroupID = result.getInt("workout_type_id");
-            }
-
-            String name = nameField.getText();
-            String description = descriptionField.getText();
-            String image = imageSourceField.getText();
-
-            sql = ("INSERT INTO exercise (exercise_id, exercise_name, exercise_description, exercise_picture, workout_type_id) VALUES (?, ?, ?, ?, ?)");
-            stmt = con.prepareStatement(sql);
-            stmt.setInt(1, higestID);
-            stmt.setString(2, name);
-            stmt.setString(3, description);
-            stmt.setString(4, image);
-            stmt.setInt(5, muscleGroupID);
-            stmt.executeUpdate();
-            stmt.close();
-            con.commit();
-            con.close();
-
-            System.out.println("Successfully added new exercise");
-
-            Exercise newExercise = new Exercise(higestID, name, description, new Image(image), muscleGroup);
-            exerciseController.readInNewExercise(newExercise);
-            cancelOperation();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        }else {
+            missingImageMessage.setVisible(true);
         }
 
     }

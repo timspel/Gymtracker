@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -125,9 +126,9 @@ public class ExerciseController {
    }
 
    public void readInNewExercise(Exercise exercise){
-      Comparator<Exercise> comp = Comparator.comparingInt(Exercise::getId);
+      Comparator<Exercise> comp = Comparator.comparing(Exercise::getMuscleGroup);
       exercises.add(exercise);
-      //exercises.sort(exercises.get(0).getId(), comp);
+      Collections.sort(exercises, comp);
    }
 
    public Exercise getExercise(){
