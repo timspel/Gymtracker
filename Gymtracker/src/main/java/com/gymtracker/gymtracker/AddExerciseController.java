@@ -36,36 +36,9 @@ public class AddExerciseController {
     private URL imageURL;
     private boolean imageChosen = false;
 
-    public void initialize() {
-        populateMuscleGroups();
-    }
-
-    public void setExerciseController(ExerciseController exerciseController){
+    public void initializeWindow(ExerciseController exerciseController){
         this.exerciseController = exerciseController;
-    }
-
-    public void populateMuscleGroups(){
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try{
-            con = Database.getDatabase();
-            con.setAutoCommit(false);
-
-            String sql = ("SELECT workout_type_name FROM workout_type");
-            stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
-            while(result.next()){
-                String workoutType = result.getString("workout_type_name");
-                muscleGroups.getItems().add(workoutType);
-            }
-            stmt.close();
-            con.commit();
-            con.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        exerciseController.populateMuscleGroups(muscleGroups);
     }
 
     public void chooseImage(){
@@ -162,4 +135,6 @@ public class AddExerciseController {
         }
 
     }
+
+
 }

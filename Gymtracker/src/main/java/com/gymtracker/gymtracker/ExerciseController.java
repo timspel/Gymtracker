@@ -1,5 +1,6 @@
 package com.gymtracker.gymtracker;
 
+import javafx.scene.input.MouseEvent;
 import model.Exercise;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,13 +30,18 @@ public class ExerciseController {
    private TextArea infoPanelDescription;
    @FXML
    private ImageView infoPanelImage;
-
+   @FXML
+   private ChoiceBox muscleGroupSorter = new ChoiceBox();
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
+   private Comparator listSort = Comparator.comparing(Exercise::getMuscleGroup);
 
    public void initialize() {
       populateExercises();
       exercisesList.setItems(exercises);
+      Collections.sort(exercises, listSort);
+      populateMuscleGroups(muscleGroupSorter);
       populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
+      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString())); //Adds listener for choosing option in muscleGroupSorter
    }
 
    public void populateExercises(){
@@ -125,10 +131,33 @@ public class ExerciseController {
       }*/
    }
 
+   public void populateMuscleGroups(ChoiceBox choiceBox){
+      Connection con = null;
+      PreparedStatement stmt = null;
+      ResultSet result = null;
+
+      try{
+         con = Database.getDatabase();
+         con.setAutoCommit(false);
+
+         String sql = ("SELECT workout_type_name FROM workout_type");
+         stmt = con.prepareStatement(sql);
+         result = stmt.executeQuery();
+         while(result.next()){
+            String workoutType = result.getString("workout_type_name");
+            choiceBox.getItems().add(workoutType);
+         }
+         stmt.close();
+         con.commit();
+         con.close();
+      } catch (SQLException e) {
+         throw new RuntimeException(e);
+      }
+   }
+
    public void readInNewExercise(Exercise exercise){
-      Comparator<Exercise> comp = Comparator.comparing(Exercise::getMuscleGroup);
       exercises.add(exercise);
-      Collections.sort(exercises, comp);
+      Collections.sort(exercises, listSort);
    }
 
    public Exercise getExercise(){
@@ -190,7 +219,7 @@ public class ExerciseController {
          FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExerciseWindow.fxml"));
          Scene scene = new Scene(fxmlLoader.load());
          AddExerciseController aec = fxmlLoader.getController();
-         aec.setExerciseController(this);
+         aec.initializeWindow(this);
          Stage stage = new Stage();
          stage.setTitle("Add Exercise");
          stage.setScene(scene);
@@ -232,5 +261,20 @@ public class ExerciseController {
       } else {
          System.out.println("Closed or canceled");
       }
+   }
+
+   public void sortExercises(String muscleGroupToSortBy){
+      ObservableList<Exercise> sortedMuscleGroup = FXCollections.observableArrayList();
+
+      for (Exercise exercise : exercises) {
+         if (exercise.getMuscleGroup().equals(muscleGroupToSortBy)) {
+            sortedMuscleGroup.add(exercise);
+         }
+      }
+      exercisesList.setItems(sortedMuscleGroup);
+   }
+
+   public void resetSort(){
+      exercisesList.setItems(exercises);
    }
 }
