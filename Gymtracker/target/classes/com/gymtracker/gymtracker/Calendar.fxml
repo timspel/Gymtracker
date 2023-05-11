@@ -71,49 +71,80 @@
             <Insets bottom="10.0" left="100.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox alignment="CENTER" centerShape="false" layoutY="77.0" maxHeight="112.0" minHeight="89.0" prefHeight="89.0" prefWidth="1276.0" spacing="160.0" AnchorPane.bottomAnchor="623.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
+      <HBox alignment="CENTER" centerShape="false" layoutX="20.0" layoutY="77.0" maxHeight="112.0" minHeight="67.0" prefHeight="67.0" prefWidth="1262.0" AnchorPane.bottomAnchor="645.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="77.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Su" wrappingWidth="23.276702880859375">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mo" wrappingWidth="29.677734375">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tu" wrappingWidth="29.796875">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="We">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Th">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fr" wrappingWidth="24.71881103515625">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sa" wrappingWidth="22.1341552734375">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
+            <HBox alignment="CENTER" layoutX="20.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Su" wrappingWidth="23.276702880859375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mo" wrappingWidth="29.677734375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tu" wrappingWidth="29.796875">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="We">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Th">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fr" wrappingWidth="24.71881103515625">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sa" wrappingWidth="22.1341552734375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <FlowPane fx:id="calendar" columnHalignment="CENTER" hgap="10.0" layoutX="-8.0" layoutY="175.0" minHeight="0.0" prefHeight="614.0" prefWidth="1255.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="175.0">
+      <FlowPane fx:id="calendar" columnHalignment="CENTER" hgap="10.0" layoutY="175.0" minHeight="0.0" prefHeight="614.0" prefWidth="1262.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <effect>
             <ColorAdjust brightness="-0.12" saturation="-0.49" />
          </effect>
+         <padding>
+            <Insets bottom="30.0" />
+         </padding>
       </FlowPane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="8.0" layoutX="-3.0" layoutY="76.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1305.0">
          <fill>

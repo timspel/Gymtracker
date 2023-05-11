@@ -12,38 +12,56 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.CalendarDialog">
+<AnchorPane prefHeight="600.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.CalendarDialog">
    <children>
-      <HBox alignment="CENTER" layoutX="284.0" layoutY="4.0" prefHeight="67.0" prefWidth="500.0">
+      <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="21.0" prefHeight="39.0" prefWidth="754.0">
          <children>
-            <Text fx:id="selectedWorkoutName" strokeType="OUTSIDE" strokeWidth="0.0" text="selectedWorkoutName" textAlignment="CENTER">
+            <Text fx:id="selectedWorkoutName" strokeType="OUTSIDE" strokeWidth="0.0" text="selectedWorkoutName" textAlignment="CENTER" wrappingWidth="434.79638671875">
                <font>
-                  <Font size="25.0" />
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fx:id="selectedWorkoutDate" strokeType="OUTSIDE" strokeWidth="0.0" text="workoutDate" wrappingWidth="318.0">
+               <font>
+                  <Font size="23.0" />
                </font>
             </Text>
          </children>
       </HBox>
-      <AnchorPane layoutX="32.0" layoutY="69.0" prefHeight="489.0" prefWidth="698.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+      <HBox layoutX="30.0" layoutY="69.0" prefHeight="489.0" prefWidth="754.0">
          <children>
-            <TableView fx:id="participantsTable" prefHeight="487.0" prefWidth="134.0">
+            <TableView fx:id="exerciseTable" prefHeight="489.0" prefWidth="420.0">
               <columns>
-                <TableColumn fx:id="participantName" maxWidth="132.0" prefWidth="132.0" text="Workout Participants" />
+                <TableColumn fx:id="exerciseName" prefWidth="170.0" text="Exercise" />
+                  <TableColumn fx:id="exerciseSet1" prefWidth="50.0" text="Set 1" />
+                  <TableColumn fx:id="exerciseSet2" prefWidth="50.0" text="Set 2" />
+                <TableColumn fx:id="exerciseSet3" prefWidth="50.0" text="Set 3" />
+                  <TableColumn fx:id="exerciseSet4" prefWidth="50.0" text="Set 4" />
+                  <TableColumn fx:id="exerciseSet5" prefWidth="50.0" text="Set 5" />
               </columns>
             </TableView>
-            <TableView fx:id="exerciseTable" layoutX="254.0" layoutY="1.0" prefHeight="487.0" prefWidth="500.0">
+            <TableView fx:id="participantsTable" prefHeight="489.0" prefWidth="330.0">
               <columns>
-                <TableColumn fx:id="exerciseName" prefWidth="98.0" text="Exercise" />
-                  <TableColumn fx:id="exerciseSet1" text="Set 1" />
-                  <TableColumn fx:id="exerciseSet2" text="Set 2" />
-                <TableColumn fx:id="exerciseSet3" text="Set 3" />
-                  <TableColumn fx:id="exerciseSet4" prefWidth="79.0" text="Set 4" />
-                  <TableColumn fx:id="exerciseSet5" prefWidth="81.0" text="Set 5" />
+                <TableColumn fx:id="participantName" maxWidth="362.0" prefWidth="332.0" text="Workout Participants" />
               </columns>
             </TableView>
          </children>
-      </AnchorPane>
-      <Button fx:id="backButton" layoutX="632.0" layoutY="561.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Back" />
-      <Button layoutX="46.0" layoutY="561.0" mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="103.0" text="Join Workout" />
+      </HBox>
+      <HBox layoutX="23.0" layoutY="558.0" prefHeight="39.0" prefWidth="761.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="364.0">
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Back" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="439.0">
+               <children>
+                  <Text fx:id="joinedStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="218.0" />
+                  <Button mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="117.0" text="Join Workout" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="18.0" layoutY="-5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="814.0">
          <fill>
             <LinearGradient endX="1.0" endY="1.0">
@@ -72,14 +90,5 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <HBox alignment="CENTER" layoutX="31.0" layoutY="9.0" prefHeight="59.0" prefWidth="134.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="49.0">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Text>
-         </children>
-      </HBox>
    </children>
 </AnchorPane>

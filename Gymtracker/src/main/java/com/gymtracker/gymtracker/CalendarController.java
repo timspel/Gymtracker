@@ -4,11 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -36,7 +36,6 @@ public class CalendarController implements Initializable {
     @FXML
     private Text year;
     @FXML private Text month;
-
     @FXML
     private FlowPane calendar;
 
@@ -118,6 +117,7 @@ public class CalendarController implements Initializable {
             }
         }
     }
+
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
@@ -128,8 +128,10 @@ public class CalendarController implements Initializable {
 
         for (int k = 0; k < calendarActivities.size(); k++) {
             CalendarActivity calendarActivity = calendarActivities.get(k);
-            Text text = new Text(calendarActivity.getUsername() + ", " + calendarActivity.getDate().toLocalTime() + ", " + calendarActivity.getWorkoutName());
-            text.setWrappingWidth(rectangleWidth); // set the wrapping width to the width of the rectangle
+
+            Text text = new Text(" - " + calendarActivity.getUsername() + ", " + calendarActivity.getDate().toLocalTime() + ", " + calendarActivity.getWorkoutName());
+            text.setWrappingWidth(rectangleWidth);
+
             maxWidth = Math.max(maxWidth, text.getBoundsInLocal().getWidth());
             text.setMouseTransparent(false); // Set the Text object to receive mouse events
 
@@ -143,11 +145,10 @@ public class CalendarController implements Initializable {
                 // Load the dialog box
                 // Assume you have an activity object called "selectedActivity"
                 String workoutName = calendarActivity.getWorkoutName();
+                String date = String.valueOf(calendarActivity.getDate());
                 int workoutId = calendarActivity.getWorkoutId();
-                Dialog<ButtonType> dialog = loadDialog(workoutName, workoutId);
+                Dialog<ButtonType> dialog = loadDialog(workoutName, workoutId,date);
 
-                // Show the dialog box and handle the user's response
-                //Optional<ButtonType> result = dialog.showAndWait();
 
             });
 
@@ -156,7 +157,7 @@ public class CalendarController implements Initializable {
                 // Apply hover effect when the mouse enters the text
                 text.setFill(Color.BLUE); // Change the text color, for example
                 text.setUnderline(true); // Add underline, for example
-                // You can add more hover effects as desired
+
             });
 
             text.setOnMouseExited(event -> {
@@ -186,7 +187,8 @@ public class CalendarController implements Initializable {
         stackPane.getChildren().add(calendarActivityBox);
     }
 
-    static Dialog<ButtonType> loadDialog(String workoutName, int workoutId) {
+
+    static Dialog<ButtonType> loadDialog(String workoutName, int workoutId, String workoutDate) {
         try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(CalendarDialog.class.getResource("CalendarDialog.fxml"));
@@ -198,6 +200,7 @@ public class CalendarController implements Initializable {
             // Set the selected workout name
             controller.setSelectedWorkoutName(workoutName);
             controller.setWorkoutId(workoutId);
+            controller.setWorkoutDate(workoutDate);
 
             // Populate the exercise table
             controller.populateExerciseTable(workoutId);
