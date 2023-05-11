@@ -117,5 +117,13 @@
             </VBox>
          </children>
       </AnchorPane>
+      <HBox alignment="CENTER" layoutX="3.0" layoutY="301.0" prefHeight="29.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="lblStatus" textFill="RED">
+               <font>
+                  <Font size="11.0" />
+               </font></Label>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -77,9 +77,11 @@ public class ProfileController {
          if(editButton.getText() != "Save") {
             editButton.setText("Save");
             goalsText.setEditable(true);
+            //goalsText.setStyle("-fx-control-inner-background: #FFFFFF;");
          }
          else {
             goalsText.setEditable(false);
+          //goalsText.setStyle("-fx-control-inner-background:TRANSPARENT");
             editButton.setText("Edit");
             Connection conn = null;
             try{
@@ -204,6 +206,7 @@ public class ProfileController {
 
    private void initComponents(){ //Initializes the components such as buttons and text fields.
       goalsText.setEditable(false);
+      //goalsText.setStyle("--fx-highlight-fill:TRANSPARENT;");
       weightField.setEditable(false);
       weightField.setStyle("-fx-background-color: TRANSPARENT;");
       heightField.setEditable(false);

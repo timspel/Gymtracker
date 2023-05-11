@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,11 +20,10 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-   private Stage stage;
-   private Scene scene;
    @FXML
    private Button loginButton;
    @FXML
@@ -40,15 +40,18 @@ public class LoginController implements Initializable {
    private TextField registerPasswordField1;
    @FXML
    private TextField registerPasswordField2;
-
-
    @FXML
    private TextField loginUsernameTextField;
    @FXML
    private TextField loginPasswordField;
+   @FXML
+   private Label lblStatus;
 
    private int userId;
-
+   private Stage stage;
+   private Scene scene;
+   private String username;
+   private static HashMap<String, String> allUsers = new HashMap<>();
    public void login(ActionEvent e) throws IOException {
       Parent root = FXMLLoader.load(getClass().getResource("MainFrame.fxml"));
       stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
@@ -60,14 +63,31 @@ public class LoginController implements Initializable {
    }
 
    public void buttonClicked(ActionEvent event) throws IOException {
-      if(event.getSource() == loginButton){
-
+      if(event.getSource() == loginButton){ //IF user pressed the Login button.
+         lblStatus.setText("");
         if (loginAttempt()){
+           PreparedStatement stmt = null;
+           try (Connection con = Database.getDatabase();) {
+              String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
+              stmt = con.prepareStatement(sql);
+              System.out.println("Opened database successfully");
 
-           login(event);
+              stmt = con.prepareStatement(sql);
+              stmt.setString(1,username);
+              stmt.setString(2, allUsers.get(username));
+
+              ResultSet resultSet = stmt.executeQuery();
+              if(resultSet.next()){
+                 userId = resultSet.getInt("user_id");
+              }
+              UserIdSingleton.getInstance().setUserId(userId);
+              login(event);
+           }
+           catch (Exception e){e.printStackTrace();}
         }
       }
-      if(event.getSource() == registerButton){
+      if(event.getSource() == registerButton){ //IF user pressed the Register button.
+         lblStatus.setText("");
          registerPane.setVisible(true);
          registerPane.setTranslateX(-204);
          TranslateTransition slide = new TranslateTransition();
@@ -78,7 +98,7 @@ public class LoginController implements Initializable {
 
          registerPane.setTranslateX(-204);
       }
-      if(event.getSource() == regUserButton){
+      if(event.getSource() == regUserButton){ //IF user pressed the Register button on the register new user panel.
          addUser();
          TranslateTransition slide = new TranslateTransition();
          slide.setDuration(Duration.seconds(0.2));
@@ -86,9 +106,8 @@ public class LoginController implements Initializable {
          slide.setToX(-204);
          slide.play();
          registerPane.setTranslateX(0);
-         //registerPane.setVisible(false);
       }
-      if(event.getSource() == cancelButton){
+      if(event.getSource() == cancelButton){ //IF user pressed the Cancel button.
          TranslateTransition slide = new TranslateTransition();
          slide.setDuration(Duration.seconds(0.2));
          slide.setNode(registerPane);
@@ -99,51 +118,26 @@ public class LoginController implements Initializable {
    }
 
    public boolean loginAttempt(){
-
+      boolean loginSuccess = false;
       if(loginCustomer(loginUsernameTextField.getText(), loginPasswordField.getText())){
-         UserIdSingleton.getInstance().setUserId(userId);
-         return true;
+         loginSuccess = true;
       }
-      System.out.println("failed to login");
-      return false;
+      else {
+         lblStatus.setText("Wrong Username or Password!");
+      }
+      return loginSuccess;
    }
 
    public boolean loginCustomer(String username, String password) {
-
-      Connection con = null;
-      PreparedStatement stmt = null;
-
-      try {con = Database.getDatabase();
-         con.setAutoCommit(false);
-         System.out.println("Opened database successfully");
-
-         String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
-         stmt = con.prepareStatement(sql);
-         stmt.setString(1,username);
-         stmt.setString(2,password);
-
-         ResultSet result = stmt.executeQuery();
-         if (result.next()){
-            userId = result.getInt("user_id");
-            System.out.println("You have logged in");
-            System.out.printf("Username: %s", username);
-            System.out.println("");
+      boolean success = false;
+      if(allUsers.containsKey(username)){
+         if(password.equals(allUsers.get(username))){
+            this.username = username;
+            success = true;
+            lblStatus.setText("Login Successful!");
          }
-         else {
-            System.out.println("Wrong username or password");
-            return false;
-
-         }
-         stmt.close();
-         con.commit();
-         con.close();
-
-      } catch (Exception e) {
-         e.printStackTrace();
-         System.err.println(e.getClass().getName() + ": " + e.getMessage());
-         return false;
       }
-      return true;
+      return success;
    }
 
 
@@ -188,6 +182,7 @@ public class LoginController implements Initializable {
             insertStmt.setString(5, profilePicture);
 
             insertStmt.executeUpdate();
+            getAllUsers();
             System.out.println("User added successfully");
          }
       } catch (Exception e) {
@@ -198,13 +193,37 @@ public class LoginController implements Initializable {
       return true;
    }
 
+   public static void getAllUsers(){
+      System.out.println("getAllUsers called.");
+      PreparedStatement stmt = null;
+      try (Connection conn = Database.getDatabase()){
+         conn.setAutoCommit(false);
+         System.out.println("Opened database successfully");
 
+         String sql = ("SELECT username, password FROM \"User\"");
+         stmt = conn.prepareStatement(sql);
+         ResultSet result = stmt.executeQuery();
 
+         while (result.next()){
+            allUsers.put(result.getString("username"),result.getString("password"));
+         }
+         System.out.println("All users have been fetched.");
+         for(String key : allUsers.keySet()){
+            System.out.println(key);
+            System.out.println(allUsers.get(key));
+         }
+         stmt.close();
+         conn.commit();
 
-
+      } catch (Exception e) {
+         e.printStackTrace();
+         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      }
+   }
 
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       registerPane.setVisible(false);
+      getAllUsers();
    }
 }
