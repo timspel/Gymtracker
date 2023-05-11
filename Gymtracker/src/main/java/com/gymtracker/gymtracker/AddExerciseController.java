@@ -42,8 +42,6 @@ public class AddExerciseController {
     }
 
     public void chooseImage(){
-        Image image2 = new Image("https://www.youtube.com/");
-        System.out.println(image2);
         if(imageSourceField != null){
             try{
                 imageURL = new URL(imageSourceField.getText()); //Set to URL-variable to verify input as URL
