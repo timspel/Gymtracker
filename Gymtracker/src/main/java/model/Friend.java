@@ -8,8 +8,9 @@ public class Friend {
     private String name;
     private Image image;
 
-    public Friend(String name){
+    public Friend(String name, int id){
         this.name = name;
+        this.id = id;
 
     }
 

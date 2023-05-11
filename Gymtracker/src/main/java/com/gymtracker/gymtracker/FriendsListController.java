@@ -120,12 +120,13 @@ public class FriendsListController implements Initializable {
              PreparedStatement pstmt = con.prepareStatement("INSERT INTO Friendship (user1_id, user2_id, status) VALUES (?, ?, 'pending') ON CONFLICT (user1_id, user2_id) DO NOTHING")) {
             pstmt.setInt(1, user1Id);
             pstmt.setInt(2, user2Id);
-
+            int friendId = user2Id;
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Friend request sent successfully");
-                Friend friend = new Friend(friendUsername);
+                Friend friend = new Friend(friendUsername,friendId);
                 populatePendingList(friend);
+                getPendingFriendRequests(UserIdSingleton.getInstance().getUserId());
                 return true;
             } else {
                 System.out.println("Friend request already exists or an error occurred");
@@ -176,13 +177,12 @@ public class FriendsListController implements Initializable {
             while (rs.next()) {
                 int friendshipId = rs.getInt("friendship_id");
                 String username = rs.getString("username");
-                pendingArrayList.add(new Friend(username)); // Add friend request to pendingArrayList
+                pendingArrayList.add(new Friend(username, friendshipId)); // Add friend request to pendingArrayList
             }
             pendingList.setItems(FXCollections.observableArrayList(pendingArrayList)); // Set the items for pendingList
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
+    
 }
