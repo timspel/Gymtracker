@@ -151,6 +151,23 @@ public class CalendarController implements Initializable {
 
             });
 
+            // Add hover effects
+            text.setOnMouseEntered(event -> {
+                // Apply hover effect when the mouse enters the text
+                text.setFill(Color.BLUE); // Change the text color, for example
+                text.setUnderline(true); // Add underline, for example
+                // You can add more hover effects as desired
+            });
+
+            text.setOnMouseExited(event -> {
+                // Remove hover effect when the mouse exits the text
+                text.setFill(Color.BLACK); // Reset the text color, for example
+                text.setUnderline(false); // Remove underline, for example
+                // Reset other hover effects as desired
+            });
+
+
+
             // Add the text object to the VBox
             calendarActivityBox.getChildren().add(text);
 
