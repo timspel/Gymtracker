@@ -35,7 +35,7 @@ public class FriendsListController implements Initializable {
     private TableView<Friend> pendingList = new TableView<>();
     @FXML
     private TableColumn<Friend,String> pendingColumn;
-    private List<Friend>  pendingArrayList = new ArrayList<>();
+    private List<Friend> pendingArrayList;
     @FXML
     private Label profileNameAdd;
     @FXML
@@ -55,16 +55,18 @@ public class FriendsListController implements Initializable {
     private int userIdFriend;
     private String  userFriendPicture;
     private  String friendUsername;
-    private List<Friend> friendRequests = new ArrayList<>();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        getPendingFriendRequests(UserIdSingleton.getInstance().getUserId());
-        System.out.println("Hello2");
-        friendsColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
+        pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name")); // Set cell value factory for the pendingColumn
 
+        pendingArrayList = new ArrayList<>();
+        getPendingFriendRequests(UserIdSingleton.getInstance().getUserId());
+
+
+        friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
+        pendingList.setItems(FXCollections.observableArrayList(pendingArrayList)); // Set the items for pendingList
     }
 
     public void searchButtonClicked(ActionEvent event) throws IOException{
@@ -137,10 +139,6 @@ public class FriendsListController implements Initializable {
     }
     public void populatePendingList(Friend friend){
         pendingArrayList.add(friend);
-        pendingList.setItems(FXCollections.observableArrayList(pendingArrayList));
-    }
-    public void populateAtStart(){
-
     }
 
     public boolean acceptFriendRequest(int friendshipId) {
@@ -164,24 +162,27 @@ public class FriendsListController implements Initializable {
     }
 
     public void getPendingFriendRequests(int userId) {
-        pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        System.out.println("!hello");
+        pendingArrayList.clear(); // Clear the pendingArrayList before populating it
+
         try (Connection con = Database.getDatabase();
              PreparedStatement pstmt = con.prepareStatement("SELECT f.friendship_id, u.username " +
                      "FROM Friendship f " +
-                     "INNER JOIN \"User\" u ON (f.user1_id = u.user_id AND f.user2_id = ? AND f.status = 'pending')")) {
+                     "INNER JOIN \"User\" u ON ((f.user1_id = u.user_id OR f.user2_id = u.user_id) AND f.status = 'pending') " +
+                     "WHERE (f.user1_id = ? OR f.user2_id = ?) AND u.user_id <> ?")) {
             pstmt.setInt(1, userId);
+            pstmt.setInt(2, userId);
+            pstmt.setInt(3, userId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 int friendshipId = rs.getInt("friendship_id");
                 String username = rs.getString("username");
-                friendRequests.add(new Friend(username));
-
+                pendingArrayList.add(new Friend(username)); // Add friend request to pendingArrayList
             }
-            pendingList.setItems(FXCollections.observableArrayList(pendingArrayList));
+            pendingList.setItems(FXCollections.observableArrayList(pendingArrayList)); // Set the items for pendingList
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
 }
