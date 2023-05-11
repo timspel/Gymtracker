@@ -59,8 +59,9 @@
             </AnchorPane>
          </children>
       </HBox>
-      <ChoiceBox fx:id="muscleGroupSorter" layoutX="40.0" layoutY="238.0" prefHeight="25.0" prefWidth="220.0" />
+      <ChoiceBox fx:id="muscleGroupSorter" layoutX="80.0" layoutY="238.0" prefHeight="25.0" prefWidth="180.0" />
       <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
+      <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="242.0" prefHeight="17.0" prefWidth="30.0" text="Filter:" />
    </children>
    <padding>
       <Insets top="1.0" />

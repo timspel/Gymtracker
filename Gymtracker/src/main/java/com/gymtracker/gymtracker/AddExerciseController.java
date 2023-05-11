@@ -58,16 +58,6 @@ public class AddExerciseController {
                 invalidURLMessage.setVisible(true);
             }
         }
-        /*Stage stage = new Stage();
-        FileChooser fc = new FileChooser();
-        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-        fc.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-
-        File selectedFile = fc.showOpenDialog(stage);
-        imageSourceField.setText(selectedFile.toURI().toString());
-        Image exerciseImage = new Image(selectedFile.toURI().toString());
-        addImageField.setImage(exerciseImage);*/
     }
 
     public void cancelOperation(){
