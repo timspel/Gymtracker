@@ -1,23 +1,42 @@
 package model;
 
-import javafx.scene.image.Image;
-
 public class Friend {
+
 
     private int id;
     private String name;
-    private Image image;
+    private double height;
+    private String image;
 
-    public Friend(String name, int id){
+    public Friend(String name, int id, double weight, double height, String image){
         this.name = name;
         this.id = id;
 
+        this.weight = weight;
+        this.height = height;
+        this.image = image;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    private double weight;
+
+    public double getHeight() {
+        return height;
     }
 
     public String getName() {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
 
 }
-

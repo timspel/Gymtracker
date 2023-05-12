@@ -25,6 +25,8 @@ public class FriendsListController implements Initializable {
 
 
     @FXML
+    private Text alert;
+    @FXML
     private TableView<Friend> friendsList = new TableView<>();
     @FXML
     private TableColumn<Friend,String> friendsColumn;
@@ -83,14 +85,14 @@ public class FriendsListController implements Initializable {
         pendingList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Friend selectedFriend = pendingList.getSelectionModel().getSelectedItem();
-                setSelectedFriendInformation(selectedFriend.getName(), selectedFriend.getWeight(), selectedFriend.getHeight(), selectedFriend.getImage());
+                setFriendInformation(selectedFriend.getName(), selectedFriend.getWeight(), selectedFriend.getHeight(), selectedFriend.getImage());
             }
         });
 
         friendsList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Friend selectedFriend = friendsList.getSelectionModel().getSelectedItem();
-                setSelectedFriendInformation(selectedFriend.getName(), selectedFriend.getWeight(), selectedFriend.getHeight(), selectedFriend.getImage());
+                setFriendInformation(selectedFriend.getName(), selectedFriend.getWeight(), selectedFriend.getHeight(), selectedFriend.getImage());
             }
         });
     }
@@ -139,16 +141,18 @@ public class FriendsListController implements Initializable {
         Connection con = null;
         try {con = Database.getDatabase();
             //con.setAutoCommit(false);
-            PreparedStatement stmt = con.prepareStatement("SELECT user_id, username, profile_picture FROM \"User\" WHERE username = ?"); {
+            PreparedStatement stmt = con.prepareStatement("SELECT user_id, username, weight, height, profile_picture FROM \"User\" WHERE username = ?"); {
                 stmt.setString(1, search); // Set the first parameter of the prepared statement to the search string + a wildcard
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     friendUsername = rs.getString("username");
+                    double weight = rs.getDouble("weight");
+                    double height = rs.getDouble("height");
                     System.out.println(friendUsername);
                     userIdFriend = rs.getInt("user_id");
                     System.out.println(userIdFriend);
                     userFriendPicture =  rs.getString("profile_picture");
-                    setFriendInformation(friendUsername, userFriendPicture);
+                    setFriendInformation(friendUsername, weight, height, userFriendPicture);
 
                 }
                 stmt.close();
@@ -159,12 +163,7 @@ public class FriendsListController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
-
-    public void setFriendInformation(String searchedUserName, String userFriendPicture  ){
-        profileNameAdd.setText(searchedUserName);
-        searchPicture.setImage(new Image(userFriendPicture));
-    }
-    public void setSelectedFriendInformation(String friendUsername, double weight, double height ,String image){
+    public void setFriendInformation(String friendUsername, double weight, double height ,String image){
         selectedUsername.setText(friendUsername);
         userWeight.setText(String.valueOf(weight)+" kg");
         userHeight.setText(String.valueOf(height)+" cm");
@@ -184,7 +183,7 @@ public class FriendsListController implements Initializable {
             if (rs.next()) {
                 int count = rs.getInt(1);
                 if (count > 0) {
-                    System.out.println("Users are already friends");
+                    setAlert("Users are already friends");
                     return;
                 }
             }
@@ -202,7 +201,7 @@ public class FriendsListController implements Initializable {
                         double height = userRs.getDouble("height");
                         String image = userRs.getString("profile_picture");
 
-                        System.out.println("Friend request sent successfully");
+                        setAlert("Friend request sent successfully");
                         Friend friend = new Friend(friendUsername, user2Id, weight, height, image);
                         pendingArrayList.add(friend);
                         populatePendingFriendRequest(UserIdSingleton.getInstance().getUserId());
@@ -254,14 +253,14 @@ public class FriendsListController implements Initializable {
                 int user2Id = rs.getInt("user2_id");
                 String status = rs.getString("status");
                 if (!status.equals("pending")) {
-                    System.out.println("Friend request is not in pending status");
+                    setAlert("Friend request is not in pending status");
                     return;
                 } else if (user1Id != userId && user2Id != userId) {
-                    System.out.println("You are not authorized to remove this friend request");
+                    setAlert("You are not authorized to remove this friend request");
                     return;
                 }
             } else {
-                System.out.println("Error: friendship request not found");
+                setAlert("You are not friends with this person");
                 return;
             }
         } catch (SQLException e) {
@@ -275,7 +274,7 @@ public class FriendsListController implements Initializable {
             deleteStmt.setInt(1, friendshipId);
             int rowsDeleted = deleteStmt.executeUpdate();
             if (rowsDeleted == 1) {
-                System.out.println("Friendship request removed successfully");
+                setAlert("Friendship request removed successfully");
 
                 // Remove friend request from pending list
                 Friend removedFriend = null;
@@ -291,7 +290,7 @@ public class FriendsListController implements Initializable {
                     pendingList.setItems(FXCollections.observableArrayList(pendingArrayList));
                 }
             } else {
-                System.out.println("Error: friendship request not found");
+                setAlert("You are not friends with this person");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -307,11 +306,11 @@ public class FriendsListController implements Initializable {
             if (rs.next()) {
                 String status = rs.getString("status");
                 if (!status.equals("accepted")) {
-                    System.out.println("Friendship is not in accepted status");
+                    setAlert("Friendship is not in accepted status");
                     return;
                 }
             } else {
-                System.out.println("Error: friendship not found");
+                setAlert("You are not friends with this person");
                 return;
             }
         } catch (SQLException e) {
@@ -325,7 +324,7 @@ public class FriendsListController implements Initializable {
             deleteStmt.setInt(1, friendshipId);
             int rowsDeleted = deleteStmt.executeUpdate();
             if (rowsDeleted == 1) {
-                System.out.println("Friendship removed successfully");
+                setAlert("Friendship removed successfully");
 
                 // Remove friend from friends list
                 Friend removedFriend = null;
@@ -341,7 +340,7 @@ public class FriendsListController implements Initializable {
                     friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
                 }
             } else {
-                System.out.println("Error: friendship not found");
+                setAlert("You are not friends with this person");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -361,14 +360,14 @@ public class FriendsListController implements Initializable {
                 int user2Id = rs.getInt("user2_id");
                 String status = rs.getString("status");
                 if (status.equals("accepted")) {
-                    System.out.println("You are already friends");
+                    setAlert("You are already friends");
                     return;
                 } else if (user2Id != userId) {
-                    System.out.println("You are not authorized to accept this friend request");
+                    setAlert("You are not authorized to accept this friend request");
                     return;
                 }
             } else {
-                System.out.println("Error: friendship request not found");
+                setAlert("Error: friendship request not found");
                 return;
             }
         } catch (SQLException e) {
@@ -382,7 +381,7 @@ public class FriendsListController implements Initializable {
             updateStmt.setInt(1, friendshipId);
             int rowsUpdated = updateStmt.executeUpdate();
             if (rowsUpdated == 1) {
-                System.out.println("Friendship request accepted successfully");
+                setAlert("Friendship request accepted successfully");
 
                 // Move friend request from pending list to friends list
                 Friend acceptedFriend = null;
@@ -400,7 +399,7 @@ public class FriendsListController implements Initializable {
                     friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
                 }
             } else {
-                System.out.println("Error: friendship request not found");
+                setAlert("Error: friendship request not found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -435,8 +434,8 @@ public class FriendsListController implements Initializable {
             e.printStackTrace();
         }
     }
-    public void setProfilePicture(String Image){
-
+    public void setAlert(String message){
+        alert.setText(message);
     }
     
 }
