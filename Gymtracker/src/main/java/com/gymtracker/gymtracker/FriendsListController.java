@@ -166,8 +166,8 @@ public class FriendsListController implements Initializable {
     }
     public void setSelectedFriendInformation(String friendUsername, double weight, double height ,String image){
         selectedUsername.setText(friendUsername);
-        userWeight.setText(String.valueOf(weight));
-        userHeight.setText(String.valueOf(height));
+        userWeight.setText(String.valueOf(weight)+" kg");
+        userHeight.setText(String.valueOf(height)+" cm");
         profilePicture.setImage(new Image(image));
     }
 
