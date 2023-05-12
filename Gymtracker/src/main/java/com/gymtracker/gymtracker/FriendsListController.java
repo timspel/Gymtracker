@@ -80,7 +80,12 @@ public class FriendsListController implements Initializable {
         pendingList.setItems(FXCollections.observableArrayList(pendingArrayList)); // Set the items for pendingList
 
 
-
+        pendingList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Friend selectedFriend = pendingList.getSelectionModel().getSelectedItem();
+                setSelectedFriendInformation(selectedFriend.getName(), selectedFriend.getWeight(), selectedFriend.getHeight(), selectedFriend.getImage());
+            }
+        });
 
         friendsList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {

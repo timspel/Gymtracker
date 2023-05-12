@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -36,46 +37,50 @@
          <children>
             <AnchorPane prefHeight="709.0" prefWidth="424.0">
                <children>
-                  <ImageView fx:id="searchPicture" fitHeight="191.0" fitWidth="200.0" layoutX="115.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../images/user.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="addFriend" layoutX="131.0" layoutY="601.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="50.0" prefWidth="125.0" text="Add Friend" translateZ="-1.0" />
-                  <Label fx:id="profileNameAdd" layoutX="173.0" layoutY="332.0" text="Label" textAlignment="CENTER">
-                     <font>
-                        <Font size="32.0" />
-                     </font>
-                  </Label>
+                  <VBox alignment="CENTER" prefHeight="710.0" prefWidth="420.0" spacing="30.0">
+                     <children>
+                        <Label fx:id="profileNameAdd" text="Label" textAlignment="CENTER">
+                           <font>
+                              <Font size="32.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="searchPicture" fitHeight="420.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/user.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="addFriend" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="50.0" prefWidth="125.0" text="Add Friend" />
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="709.0" prefWidth="451.0" style="-fx-border-color: black;">
                <children>
-                  <ImageView fx:id="profilePicture" fitHeight="191.0" fitWidth="200.0" layoutX="117.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="386.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="131.0">
-                     <image>
-                        <Image url="@../../../images/user.png" />
-                     </image>
-                  </ImageView>
+                  <VBox alignment="CENTER" prefHeight="710.0" prefWidth="450.0" spacing="30.0">
+                     <children>
+                        <Text fx:id="selectedUsername" strokeType="OUTSIDE" strokeWidth="0.0" text="Profilename">
+                           <font>
+                              <Font size="29.0" />
+                           </font>
+                        </Text>
+                        <ImageView fx:id="profilePicture" fitHeight="420.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/user.png" />
+                           </image>
+                        </ImageView>
+                        <Text fx:id="userHeight" strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="userWeight" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
                   <Button fx:id="removeFriend" alignment="CENTER" layoutX="160.0" layoutY="599.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="50.0" prefWidth="125.0" text="Remove Friend" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="160.0" />
-                  <Text fx:id="muscleGroup" layoutX="87.0" layoutY="406.740234375" strokeType="OUTSIDE" strokeWidth="0.0" text="muscle group" textAlignment="CENTER" wrappingWidth="279.13671875" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="84.86328125" AnchorPane.topAnchor="380.8642578125">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="userHeight" layoutX="193.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Text>
-                  <Text fx:id="userWeight" layoutX="191.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="selectedUsername" layoutX="149.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profilename">
-                     <font>
-                        <Font size="29.0" />
-                     </font>
-                  </Text>
                   <Button fx:id="acceptFriend" layoutX="339.0" layoutY="559.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="accept" />
                   <Button fx:id="removeFriendRequest" layoutX="326.0" layoutY="612.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="remove" />
                </children>
