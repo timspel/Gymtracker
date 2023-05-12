@@ -281,7 +281,7 @@ public class ControllerWorkouts implements Initializable{
         loadedWorkout = workoutLoaded(workoutChoiceBox.getValue(), Singleton.getInstance().getUserId());
 
         if(loadedWorkout){
-            workoutNameTextField.setText();
+            workoutNameTextField.setText(workoutChoiceBox.getValue());
         }
     }
 
