@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -209,7 +208,7 @@ public class CalendarController implements Initializable {
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
 
-        int userId = UserIdSingleton.getInstance().getUserId();
+        int userId = Singleton.getInstance().getUserId();
         try (Connection conn = Database.getDatabase()) {
             String sql = "SELECT w.date, u.username, w.workout_name, w.workout_id " +
                     "FROM workout w " +

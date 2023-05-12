@@ -3,8 +3,10 @@ package com.gymtracker.gymtracker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;

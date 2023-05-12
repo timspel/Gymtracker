@@ -159,7 +159,7 @@ public class CalendarDialog {
 
 // WORK IN PROGRESS
     public void joinWorkout(){
-        int userId = UserIdSingleton.getInstance().getUserId();
+        int userId = Singleton.getInstance().getUserId();
 
         try (Connection conn = Database.getDatabase()) {
             // Check if the user is already a participant of the workout

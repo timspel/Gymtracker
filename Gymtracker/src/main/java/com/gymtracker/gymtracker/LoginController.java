@@ -101,7 +101,7 @@ public class LoginController implements Initializable {
    public boolean loginAttempt(){
 
       if(loginCustomer(loginUsernameTextField.getText(), loginPasswordField.getText())){
-         UserIdSingleton.getInstance().setUserId(userId);
+         Singleton.getInstance().setUserId(userId);
          return true;
       }
       System.out.println("failed to login");
