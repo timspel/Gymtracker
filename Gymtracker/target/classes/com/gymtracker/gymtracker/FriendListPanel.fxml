@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,25 +14,25 @@
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.FriendsListController">
    <children>
-      <AnchorPane fx:id="ColourPane" prefHeight="79.0" prefWidth="1276.0" style="-fx-background-color: black;">
+      <AnchorPane fx:id="ColourPane" prefHeight="50.0" prefWidth="1276.0" style="-fx-background-color: black;">
          <children>
-            <ImageView fitHeight="79.0" fitWidth="376.0" layoutX="787.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="68.0" fitWidth="339.0" layoutX="797.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../images/Gympic.jpg" />
                </image></ImageView>
-            <Label layoutX="484.0" layoutY="5.0" prefHeight="64.0" prefWidth="339.0" text="Gym Partners" textFill="WHITE">
+            <Label layoutX="484.0" layoutY="-5.0" prefHeight="50.0" prefWidth="339.0" text="Gym Partners" textFill="WHITE">
                <font>
                   <Font size="46.0" />
                </font>
             </Label>
-            <TextField fx:id="searchField" layoutX="11.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="287.0">
+            <TextField fx:id="searchField" layoutX="11.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="287.0">
                <font>
                   <Font size="21.0" />
                </font>
             </TextField>
-            <Button fx:id="searchButton" layoutX="307.0" layoutY="20.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="42.0" prefWidth="105.0" text="Search Partner" />
+            <Button fx:id="searchButton" layoutX="307.0" layoutY="13.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="39.0" prefWidth="105.0" text="Search Partner" />
          </children></AnchorPane>
-      <HBox layoutY="80.0" prefHeight="709.0" prefWidth="1276.0">
+      <HBox layoutY="68.0" prefHeight="723.0" prefWidth="1276.0">
          <children>
             <AnchorPane prefHeight="709.0" prefWidth="424.0">
                <children>
@@ -43,16 +42,16 @@
                      </image>
                   </ImageView>
                   <Button fx:id="addFriend" layoutX="131.0" layoutY="601.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="50.0" prefWidth="125.0" text="Add Friend" translateZ="-1.0" />
-                  <Text fx:id="profileNameAdd" layoutX="134.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profilename">
+                  <Label fx:id="profileNameAdd" layoutX="173.0" layoutY="332.0" text="Label" textAlignment="CENTER">
                      <font>
-                        <Font size="29.0" />
+                        <Font size="32.0" />
                      </font>
-                  </Text>
+                  </Label>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="729.0" prefWidth="451.0" style="-fx-border-color: black;">
+            <AnchorPane prefHeight="709.0" prefWidth="451.0" style="-fx-border-color: black;">
                <children>
-                  <ImageView fx:id="profiePicture" fitHeight="191.0" fitWidth="200.0" layoutX="117.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="386.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="131.0">
+                  <ImageView fx:id="profilePicture" fitHeight="191.0" fitWidth="200.0" layoutX="117.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="386.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="131.0">
                      <image>
                         <Image url="@../../../images/user.png" />
                      </image>
@@ -63,50 +62,43 @@
                         <Font size="22.0" />
                      </font>
                   </Text>
-                  <Text fx:id="height" layoutX="193.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
+                  <Text fx:id="userHeight" layoutX="193.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height">
                      <font>
                         <Font size="20.0" />
                      </font></Text>
-                  <Text fx:id="weight" layoutX="191.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight">
+                  <Text fx:id="userWeight" layoutX="191.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Text>
-                  <Text layoutX="149.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profilename">
+                  <Text fx:id="selectedUsername" layoutX="149.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profilename">
                      <font>
                         <Font size="29.0" />
                      </font>
                   </Text>
+                  <Button fx:id="acceptFriend" layoutX="339.0" layoutY="559.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="accept" />
+                  <Button fx:id="removeFriendRequest" layoutX="326.0" layoutY="612.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="remove" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="709.0" prefWidth="410.0">
                <children>
-                  <ScrollPane prefHeight="395.0" prefWidth="406.0">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="395.0" prefWidth="406.0">
-                           <children>
-                              <TableView fx:id="friendsList" layoutX="-2.0" layoutY="-2.0" prefHeight="395.0" prefWidth="406.0">
-                                 <columns>
-                                    <TableColumn prefWidth="405.0" text="FriendsList" />
-                                 </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane layoutX="-1.0" layoutY="395.0" prefHeight="316.0" prefWidth="406.0">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="314.0" prefWidth="405.0">
-                           <children>
-                              <TableView fx:id="pendingList" prefHeight="316.0" prefWidth="406.0">
-                                 <columns>
-                                    <TableColumn prefWidth="405.0" text="Pending Friend Requests" />
-                                 </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="406.0">
+                     <children>
+                        <TableView fx:id="friendsList" prefHeight="395.0" prefWidth="404.0">
+                           <columns>
+                              <TableColumn fx:id="friendsColumn" prefWidth="405.0" text="FriendsList" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutY="388.0" minHeight="0.0" minWidth="0.0" prefHeight="323.0" prefWidth="405.0">
+                     <children>
+                        <TableView fx:id="pendingList" prefHeight="333.0" prefWidth="401.0">
+                           <columns>
+                              <TableColumn fx:id="pendingColumn" prefWidth="405.0" text="Pending Friend Requests" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
                </children>
             </AnchorPane>
          </children>

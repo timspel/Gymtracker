@@ -17,3 +17,11 @@ Done
 
 Now that the SDK is downloaded and setup you can run the class MainApplication found in "Gymtracker\Gymtracker\src\main\java\com\gymtracker\gymtracker"
 
+
+Some of the functions in the program are not implemented yet. To use the program you will need to have set up the driver in the project ![image](https://github.com/timspel/Gymtracker/assets/121502580/de81b2fe-9b27-492a-aaff-53e872646517). If you do not see the JAR file like this you will need to go to File-> Project Structure -> Modules -> then press the + on the right hand side under dependencies -> Select the JAR file called "postgresql-42.5.1.jar" -> Press ok -> apply/ok -> Done
+![image](https://github.com/timspel/Gymtracker/assets/121502580/be9ce591-9732-43a6-b39e-50d19217ada5)
+
+Try not to input to much data into the database since we are still developing the program. We have identified a few problems with connections to the database where connection will get lost when running too many SQL queries. For further help contact Timid#0584 on discord: 
+
+ 
+
