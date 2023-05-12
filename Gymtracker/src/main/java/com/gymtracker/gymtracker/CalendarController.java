@@ -231,7 +231,7 @@ public class CalendarController implements Initializable {
 
         int userId = UserIdSingleton.getInstance().getUserId();
         try (Connection conn = Database.getDatabase()) {
-            String sql = "SELECT w.date, u.username, w.workout_name, w.workout_id " +
+            String sql = "SELECT DISTINCT w.date, u.username, w.workout_name, w.workout_id " +
                     "FROM workout w " +
                     "JOIN \"User\" u ON w.user_id = u.user_id " +
                     "LEFT JOIN friendship f ON (w.user_id = f.user2_id OR w.user_id = f.user1_id) AND f.status != 'pending' AND (f.user1_id = ? OR f.user2_id = ?) " +
