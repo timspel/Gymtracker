@@ -289,6 +289,7 @@ public class ControllerWorkouts implements Initializable{
         loadedWorkoutExercises = new ArrayList<>();
         loadedWorkoutSets = new ArrayList<>();
         int workoutId = 0;
+        int workoutTypeId = 0;
         int exerciseId = 0;
         String exerciseName = null;
         int setNumber = 0;
@@ -297,7 +298,7 @@ public class ControllerWorkouts implements Initializable{
         double weight = 0;
 
         try(Connection conn = Database.getDatabase()){
-            String query = "select workout_id from Workout where workout_name = ? and user_id = ?";
+            String query = "select workout_id, workout_description, workout_type_id, date from Workout where workout_name = ? and user_id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, workoutName);
             statement.setInt(2, userId);
@@ -305,6 +306,18 @@ public class ControllerWorkouts implements Initializable{
 
             if(resultSet.next()){
                 workoutId = resultSet.getInt("workout_id");
+                workoutDescriptionTextField.setText(resultSet.getString("workout_description"));
+                workoutDatePicker.setValue(resultSet.getDate("date").toLocalDate());
+                workoutTypeId = resultSet.getInt("workout_type_id");
+
+                query = "SELECT workout_type_name FROM workout_type WHERE workout_type_id = ?";
+                statement = conn.prepareStatement(query);
+                statement.setInt(1, workoutTypeId);
+                ResultSet resultType = statement.executeQuery();
+
+                if(resultSet.next()){
+                    categoriesChoiceBox.setValue(Category.valueOf(resultType.getString("workout_type_name")));
+                }
             }
 
             query = "select exercise_id from workout_exercise where workout_id = ?";
