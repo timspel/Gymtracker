@@ -104,7 +104,6 @@ public class LoginController implements Initializable {
          PreparedStatement stmt = null;
          try (Connection con = Database.getDatabase();) {
             String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
-            stmt = con.prepareStatement(sql);
             System.out.println("Opened database successfully");
 
             stmt = con.prepareStatement(sql);
@@ -143,7 +142,6 @@ public class LoginController implements Initializable {
       }
       return success;
    }
-
 
    public void addUser(){
       boolean registered = false;
@@ -203,7 +201,6 @@ public class LoginController implements Initializable {
       try (Connection conn = Database.getDatabase()){
          conn.setAutoCommit(false);
          System.out.println("Opened database successfully");
-
          String sql = ("SELECT username, password FROM \"User\"");
          stmt = conn.prepareStatement(sql);
          ResultSet result = stmt.executeQuery();
@@ -235,6 +232,5 @@ public class LoginController implements Initializable {
             loginButton.fire();
          }
       });
-
    }
 }
