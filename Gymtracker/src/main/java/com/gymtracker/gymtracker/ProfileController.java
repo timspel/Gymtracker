@@ -213,7 +213,6 @@ public class ProfileController {
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
          con.setAutoCommit(false);
-         System.out.println("Database Connected.");
 
          String sql = ("UPDATE \"User\" SET profile_picture = ? WHERE user_id = ?");
          String path = pictureUrlField.getText(); //Gets the url from the textfield
@@ -237,7 +236,6 @@ public class ProfileController {
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
          con.setAutoCommit(false);
-         System.out.println("Database Connected.");
 
          String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
@@ -257,7 +255,6 @@ public class ProfileController {
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
          con.setAutoCommit(false);
-         System.out.println("Database Connected.");
          String sql = ("SELECT username, weight, height, profile_picture, personal_goal FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
