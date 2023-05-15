@@ -35,7 +35,8 @@ public class AddOrEditExerciseController {
     @FXML
     private Label invalidURLMessage;
     @FXML
-    private Label missingImageMessage;
+    private Label invalidMuscleGroup;
+
     private ExerciseController exerciseController;
     private Exercise exerciseToEdit;
     private URL imageURL;
@@ -44,6 +45,7 @@ public class AddOrEditExerciseController {
     public void initializeWindow(ExerciseController exerciseController, Exercise exercise){
         this.exerciseController = exerciseController;
         exerciseController.populateMuscleGroups(muscleGroups);
+        muscleGroups.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> hideMuscleGroupErrorLabel());
 
         if(exercise == null){
             headerLabel.setText("Add new exercise");
@@ -52,6 +54,19 @@ public class AddOrEditExerciseController {
         }else{
             headerLabel.setText("Editing: " + exercise.getName());
             confirmButton.setText("Confirm");
+
+            try {
+                imageURL = new URL(exercise.getImage().getUrl());
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+
+            nameField.setText(exercise.getName());
+            imageSourceField.setText(exercise.getImage().getUrl());
+            imagePreview.setImage(exercise.getImage());
+            muscleGroups.setValue(exercise.getMuscleGroup());
+            descriptionField.setText(exercise.getDescription());
+
             confirmButton.setOnAction(event -> confirmExerciseEdit());
             exerciseToEdit = exercise;
         }
@@ -65,13 +80,12 @@ public class AddOrEditExerciseController {
                 if(invalidURLMessage.isVisible()){
                     invalidURLMessage.setVisible(false);
                 }
-                if(missingImageMessage.isVisible()){
-                    missingImageMessage.setVisible(false);
-                }
+
                 imagePreview.setImage(new Image(String.valueOf(imageURL.toURI())));
                 imageChosen = true;
             } catch (MalformedURLException | URISyntaxException e) {
                 //throw new RuntimeException(e);
+                imagePreview.setImage(null);
                 invalidURLMessage.setVisible(true);
             }
         }
@@ -82,8 +96,37 @@ public class AddOrEditExerciseController {
         stage.close();
     }
 
+    public boolean checkInputFields(){
+        if(nameField.getText().equals("") || !imageChosen || muscleGroups.getSelectionModel().getSelectedItem() == null || descriptionField.getText().equals("")){
+            return false;
+        }
+        if(nameField.getText().equals("Name can't be empty") || descriptionField.getText().equals("Description can't be empty")){
+            return false;
+        }
+        return true;
+    }
+
+    public void throwInputFieldError(){
+        if(nameField.getText().equals("")){
+            nameField.setText("Name can't be empty");
+        }
+        if(!imageChosen){
+            invalidURLMessage.setVisible(true);
+        }
+        if(muscleGroups.getSelectionModel().getSelectedItem() == null){
+            invalidMuscleGroup.setVisible(true);
+        }
+        if(descriptionField.getText().equals("")){
+            descriptionField.setText("Description can't be empty");
+        }
+    }
+
+    public void hideMuscleGroupErrorLabel(){
+        invalidMuscleGroup.setVisible(false);
+    }
+
     public void addNewExercise(){
-        if(imageChosen && !nameField.getText().equals("")){
+        if(checkInputFields()){
             Connection con = null;
             PreparedStatement stmt = null;
             ResultSet result = null;
@@ -134,12 +177,7 @@ public class AddOrEditExerciseController {
                 throw new RuntimeException(e);
             }
         }else {
-            if(imageChosen){
-                missingImageMessage.setVisible(true);
-            }
-            if(!nameField.getText().equals("")){
-                System.out.println("Missing exercise name");
-            }
+            throwInputFieldError();
         }
     }
 
@@ -155,6 +193,7 @@ public class AddOrEditExerciseController {
             String sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
             stmt = con.prepareStatement(sql);
             String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
+            System.out.println("IS THIS IT: " + muscleGroup);
             stmt.setString(1, muscleGroup);
             result = stmt.executeQuery();
             int muscleGroupID = -1;

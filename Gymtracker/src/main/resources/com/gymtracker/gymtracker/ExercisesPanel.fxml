@@ -19,7 +19,7 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <ListView fx:id="exercisesList" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
+      <ListView fx:id="exercisesList" fixedCellSize="30.0" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
             <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
@@ -31,7 +31,7 @@
                <children>
                   <TextArea fx:id="infoPanelDescription" editable="false" prefHeight="350.0" prefWidth="310.0" wrapText="true">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="16.0" />
                      </font>
                   </TextArea>
                </children>

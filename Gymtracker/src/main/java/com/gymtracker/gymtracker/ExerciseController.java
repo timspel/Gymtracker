@@ -38,8 +38,10 @@ public class ExerciseController {
       exercisesList.setItems(exercises);
       exercises.sort(listSort);
       populateMuscleGroups(muscleGroupSorter);
-      populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
-      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString())); //Adds listener for choosing option in muscleGroupSorter
+      //To immediately choose load in the first exercise so that it's viewed when you open the tab
+      populateInfoPanel(exercises.get(0));
+      //Adds listener for choosing option in muscleGroupSorter
+      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
    }
 
    public void populateExercises(){
@@ -121,9 +123,17 @@ public class ExerciseController {
    }
 
    public void populateInfoPanel(Exercise selectedExercise) {
+      //To split up description, making it more readable
+      String StringToSplit = selectedExercise.getDescription();
+      String newString = "";
+      String[] splitString = StringToSplit.split("\\. ");
+      for (String s : splitString) {
+         newString += "- " + s + "\n";
+      }
+
       infoPanelName.setText(selectedExercise.getName());
-      infoPanelDescription.setText(selectedExercise.getDescription());
-      infoPanelImage.setImage(selectedExercise.getPicture());
+      infoPanelDescription.setText(newString);
+      infoPanelImage.setImage(selectedExercise.getImage());
    }
 
    public void removeExercise(){
