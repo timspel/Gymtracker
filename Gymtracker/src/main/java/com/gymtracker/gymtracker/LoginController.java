@@ -193,7 +193,7 @@ public class LoginController implements Initializable {
       return true;
    }
 
-   public static void getAllUsers(){
+   private static void getAllUsers(){
       System.out.println("getAllUsers called.");
       PreparedStatement stmt = null;
       try (Connection conn = Database.getDatabase()){
@@ -208,10 +208,6 @@ public class LoginController implements Initializable {
             allUsers.put(result.getString("username"),result.getString("password"));
          }
          System.out.println("All users have been fetched.");
-         for(String key : allUsers.keySet()){
-            System.out.println(key);
-            System.out.println(allUsers.get(key));
-         }
          stmt.close();
          conn.commit();
 
