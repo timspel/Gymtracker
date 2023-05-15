@@ -44,7 +44,7 @@
          </children>
       </AnchorPane>
       <Button layoutX="40.0" layoutY="730.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
-      <Button layoutX="140.0" layoutY="730.0" mnemonicParsing="false" text="Edit exercise" />
+      <Button layoutX="140.0" layoutY="730.0" mnemonicParsing="false" onAction="#openEditExerciseWindow" text="Edit exercise" />
       <Button layoutX="235.0" layoutY="730.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
       <HBox alignment="CENTER" prefHeight="154.0" prefWidth="1276.0" style="-fx-background-color: #000000;">
          <children>
@@ -60,7 +60,7 @@
          </children>
       </HBox>
       <ChoiceBox fx:id="muscleGroupSorter" layoutX="80.0" layoutY="238.0" prefHeight="25.0" prefWidth="180.0" />
-      <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
+      <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetExerciseSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
       <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="242.0" prefHeight="17.0" prefWidth="30.0" text="Filter:" />
    </children>
    <padding>

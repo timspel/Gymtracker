@@ -126,22 +126,6 @@ public class ExerciseController {
       infoPanelImage.setImage(selectedExercise.getPicture());
    }
 
-   public void openAddExerciseWindow(){
-      try{
-         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExerciseWindow.fxml"));
-         Scene scene = new Scene(fxmlLoader.load());
-         AddExerciseController aec = fxmlLoader.getController();
-         aec.initializeWindow(this);
-         Stage stage = new Stage();
-         stage.setTitle("Add Exercise");
-         stage.setScene(scene);
-         stage.setResizable(false);
-         stage.show();
-      }catch (IOException e){
-         System.out.println("Problem occurred opening Add window: " + e);
-      }
-   }
-
    public void removeExercise(){
       Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
       deleteAlert.setTitle("Delete exercise?");
@@ -193,7 +177,50 @@ public class ExerciseController {
       exercisesList.setItems(sortedMuscleGroup);
    }
 
-   public void resetSort(){
+   public void resetExerciseSort(){
       exercisesList.setItems(exercises);
    }
+
+   public void openAddExerciseWindow(){
+      try{
+         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddOrEditExerciseWindow.fxml"));
+         Scene scene = new Scene(fxmlLoader.load());
+         AddOrEditExerciseController aec = fxmlLoader.getController();
+         aec.initializeWindow(this, null);
+         Stage stage = new Stage();
+         stage.setTitle("Add Exercise");
+         stage.setScene(scene);
+         stage.setResizable(false);
+         stage.getIcons().add(new Image("icon.png"));
+         stage.show();
+      }catch (IOException e){
+         System.out.println("Problem occurred opening Add window: " + e);
+      }
+   }
+
+   public void openEditExerciseWindow(){
+      if(getExercise() != null){
+         try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddOrEditExerciseWindow.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            AddOrEditExerciseController aec = fxmlLoader.getController();
+            aec.initializeWindow(this, getExercise());
+            Stage stage = new Stage();
+            stage.setTitle("Edit Exercise");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("icon.png"));
+            stage.show();
+         }catch (IOException e){
+            System.out.println("Problem occurred opening Add window: " + e);
+         }
+      }else{
+         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+         errorAlert.setTitle("No exercise selected");
+         errorAlert.setHeaderText(null);
+         errorAlert.setContentText("An exercise must be selected before it can be edited");
+         errorAlert.showAndWait();
+      }
+   }
+
 }
