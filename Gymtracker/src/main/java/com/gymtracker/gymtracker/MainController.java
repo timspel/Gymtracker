@@ -48,18 +48,18 @@ public class MainController implements Initializable{
    private Parent scrollContent;
    ArrayList<Parent> parents = new ArrayList<>();
    public MainController(){ //Loads in the other frames
-      parents.add(workoutPane);
-      parents.add(calendarPane);
-      parents.add(profilePane);
-      parents.add(friendlistPane);
-      parents.add(exercisePane);
+      parents.add(0,workoutPane);
+      parents.add(1, calendarPane);
+      parents.add(2, profilePane);
+      parents.add(3, friendlistPane);
+      parents.add(4, exercisePane);
       try {
          scrollContent = FXMLLoader.load(getClass().getResource("WelcomePane.fxml"));
       }
       catch (IOException ioe){ioe.printStackTrace();}
 
-      for(Parent p : parents){ //New thread handles each FXML interface.
-         new Worker(this, p).start();
+      for(int i = 0; i < parents.size(); i++){ //New thread handles each FXML interface.
+         new Worker(this, parents.get(i), i).start();
       }
 }
 
@@ -109,30 +109,32 @@ public class MainController implements Initializable{
    private class Worker extends Thread {
       private MainController mainController;
       private Parent parent;
-      public Worker(MainController mainController, Parent parent){
+      private int index;
+      public Worker(MainController mainController, Parent parent, int index){
          this.mainController = mainController;
          this.parent = parent;
+         this.index = index;
       }
       @Override
       public void run() {
          try {
-            if(parent == workoutPane && workoutPane == null){
+            if(index == 0){
                System.out.println("Workouts!");
                workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
             }
-            if(parent == calendarPane && calendarPane == null) {
+            if(index == 1) {
                System.out.println("Calendar");
                calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
             }
-            if(parent == profilePane && profilePane == null) {
+            if(index == 2) {
                System.out.println("Profile");
                profilePane = new ProfileController(mainController).getParent();
             }
-            if(parent == friendlistPane && friendlistPane == null) {
+            if(index == 3) {
                System.out.println("Friends");
                friendlistPane = FXMLLoader.load(getClass().getResource("FriendListPanel.fxml"));
             }
-            if(parent == exercisePane && exercisePane == null) {
+            if(index == 4) {
                System.out.println("Exercise");
                exercisePane = FXMLLoader.load(getClass().getResource("ExercisesPanel.fxml"));
             }
