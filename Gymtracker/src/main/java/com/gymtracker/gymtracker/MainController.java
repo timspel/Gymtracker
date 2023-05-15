@@ -62,6 +62,7 @@ public class MainController implements Initializable{
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(scrollPane);
          scrollPane.setContent(workoutPane);
+         Singleton.getInstance().setWorkoutScroll(scrollPane);
       }
       if(event.getSource() == calendarButton){
          stackPane.getChildren().removeAll();

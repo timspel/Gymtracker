@@ -7,12 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import model.*;
 import model.Set;
 import model.Template;
-import java.io.IOException;
+
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -25,13 +27,7 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Button saveWorkoutButton;
     @FXML
-    private Label savedTemplatesLabel;
-    @FXML
     private ChoiceBox<String> exercisesChoiceBox;
-    @FXML
-    private Label newWorkoutLabel;
-    @FXML
-    private Label exerciseLabel;
     @FXML
     private Button addExerciseButton;
     @FXML
@@ -39,11 +35,7 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private TextField workoutNameTextField;
     @FXML
-    private Label categoryLabel;
-    @FXML
     private ChoiceBox<Category> categoriesChoiceBox;
-    @FXML
-    private Label exercisesLabel;
     @FXML
     private Button removeExerciseButton;
     @FXML
@@ -62,8 +54,6 @@ public class ControllerWorkouts implements Initializable{
     private TableColumn<ExerciseWorkoutTab, Set> exerciseSet5;
     @FXML
     private Spinner<Integer> repetitionsSpinner;
-    @FXML
-    private Label repetitionsLabel;
     @FXML
     private Button addSetButton;
     @FXML
@@ -89,13 +79,7 @@ public class ControllerWorkouts implements Initializable{
     @FXML
     private Button removeSetButton;
     @FXML
-    private Label weightLabel;
-    @FXML
     private TextField weightTextField;
-    @FXML
-    private Label kgLabel;
-    @FXML
-    private Button createWorkoutButton;
     @FXML
     private TextField workoutDescriptionTextField;
     @FXML
@@ -104,8 +88,6 @@ public class ControllerWorkouts implements Initializable{
     private TextField templateDescriptionTextField;
     @FXML
     private ChoiceBox<Category> categoriesTemplateChoiceBox;
-    @FXML
-    private Button createTemplateButton;
     @FXML
     private ChoiceBox<String> exercisesTemplateChoiceBox;
     @FXML
@@ -126,6 +108,10 @@ public class ControllerWorkouts implements Initializable{
     private Button loadWorkoutButton;
     @FXML
     private Button removeWorkoutButton;
+    @FXML
+    private Button newWorkoutButton;
+    @FXML
+    private Button loadedAddExerciseButton;
     private Set set;
     private int numberOfSets = 0;
     private List<Set> sets;
@@ -140,16 +126,20 @@ public class ControllerWorkouts implements Initializable{
     private List<ExerciseWorkoutTab> exercisesTemplate;
     private List<Template> templates;
     private List<ExerciseWorkoutTab> loadedTemplateExercises;
-    private boolean loaded = false;
+    private boolean loadedTemplate = false;
+    private boolean loadedWorkout = false;
+    private List<ExerciseWorkoutTab> loadedWorkoutExercises;
+    private List<Set> loadedWorkoutSets;
 
-    public ControllerWorkouts() throws IOException {
+    public ControllerWorkouts() {}
 
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadedAddExerciseButton.setVisible(false);
         categoriesChoiceBox.getItems().setAll(Category.values());
         categoriesTemplateChoiceBox.getItems().setAll(Category.values());
         populateExerciseChoiceBox();
+        populateWorkoutChoiceBox();
 
         sets = new ArrayList<>();
         exercises = new ArrayList<>();
@@ -163,8 +153,8 @@ public class ControllerWorkouts implements Initializable{
         templateDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         templateCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-        setTemplates(UserIdSingleton.getInstance().getUserId());
-        templatesTable.setItems(getObservableTemplates());
+        setTemplates(Singleton.getInstance().getUserId());
+        templatesTable.setItems(FXCollections.observableArrayList(templates));
 
         templatesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Template>() {
             @Override
@@ -182,7 +172,7 @@ public class ControllerWorkouts implements Initializable{
         setWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         setRepetitions.setCellValueFactory(new PropertyValueFactory<>("repetitions"));
 
-        setsTable.setItems(getObservableSets());
+        setsTable.setItems(FXCollections.observableArrayList(sets));
 
         setsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Set>() {
             @Override
@@ -203,7 +193,7 @@ public class ControllerWorkouts implements Initializable{
         exerciseSet4.setCellValueFactory(new PropertyValueFactory<>("set4"));
         exerciseSet5.setCellValueFactory(new PropertyValueFactory<>("set5"));
 
-        exercisesTable.setItems(getObservableExercises());
+        exercisesTable.setItems(FXCollections.observableArrayList(exercises));
 
         exercisesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ExerciseWorkoutTab>() {
             @Override
@@ -214,7 +204,7 @@ public class ControllerWorkouts implements Initializable{
                     TablePosition tablePosition = (TablePosition) selectedCells.get(0);
                     selectedExerciseRow = tablePosition.getRow();
 
-                    if(loaded){
+                    if(loadedTemplate){
                         exercisesChoiceBox.setValue(loadedTemplateExercises.get(selectedExerciseRow).getExerciseName());
                     }
                 }
@@ -222,7 +212,7 @@ public class ControllerWorkouts implements Initializable{
         });
 
         templateExerciseNameColumn.setCellValueFactory(new PropertyValueFactory<>("exerciseName"));
-        exercisesTemplateTable.setItems(getObservableExercisesTemplate());
+        exercisesTemplateTable.setItems(FXCollections.observableArrayList(exercisesTemplate));
 
         exercisesTemplateTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ExerciseWorkoutTab>() {
             @Override
@@ -241,6 +231,8 @@ public class ControllerWorkouts implements Initializable{
     public void buttonPressed(ActionEvent e){
         if(e.getSource() == saveWorkoutButton){
             saveWorkout();
+            populateWorkoutChoiceBox();
+            clearWorkoutSection();
         }
         if(e.getSource() == removeExerciseButton){
             removeExercise();
@@ -262,9 +254,11 @@ public class ControllerWorkouts implements Initializable{
         }
         if(e.getSource() == loadTemplateButton){
             loadTemplate();
+            scrollToPosition(Singleton.getInstance().getWorkoutScroll(), 250);
+            loadedAddExerciseButton.setVisible(true);
         }
-        if(e.getSource() == createWorkoutButton){
-            createWorkout();
+        if(e.getSource() == newWorkoutButton){
+
         }
         if(e.getSource() == templateRemoveExerciseButton){
             removeTemplateExercise();
@@ -272,15 +266,118 @@ public class ControllerWorkouts implements Initializable{
         if(e.getSource() == templateAddExerciseButton){
             addExerciseToTemplate();
         }
-        if(e.getSource() == createTemplateButton){
-            createTemplate();
+        if(e.getSource() == loadedAddExerciseButton){
+            loadedAddExercise();
+        }
+        if(e.getSource() == removeWorkoutButton){
+            removeWorkout();
+        }
+        if(e.getSource() == loadWorkoutButton){
+            loadWorkout();
         }
     }
 
-    public void loadTemplate(){
-        loaded = templateLoaded(templates.get(selectedTemplateRow).getTemplateName(), UserIdSingleton.getInstance().getUserId());
+    public void loadWorkout(){
+        loadedWorkout = workoutLoaded(workoutChoiceBox.getValue(), Singleton.getInstance().getUserId());
 
-        if(loaded){
+        if(loadedWorkout){
+            workoutNameTextField.setText(workoutChoiceBox.getValue());
+        }
+    }
+
+    public boolean workoutLoaded(String workoutName, int userId){
+        loadedWorkoutExercises = new ArrayList<>();
+        loadedWorkoutSets = new ArrayList<>();
+        int workoutId = 0;
+        int workoutTypeId = 0;
+        int exerciseId = 0;
+        String exerciseName = null;
+        int setNumber = 0;
+        int numberOfSets = 0;
+        int reps = 0;
+        double weight = 0;
+
+        try(Connection conn = Database.getDatabase()){
+            String query = "select workout_id, workout_description, workout_type_id, date from Workout where workout_name = ? and user_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, workoutName);
+            statement.setInt(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()){
+                workoutId = resultSet.getInt("workout_id");
+                workoutDescriptionTextField.setText(resultSet.getString("workout_description"));
+                workoutDatePicker.setValue(resultSet.getDate("date").toLocalDate());
+                workoutTypeId = resultSet.getInt("workout_type_id");
+
+                query = "SELECT workout_type_name FROM workout_type WHERE workout_type_id = ?";
+                statement = conn.prepareStatement(query);
+                statement.setInt(1, workoutTypeId);
+                ResultSet resultType = statement.executeQuery();
+
+                if(resultSet.next()){
+                    categoriesChoiceBox.setValue(Category.valueOf(resultType.getString("workout_type_name")));
+                }
+            }
+
+            query = "select exercise_id from workout_exercise where workout_id = ?";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            resultSet = statement.executeQuery();
+
+            while(resultSet.next()){
+                exerciseId = resultSet.getInt("exercise_id");
+
+                query = "select exercise_name from exercise where exercise_id = ?";
+                statement = conn.prepareStatement(query);
+                statement.setInt(1, exerciseId);
+                ResultSet result = statement.executeQuery();
+
+                if(result.next()){
+                    exerciseName = result.getString("exercise_name");
+
+                    query = "select set_number, weight, reps from exercise_set where exercise_id = ? and workout_id = ?";
+                    statement = conn.prepareStatement(query);
+                    statement.setInt(1, exerciseId);
+                    statement.setInt(2, workoutId);
+                    ResultSet resultSets = statement.executeQuery();
+
+                    while(resultSets.next()){
+                        loadedWorkoutSets.add(new Set(resultSets.getInt("set_number"), resultSets.getInt("reps"), resultSets.getDouble("weight")));
+                        numberOfSets++;
+                    }
+
+                    if(numberOfSets == 1){
+                        exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString());
+                    }
+                    if(numberOfSets == 2){
+                        exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString());
+                    }
+                    if(numberOfSets == 3){
+                        exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString());
+                    }
+                    if(numberOfSets == 4){
+                        exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString());
+                    }
+                    if(numberOfSets == 5){
+                        exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets.get(4).toString());
+                    }
+                    loadedWorkoutExercises.add(exercise);
+                    exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
+                    setsTable.setItems(FXCollections.observableArrayList(loadedWorkoutSets));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public void loadTemplate(){
+        loadedTemplate = templateLoaded(templates.get(selectedTemplateRow).getTemplateName(), Singleton.getInstance().getUserId());
+
+        if(loadedTemplate){
             workoutNameTextField.setText(templates.get(selectedTemplateRow).getTemplateName());
             workoutDescriptionTextField.setText(templates.get(selectedTemplateRow).getDescription());
             categoriesChoiceBox.setValue(Category.valueOf(templates.get(selectedTemplateRow).getCategory()));
@@ -333,11 +430,39 @@ public class ControllerWorkouts implements Initializable{
 
     public void addExerciseToTemplate(){
         exercisesTemplate.add(new ExerciseWorkoutTab(exercisesTemplateChoiceBox.getValue()));
-        exercisesTemplateTable.setItems(getObservableExercisesTemplate());
+        exercisesTemplateTable.setItems(FXCollections.observableArrayList(exercisesTemplate));
         
     }
 
     public void saveTemplate(){
+        int categoryId = switch (categoriesTemplateChoiceBox.getValue()) {
+            case Chest -> 1;
+            case Back -> 2;
+            case Legs -> 3;
+            case Arms -> 4;
+            case Shoulders -> 5;
+            case Push -> 6;
+            case Pull -> 7;
+            case Abs -> 8;
+            default -> 0;
+        };
+
+        boolean created = false;
+
+        if(templateNameTextField.getText().length() > 1 && templateDescriptionTextField.getText().length() > 1 && categoryId > 0){
+            created = newTemplateRegistered(Singleton.getInstance().getUserId(), templateNameTextField.getText(), templateDescriptionTextField.getText(), categoryId);
+        }
+        else{
+            System.out.println("fill in all fields");
+        }
+
+        if(!created){
+            System.out.println("could not create template");
+        }
+        else{
+            System.out.println("template created");
+        }
+
         boolean registered = false;
         boolean setTemplates = false;
         if(exercisesTemplate.size() > 0){
@@ -350,10 +475,10 @@ public class ControllerWorkouts implements Initializable{
         }
 
         templates = new ArrayList<>();
-        setTemplates = setTemplates(UserIdSingleton.getInstance().getUserId());
+        setTemplates = setTemplates(Singleton.getInstance().getUserId());
 
         if(setTemplates){
-            templatesTable.setItems(getObservableTemplates());
+            templatesTable.setItems(FXCollections.observableArrayList(templates));
         }
         else{
             System.out.println("could not set templates");
@@ -367,7 +492,7 @@ public class ControllerWorkouts implements Initializable{
         int templateId = 0;
 
         if(selectedTemplateRow != -1) {
-            exercisesTemplate = getSelectedTemplateExercises(templates.get(selectedTemplateRow).getTemplateName(), UserIdSingleton.getInstance().getUserId());
+            exercisesTemplate = getSelectedTemplateExercises(templates.get(selectedTemplateRow).getTemplateName(), Singleton.getInstance().getUserId());
             templateId = getTemplateId(templates.get(selectedTemplateRow).getTemplateName());
 
             if(exercisesTemplate.size() > 0){
@@ -380,10 +505,10 @@ public class ControllerWorkouts implements Initializable{
             }
 
             templates = new ArrayList<>();
-            setTemplates = setTemplates(UserIdSingleton.getInstance().getUserId());
+            setTemplates = setTemplates(Singleton.getInstance().getUserId());
 
             if(setTemplates){
-                templatesTable.setItems(getObservableTemplates());
+                templatesTable.setItems(FXCollections.observableArrayList(templates));
             }
             else{
                 System.out.println("could not set templates");
@@ -394,16 +519,16 @@ public class ControllerWorkouts implements Initializable{
     public int getTemplateId(String templateName){
         int templateId = 0;
         try(Connection conn = Database.getDatabase()){
-            String query = "select template_id from template where template_name = ?";
+            String query = "select template_id from template where template_name = ? and user_id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, templateName);
+            statement.setInt(2, Singleton.getInstance().getUserId());
             ResultSet resultSet = statement.executeQuery();
 
             if(resultSet.next()){
                 templateId = resultSet.getInt("template_id");
             }
             statement.close();
-            conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -519,7 +644,7 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
-    public boolean addExerciseToWorkout(int workoutId, String exerciseName, int setNumber, int reps, double weight) {
+    public boolean addExerciseToWorkout(int workoutId, String exerciseName) {
         try (Connection con = Database.getDatabase()) {
             String sql = "SELECT exercise_id FROM Exercise WHERE exercise_name = ?";
             PreparedStatement pstmt = con.prepareStatement(sql);
@@ -539,32 +664,8 @@ public class ControllerWorkouts implements Initializable{
                 insertStmt.executeUpdate();
                 System.out.println("Exercise added to workout successfully");
             }
-            // Add the exercise set to the workout
-            try (PreparedStatement selectStmt = con.prepareStatement("SELECT workout_exercise_id FROM Workout_Exercise WHERE workout_id = ? AND exercise_id = ?")) {
-                selectStmt.setInt(1, workoutId);
-                selectStmt.setInt(2, exerciseId);
-
-                try (ResultSet rs2 = selectStmt.executeQuery()) {
-                    if (rs2.next()) {
-                        int workoutExerciseId = rs2.getInt("workout_exercise_id");
-
-                        try (PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Exercise_set (workout_id, exercise_id, set_number, reps, weight) VALUES (?, ?, ?, ?, ?)")) {
-                            insertStmt.setInt(1, workoutId);
-                            insertStmt.setInt(2, exerciseId);
-                            insertStmt.setInt(3, setNumber);
-                            insertStmt.setInt(4, reps);
-                            insertStmt.setDouble(5, weight);
-
-                            insertStmt.executeUpdate();
-                            System.out.println("Exercise set added successfully");
-                        }
-                    } else {
-                        System.out.println("Error: exercise not found in the workout");
-                        return false;
-                    }
-                }
-            }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
@@ -572,64 +673,35 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
-    public void createTemplate(){
-        int categoryId = switch (categoriesTemplateChoiceBox.getValue()) {
-            case Chest -> 1;
-            case Back -> 2;
-            case Legs -> 3;
-            case Arms -> 4;
-            case Shoulders -> 5;
-            case Push -> 6;
-            case Pull -> 7;
-            case Abs -> 8;
-            default -> 0;
-        };
+    public boolean addSetToExercise(int workoutId, String exerciseName, int setNumber, int reps, double weight){
+        try(Connection con = Database.getDatabase()){
+            String sql = "SELECT exercise_id FROM Exercise WHERE exercise_name = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, exerciseName);
 
-        boolean created = false;
+            // Execute the query and retrieve the exercise ID
+            ResultSet rs = pstmt.executeQuery();
+            int exerciseId = -1; // Default value in case exercise name not found
+            if (rs.next()) {
+                exerciseId = rs.getInt("exercise_id");
+            }
 
-        if(templateNameTextField.getText().length() > 1 && templateDescriptionTextField.getText().length() > 1 && categoryId > 0){
-            created = newTemplateRegistered(UserIdSingleton.getInstance().getUserId(), templateNameTextField.getText(), templateDescriptionTextField.getText(), categoryId);
-        }
-        else{
-            System.out.println("fill in all fields");
-        }
+            PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Exercise_set (workout_id, exercise_id, set_number, reps, weight) VALUES (?, ?, ?, ?, ?)");
+            insertStmt.setInt(1, workoutId);
+            insertStmt.setInt(2, exerciseId);
+            insertStmt.setInt(3, setNumber);
+            insertStmt.setInt(4, reps);
+            insertStmt.setDouble(5, weight);
+            insertStmt.executeUpdate();
 
-        if(!created){
-            System.out.println("could not create template");
+            System.out.println("Exercise set added successfully");
         }
-        else{
-            System.out.println("template created");
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
-    }
-
-    public void createWorkout(){
-        int categoryId = switch (categoriesChoiceBox.getValue()) {
-            case Chest -> 1;
-            case Back -> 2;
-            case Legs -> 3;
-            case Arms -> 4;
-            case Shoulders -> 5;
-            case Push -> 6;
-            case Pull -> 7;
-            case Abs -> 8;
-            default -> 0;
-        };
-
-        boolean created = false;
-
-        if(workoutNameTextField.getText().length() > 1 && workoutDescriptionTextField.getText().length() > 1 && categoryId > 0 && workoutDatePicker.getValue() != null && workoutTimeTextField.getText().length() > 1){
-            created = newWorkoutRegistered(UserIdSingleton.getInstance().getUserId(), workoutNameTextField.getText(), workoutDescriptionTextField.getText(), categoryId, workoutDatePicker.getValue(), workoutTimeTextField.getText(), true);
-        }
-        else{
-            System.out.println("fill in all fields");
-        }
-
-        if(!created){
-            System.out.println("could not create workout, try filling in correct time format");
-        }
-        else{
-            System.out.println("workout created");
-        }
+        return true;
     }
 
     public boolean newWorkoutRegistered(int userId, String workoutName, String workoutDescription, int categoryId, LocalDate date, String time, boolean isOriginal) {
@@ -709,41 +781,160 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
-    public ObservableList<Set> getObservableSets(){
-        return FXCollections.observableArrayList(sets);
-    }
-
-    public ObservableList<Template> getObservableTemplates(){
-        return FXCollections.observableArrayList(templates);
-    }
-
-    public ObservableList<ExerciseWorkoutTab> getObservableExercises(){
-        return FXCollections.observableArrayList(exercises);
-    }
-
-    public ObservableList<ExerciseWorkoutTab> getObservableExercisesTemplate(){
-        return FXCollections.observableArrayList(exercisesTemplate);
+    public boolean addParticipantToWorkout(int workoutId, int userId){
+        try(Connection conn = Database.getDatabase()){
+            String query = "INSERT INTO Workout_participants (workout_id, user_id) VALUES (?,?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public void saveWorkout(){
-        if(exercises.size() > 0){
-            for(int i = 0; i < exercises.size(); i++){
-                boolean added = false;
+        int categoryId = switch (categoriesChoiceBox.getValue()) {
+            case Chest -> 1;
+            case Back -> 2;
+            case Legs -> 3;
+            case Arms -> 4;
+            case Shoulders -> 5;
+            case Push -> 6;
+            case Pull -> 7;
+            case Abs -> 8;
+            default -> 0;
+        };
 
-                for(int j = 0; j < sets.size(); j++){
-                    added = addExerciseToWorkout(workoutId, exercises.get(i).getExerciseName(), sets.get(j).getSetNumber(), sets.get(j).getRepetitions(), sets.get(j).getWeight());
-                }
+        boolean created = false;
 
-                if(!added){
-                    System.out.println("could not add exercise");
+        if(workoutNameTextField.getText().length() > 1 && workoutDescriptionTextField.getText().length() > 1 && categoryId > 0 && workoutDatePicker.getValue() != null && workoutTimeTextField.getText().length() > 1){
+            created = newWorkoutRegistered(Singleton.getInstance().getUserId(), workoutNameTextField.getText(), workoutDescriptionTextField.getText(), categoryId, workoutDatePicker.getValue(), workoutTimeTextField.getText(), true);
+
+            boolean addParticipant = addParticipantToWorkout(workoutId, Singleton.getInstance().getUserId());
+
+            if(!addParticipant){
+                System.out.println("Could not add participant");
+            }
+            if(loadedTemplate){
+                if(loadedTemplateExercises.size() > 0){
+                    for(int i = 0; i < loadedTemplateExercises.size(); i++){
+                        boolean addedExercise = false;
+                        boolean addedSet = false;
+
+                        addedExercise = addExerciseToWorkout(workoutId, loadedTemplateExercises.get(i).getExerciseName());
+
+                        if(!addedExercise){
+                            System.out.println("could not add exercise to workout");
+                        }
+
+                        for(int j = 0; j < sets.size(); j++){
+                            addedSet = addSetToExercise(workoutId, loadedTemplateExercises.get(i).getExerciseName(), sets.get(j).getSetNumber(), sets.get(j).getRepetitions(), sets.get(j).getWeight());
+                        }
+
+                        if(!addedSet){
+                            System.out.println("could not add set to exercise");
+                        }
+                    }
                 }
-                else{
-                    clearWorkoutSection();
-                    setsTable.setItems(getObservableSets());
-                    exercisesTable.setItems(getObservableExercises());
+            }
+            else{
+                if(exercises.size() > 0){
+                    for(int i = 0; i < exercises.size(); i++){
+                        boolean addedExercise = false;
+                        boolean addedSet = false;
+
+                        addedExercise = addExerciseToWorkout(workoutId, exercises.get(i).getExerciseName());
+
+                        if(!addedExercise){
+                            System.out.println("could not add exercise to workout");
+                        }
+
+                        for(int j = 0; j < sets.size(); j++){
+                            addedSet = addSetToExercise(workoutId, exercises.get(i).getExerciseName(), sets.get(j).getSetNumber(), sets.get(j).getRepetitions(), sets.get(j).getWeight());
+                        }
+
+                        if(!addedSet){
+                            System.out.println("could not add set to exercise");
+                        }
+                    }
                 }
             }
         }
+        else{
+            System.out.println("fill in all fields");
+        }
+
+        if(!created){
+            System.out.println("could not create workout, try filling in correct time format");
+        }
+        else{
+            System.out.println("workout created");
+        }
+    }
+
+    public void removeWorkout(){
+        int workoutId = getWorkoutId(workoutChoiceBox.getValue(), Singleton.getInstance().getUserId());
+        boolean removed = workoutRemoved(workoutId);
+
+        if(removed){
+            System.out.println("Workout successfully removed");
+            populateWorkoutChoiceBox();
+        }
+        else{
+            System.out.println("could not remove workout");
+        }
+    }
+
+    public int getWorkoutId(String workoutName, int userId){
+        int workoutId = 0;
+        try(Connection conn = Database.getDatabase()){
+            String query = "SELECT workout_id FROM Workout WHERE workout_name = ? and user_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, workoutName);
+            statement.setInt(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()){
+                workoutId = resultSet.getInt("workout_id");
+            }
+            statement.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return workoutId;
+    }
+
+    public boolean workoutRemoved(int workoutId){
+        try(Connection conn = Database.getDatabase()){
+            String query = "DELETE FROM Workout_exercise where workout_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            statement.executeUpdate();
+
+            query = "DELETE FROM Exercise_set where workout_id = ?";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            statement.executeUpdate();
+
+            query = "DELETE FROM Workout_participants where workout_id = ?";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            statement.executeUpdate();
+
+            query = "DELETE FROM Workout where workout_id = ?";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, workoutId);
+            statement.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public void addSet(){
@@ -751,7 +942,7 @@ public class ControllerWorkouts implements Initializable{
             set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Double.parseDouble(weightTextField.getText()));
             sets.add(set);
             numberOfSets++;
-            setsTable.setItems(getObservableSets());
+            setsTable.setItems(FXCollections.observableArrayList(sets));
         }
     }
 
@@ -770,11 +961,11 @@ public class ControllerWorkouts implements Initializable{
             sets.add(new Set(numberOfSets + 1, set.getRepetitions(), set.getWeight()));
             numberOfSets++;
         }
-        setsTable.setItems(getObservableSets());
+        setsTable.setItems(FXCollections.observableArrayList(sets));
     }
 
     public void addExercise(){
-        if(loaded){
+        if(loadedTemplate){
             if(numberOfSets == 1){
                 exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString());
             }
@@ -813,8 +1004,29 @@ public class ControllerWorkouts implements Initializable{
             }
 
             exercises.add(exercise);
-            exercisesTable.setItems(getObservableExercises());
+            exercisesTable.setItems(FXCollections.observableArrayList(exercises));
         }
+    }
+
+    public void loadedAddExercise(){
+        if(numberOfSets == 1){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString());
+        }
+        if(numberOfSets == 2){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString());
+        }
+        if(numberOfSets == 3){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString());
+        }
+        if(numberOfSets == 4){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString());
+        }
+        if(numberOfSets == 5){
+            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets.get(4).toString());
+        }
+
+        loadedTemplateExercises.add(exercise);
+        exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
     }
 
     public void populateExerciseChoiceBox(){
@@ -836,22 +1048,49 @@ public class ControllerWorkouts implements Initializable{
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
 
+    public void populateWorkoutChoiceBox(){
+        workoutChoiceBox.getItems().clear();
+        try(Connection conn = Database.getDatabase()){
+            String query = "SELECT workout_name FROM Workout where user_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, Singleton.getInstance().getUserId());
+            ResultSet rs = statement.executeQuery();
+
+            // Add the workout names to the ComboBox
+            while (rs.next()) {
+                String workoutName = rs.getString("workout_name");
+                workoutChoiceBox.getItems().add(workoutName);
+            }
+
+            rs.close();
+            statement.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void removeExercise(){
-        exercises.remove(selectedExerciseRow);
-        exercisesTable.setItems(getObservableExercises());
+        if(loadedTemplate){
+            loadedTemplateExercises.remove(selectedExerciseRow);
+            exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
+        }
+        else{
+            exercises.remove(selectedExerciseRow);
+            exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+        }
     }
 
     public void removeTemplateExercise(){
         exercisesTemplate.remove(selectedExerciseTemplateRow);
-        exercisesTemplateTable.setItems(getObservableExercisesTemplate());
+        exercisesTemplateTable.setItems(FXCollections.observableArrayList(exercisesTemplate));
     }
 
     public void clearWorkoutSection(){
         exercises = new ArrayList<>();
         sets = new ArrayList<>();
+        loadedTemplateExercises = new ArrayList<>();
         workoutNameTextField.clear();
         workoutDescriptionTextField.clear();
         workoutDatePicker.setValue(null);
@@ -861,7 +1100,33 @@ public class ControllerWorkouts implements Initializable{
         repetitionsSpinner.getValueFactory().setValue(0);
         weightTextField.clear();
         numberOfSets = 0;
+        setsTable.setItems(FXCollections.observableArrayList(sets));
+
+        if(loadedTemplate){
+            exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
+        }
+        else{
+            exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+        }
     }
+
+    public void scrollToPosition(ScrollPane scrollPane, int position) {
+        javafx.scene.Node content = scrollPane.getContent();
+        AnchorPane anchorPaneContent = (AnchorPane) content;
+        Bounds bounds = anchorPaneContent.getBoundsInLocal();
+        double contentHeight = bounds.getHeight();
+
+        // Calculate the position within the AnchorPane based on the desired position
+
+        // Adjust the vertical scroll position
+        double vValue = position / contentHeight;
+        scrollPane.setVvalue(vValue);
+
+        // Adjust the horizontal scroll position if needed
+        double hValue = 0.0; // Set the desired horizontal scroll position
+        scrollPane.setHvalue(hValue);
+    }
+
 }
 
 class SetComparator implements Comparator<Set>{

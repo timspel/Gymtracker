@@ -12,8 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +63,7 @@ public class ProfileController {
    public ProfileController(MainController mainController) throws IOException {
       this.mainController = mainController;
       loadFXML();
-      userId = UserIdSingleton.getInstance().getUserId();
+      userId = Singleton.getInstance().getUserId();
 
       getUserInfo();
       showProfilePic();
