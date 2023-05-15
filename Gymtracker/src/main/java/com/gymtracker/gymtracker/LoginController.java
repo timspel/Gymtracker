@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -65,26 +66,7 @@ public class LoginController implements Initializable {
    public void buttonClicked(ActionEvent event) throws IOException {
       if(event.getSource() == loginButton){ //IF user pressed the Login button.
          lblStatus.setText("");
-        if (loginAttempt()){
-           PreparedStatement stmt = null;
-           try (Connection con = Database.getDatabase();) {
-              String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
-              stmt = con.prepareStatement(sql);
-              System.out.println("Opened database successfully");
-
-              stmt = con.prepareStatement(sql);
-              stmt.setString(1,username);
-              stmt.setString(2, allUsers.get(username));
-
-              ResultSet resultSet = stmt.executeQuery();
-              if(resultSet.next()){
-                 userId = resultSet.getInt("user_id");
-              }
-              Singleton.getInstance().setUserId(userId);
-              login(event);
-           }
-           catch (Exception e){e.printStackTrace();}
-        }
+         handleLogin(event);
       }
       if(event.getSource() == registerButton){ //IF user pressed the Register button.
          lblStatus.setText("");
@@ -117,6 +99,28 @@ public class LoginController implements Initializable {
       }
    }
 
+   private void handleLogin(ActionEvent event){
+      if (loginAttempt()){
+         PreparedStatement stmt = null;
+         try (Connection con = Database.getDatabase();) {
+            String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
+            stmt = con.prepareStatement(sql);
+            System.out.println("Opened database successfully");
+
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1,username);
+            stmt.setString(2, allUsers.get(username));
+
+            ResultSet resultSet = stmt.executeQuery();
+            if(resultSet.next()){
+               userId = resultSet.getInt("user_id");
+            }
+            Singleton.getInstance().setUserId(userId);
+            login(event);
+         }
+         catch (Exception e){e.printStackTrace();}
+      }
+   }
    public boolean loginAttempt(){
       boolean loginSuccess = false;
       if(loginCustomer(loginUsernameTextField.getText(), loginPasswordField.getText())){
@@ -221,5 +225,16 @@ public class LoginController implements Initializable {
    public void initialize(URL url, ResourceBundle resourceBundle) {
       registerPane.setVisible(false);
       getAllUsers();
+      loginPasswordField.setOnKeyPressed( event -> {
+         if( event.getCode() == KeyCode.ENTER ) {
+            loginButton.fire();
+         }
+      } );
+      loginButton.setOnKeyPressed(event -> {
+         if(event.getCode() == KeyCode.ENTER){
+            loginButton.fire();
+         }
+      });
+
    }
 }
