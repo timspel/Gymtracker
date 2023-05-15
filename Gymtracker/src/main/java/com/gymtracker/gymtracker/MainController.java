@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable{
+   //<editor-fold desc="FXML Variables">
    @FXML
    private Button workoutsButton;
    @FXML
@@ -40,6 +41,8 @@ public class MainController implements Initializable{
    private Button homeButton;
    @FXML
    private Button logoutButton;
+   //</editor-fold>
+
    private Parent workoutPane;
    private Parent calendarPane;
    private Parent profilePane;
@@ -47,7 +50,7 @@ public class MainController implements Initializable{
    private Parent exercisePane;
    private Parent scrollContent;
    ArrayList<Parent> parents = new ArrayList<>();
-   public MainController(){ //Loads in the other frames
+   public MainController(){
       parents.add(0,workoutPane);
       parents.add(1, calendarPane);
       parents.add(2, profilePane);
@@ -106,7 +109,7 @@ public class MainController implements Initializable{
       scrollPane.setContent(scrollContent);
    }
 
-   private class Worker extends Thread {
+   private class Worker extends Thread { //Inner Thread class that loads in all FXML files.
       private MainController mainController;
       private Parent parent;
       private int index;
@@ -118,7 +121,7 @@ public class MainController implements Initializable{
       @Override
       public void run() {
          try {
-            if(index == 0){
+            if(index == 0){ //Ska byta denna till switch sats jag vet //Alex
                System.out.println("Workouts!");
                workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
             }
