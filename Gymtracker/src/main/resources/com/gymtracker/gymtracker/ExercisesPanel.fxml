@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
@@ -18,7 +19,7 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <ListView fx:id="exercisesList" layoutX="40.0" layoutY="238.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
+      <ListView fx:id="exercisesList" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
             <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
@@ -42,9 +43,9 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <Button layoutX="40.0" layoutY="716.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
-      <Button layoutX="140.0" layoutY="716.0" mnemonicParsing="false" text="Edit exercise" />
-      <Button layoutX="235.0" layoutY="716.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
+      <Button layoutX="40.0" layoutY="730.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
+      <Button layoutX="140.0" layoutY="730.0" mnemonicParsing="false" onAction="#openEditExerciseWindow" text="Edit exercise" />
+      <Button layoutX="235.0" layoutY="730.0" mnemonicParsing="false" onAction="#removeExercise" text="Remove exercise" />
       <HBox alignment="CENTER" prefHeight="154.0" prefWidth="1276.0" style="-fx-background-color: #000000;">
          <children>
             <AnchorPane prefHeight="156.0" prefWidth="499.0">
@@ -58,6 +59,9 @@
             </AnchorPane>
          </children>
       </HBox>
+      <ChoiceBox fx:id="muscleGroupSorter" layoutX="80.0" layoutY="238.0" prefHeight="25.0" prefWidth="180.0" />
+      <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetExerciseSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
+      <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="242.0" prefHeight="17.0" prefWidth="30.0" text="Filter:" />
    </children>
    <padding>
       <Insets top="1.0" />

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
@@ -17,6 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +58,16 @@ public class CalendarDialog {
 
     @FXML
     private Text selectedWorkoutName;
-
-    int workoutId;
+    @FXML
+    private Text selectedWorkoutDate;
+    private int workoutId;
+    @FXML
+    private Text joinedStatus;
+    @FXML
+    private Button backButton;
 
     private List<ExerciseWorkoutTab> exercises;
     private List<WorkoutParticipant> workoutParticipants;
-    @FXML
-    private Button backButton;
 
     public void initialize() {
         backButton.setOnAction(this::handleBackButtonClick);
@@ -109,7 +120,6 @@ public class CalendarDialog {
                 "WHERE workout.workout_id = ?";
 
         try (Connection conn = Database.getDatabase()){
-
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, workoutId);
 
@@ -127,8 +137,6 @@ public class CalendarDialog {
                             break;
                         }
                     }
-
-
                     if (exercise == null) {
                         exercise = new ExerciseWorkoutTab(exerciseName);
                         exercises.add(exercise);
@@ -169,13 +177,8 @@ public class CalendarDialog {
             stmtCheck.setInt(2, userId);
             ResultSet rs = stmtCheck.executeQuery();
             if (rs.next()) {
-                // The user is already a participant of the workout
-                Alert alreadyJoined = new Alert(Alert.AlertType.INFORMATION);
-                alreadyJoined.setTitle("Already Joined");
-                alreadyJoined.setHeaderText("Already Joined");
-                alreadyJoined.setContentText("You have already joined " + selectedWorkoutName.getText() + "!");
-                alreadyJoined.showAndWait();
-
+                setJoinedStatus("You have already joined " + selectedWorkoutName.getText() + "!");
+                joinedStatus.setFill(Color.RED);
                 return;
             }
 
@@ -186,13 +189,8 @@ public class CalendarDialog {
             stmt.setInt(2, userId);
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 1) {
-                System.out.println("The user has joined the workout.");
-                Alert joined = new Alert(Alert.AlertType.INFORMATION);
-                joined.setTitle("Joined");
-                joined.setHeaderText("Joined");
-                joined.setContentText("You have joined the " + selectedWorkoutName.getText() + "!");
-                joined.showAndWait();
-
+                setJoinedStatus("You have joined " + selectedWorkoutName.getText() + "!");
+                joinedStatus.setFill(Color.BLUE);
             }
 
             // Insert a new row in the workout table
@@ -224,7 +222,9 @@ public class CalendarDialog {
 
     }
 
-
+    private void setJoinedStatus(String status){
+        joinedStatus.setText(status);
+    }
 
     public void setWorkoutId(int workoutId){
         this.workoutId = workoutId;
@@ -234,4 +234,16 @@ public class CalendarDialog {
         selectedWorkoutName.setText(workoutName);
     }
 
+
+    public void setWorkoutDate(String workoutDate) {
+        try {
+            ZonedDateTime dateTime = ZonedDateTime.parse(workoutDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - EEEE, MMM dd");
+            String formattedDate = dateTime.format(formatter);
+            selectedWorkoutDate.setText(formattedDate);
+        } catch (DateTimeException e) {
+            // Handle the exception or display an error message
+            e.printStackTrace();
+        }
+    }
 }
