@@ -140,6 +140,7 @@ public class MainController implements Initializable{
             if(index == 4) {
                System.out.println("Exercise");
                exercisePane = FXMLLoader.load(getClass().getResource("ExercisesPanel.fxml"));
+               System.out.println("Done...");
             }
          }
          catch (IOException io){
