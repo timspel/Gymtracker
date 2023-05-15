@@ -62,7 +62,7 @@ public class MainController implements Initializable{
       catch (IOException ioe){ioe.printStackTrace();}
 
       for(int i = 0; i < parents.size(); i++){ //New thread handles each FXML interface.
-         new Worker(this, parents.get(i), i).start();
+         new LoadingThread(this, parents.get(i), i).start();
       }
 }
 
@@ -109,11 +109,11 @@ public class MainController implements Initializable{
       scrollPane.setContent(scrollContent);
    }
 
-   private class Worker extends Thread { //Inner Thread class that loads in all FXML files.
+   private class LoadingThread extends Thread { //Inner Thread class that loads in all FXML files.
       private MainController mainController;
       private Parent parent;
       private int index;
-      public Worker(MainController mainController, Parent parent, int index){
+      public LoadingThread(MainController mainController, Parent parent, int index){
          this.mainController = mainController;
          this.parent = parent;
          this.index = index;
