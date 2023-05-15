@@ -59,6 +59,6 @@ public class Exercise {
 
     @Override
     public String toString() {
-        return String.format("%s | %s", muscleGroup, name);
+        return String.format("%s", name);
     }
 }
