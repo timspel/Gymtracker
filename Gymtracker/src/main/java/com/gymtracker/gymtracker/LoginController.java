@@ -80,7 +80,7 @@ public class LoginController implements Initializable {
               if(resultSet.next()){
                  userId = resultSet.getInt("user_id");
               }
-              UserIdSingleton.getInstance().setUserId(userId);
+              Singleton.getInstance().setUserId(userId);
               login(event);
            }
            catch (Exception e){e.printStackTrace();}

@@ -71,11 +71,11 @@ public class FriendsListController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         friendsColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         friendsArrayList = new ArrayList<>();
-        populateFriendsList(UserIdSingleton.getInstance().getUserId());
+        populateFriendsList(Singleton.getInstance().getUserId());
 
         pendingColumn.setCellValueFactory(new PropertyValueFactory<>("name")); // Set cell value factory for the pendingColumn
         pendingArrayList = new ArrayList<>();
-        populatePendingFriendRequest(UserIdSingleton.getInstance().getUserId());
+        populatePendingFriendRequest(Singleton.getInstance().getUserId());
 
 
         friendsList.setItems(FXCollections.observableArrayList(friendsArrayList));
@@ -103,7 +103,7 @@ public class FriendsListController implements Initializable {
             searchFriends(search);
         }
         if(event.getSource() == addFriend){
-            userId = UserIdSingleton.getInstance().getUserId();
+            userId = Singleton.getInstance().getUserId();
             System.out.println(userId);
             System.out.println(userIdFriend);
             addFriendship(userId,userIdFriend);
@@ -121,7 +121,7 @@ public class FriendsListController implements Initializable {
             Friend selectedFriend = pendingList.getSelectionModel().getSelectedItem();
             if (selectedFriend != null) {
                 int friendshipId = selectedFriend.getId();
-                removeFriendshipRequest(friendshipId, UserIdSingleton.getInstance().getUserId());
+                removeFriendshipRequest(friendshipId, Singleton.getInstance().getUserId());
             }
 
         }
@@ -131,7 +131,7 @@ public class FriendsListController implements Initializable {
             Friend selectedFriend = pendingList.getSelectionModel().getSelectedItem();
             if (selectedFriend != null) {
                 int friendshipId = selectedFriend.getId();
-                acceptFriendship(friendshipId, UserIdSingleton.getInstance().getUserId());
+                acceptFriendship(friendshipId, Singleton.getInstance().getUserId());
             }
 
         }
@@ -204,7 +204,7 @@ public class FriendsListController implements Initializable {
                         setAlert("Friend request sent successfully");
                         Friend friend = new Friend(friendUsername, user2Id, weight, height, image);
                         pendingArrayList.add(friend);
-                        populatePendingFriendRequest(UserIdSingleton.getInstance().getUserId());
+                        populatePendingFriendRequest(Singleton.getInstance().getUserId());
                     }
                 }
             }
