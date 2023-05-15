@@ -77,9 +77,11 @@ public class ProfileController {
          if(editButton.getText() != "Save") {
             editButton.setText("Save");
             goalsText.setEditable(true);
+            //goalsText.setStyle("-fx-control-inner-background: #FFFFFF;");
          }
          else {
             goalsText.setEditable(false);
+          //goalsText.setStyle("-fx-control-inner-background:TRANSPARENT");
             editButton.setText("Edit");
             Connection conn = null;
             try{
@@ -204,6 +206,7 @@ public class ProfileController {
 
    private void initComponents(){ //Initializes the components such as buttons and text fields.
       goalsText.setEditable(false);
+      //goalsText.setStyle("--fx-highlight-fill:TRANSPARENT;");
       weightField.setEditable(false);
       weightField.setStyle("-fx-background-color: TRANSPARENT;");
       heightField.setEditable(false);
@@ -264,7 +267,7 @@ public class ProfileController {
          con.setAutoCommit(false);
          System.out.println("Database Connected.");
          System.out.println(userId);
-         String sql = ("SELECT username, weight, height, profile_picture FROM \"User\" WHERE user_id = ?");
+         String sql = ("SELECT username, weight, height, profile_picture, personal_goal FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
 
@@ -274,6 +277,7 @@ public class ProfileController {
             height = result.getDouble("height");
             weight = result.getDouble("weight");
             profilePicture = result.getString("profile_picture");
+            goalsText.setText(result.getString("personal_goal"));
          }
 
          stmt.close();
