@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,7 +23,7 @@
       <ListView fx:id="exercisesList" fixedCellSize="30.0" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
+            <Label fx:id="infoPanelName" layoutX="20.0" layoutY="29.0" text="Exercise name">
                <font>
                   <Font name="AppleGothic Regular" size="25.0" />
                </font>
@@ -41,6 +42,12 @@
                   <ImageView fx:id="infoPanelImage" fitHeight="350.0" fitWidth="369.0" layoutX="-4.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
+            <Label layoutX="408.0" layoutY="46.0" prefHeight="27.0" prefWidth="130.0" text="Current weight:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="currentWeight" editable="true" layoutX="553.0" layoutY="47.0" />
          </children>
       </AnchorPane>
       <Button layoutX="40.0" layoutY="730.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />

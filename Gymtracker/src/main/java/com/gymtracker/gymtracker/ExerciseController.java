@@ -30,8 +30,11 @@ public class ExerciseController {
    private ImageView infoPanelImage;
    @FXML
    private ChoiceBox muscleGroupSorter = new ChoiceBox();
+   @FXML
+   private Spinner<Integer> currentWeight;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
    private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getMuscleGroup);
+
 
    public void initialize() {
       populateExercises();
@@ -42,6 +45,8 @@ public class ExerciseController {
       populateInfoPanel(exercises.get(0));
       //Adds listener for choosing option in muscleGroupSorter
       muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
+      //currentWeight.valueProperty().addListener( (v, oldValue, newValue) ->  );
+      currentWeight = new Spinner<>(1, 100, 50);
    }
 
    public void populateExercises(){
