@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable{
@@ -44,17 +45,22 @@ public class MainController implements Initializable{
    private Parent profilePane;
    private Parent friendlistPane;
    private Parent exercisePane;
-   private AnchorPane scrollContent;
+   private Parent scrollContent;
+   ArrayList<Parent> parents = new ArrayList<>();
    public MainController(){ //Loads in the other frames
+      parents.add(workoutPane);
+      parents.add(calendarPane);
+      parents.add(profilePane);
+      parents.add(friendlistPane);
+      parents.add(exercisePane);
       try {
-         workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
-         calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
          scrollContent = FXMLLoader.load(getClass().getResource("WelcomePane.fxml"));
-         profilePane = new ProfileController(this).getParent();
-         friendlistPane = FXMLLoader.load(getClass().getResource("FriendListPanel.fxml"));
-         exercisePane = FXMLLoader.load(getClass().getResource("ExercisesPanel.fxml"));
       }
       catch (IOException ioe){ioe.printStackTrace();}
+
+      for(Parent p : parents){ //New thread handles each FXML interface.
+         new Worker(this, p).start();
+      }
 }
 
    public void buttonPressed(ActionEvent event) throws IOException{ //Handles button presses
@@ -98,5 +104,42 @@ public class MainController implements Initializable{
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       scrollPane.setContent(scrollContent);
+   }
+
+   private class Worker extends Thread {
+      private MainController mainController;
+      private Parent parent;
+      public Worker(MainController mainController, Parent parent){
+         this.mainController = mainController;
+         this.parent = parent;
+      }
+      @Override
+      public void run() {
+         try {
+            if(parent == workoutPane && workoutPane == null){
+               System.out.println("Workouts!");
+               workoutPane = FXMLLoader.load(getClass().getResource("WorkoutPane.fxml"));
+            }
+            if(parent == calendarPane && calendarPane == null) {
+               System.out.println("Calendar");
+               calendarPane = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
+            }
+            if(parent == profilePane && profilePane == null) {
+               System.out.println("Profile");
+               profilePane = new ProfileController(mainController).getParent();
+            }
+            if(parent == friendlistPane && friendlistPane == null) {
+               System.out.println("Friends");
+               friendlistPane = FXMLLoader.load(getClass().getResource("FriendListPanel.fxml"));
+            }
+            if(parent == exercisePane && exercisePane == null) {
+               System.out.println("Exercise");
+               exercisePane = FXMLLoader.load(getClass().getResource("ExercisesPanel.fxml"));
+            }
+         }
+         catch (IOException io){
+            io.printStackTrace();
+         }
+      }
    }
 }
