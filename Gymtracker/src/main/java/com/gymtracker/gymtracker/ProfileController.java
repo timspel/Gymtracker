@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,8 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,14 +64,14 @@ public class ProfileController {
    public ProfileController(MainController mainController) throws IOException {
       this.mainController = mainController;
       loadFXML();
-      userId = UserIdSingleton.getInstance().getUserId();
+      userId = Singleton.getInstance().getUserId();
 
       getUserInfo();
       showProfilePic();
       initComponents();
    }
 
-   public void buttonHandler(ActionEvent event){
+   public void buttonHandler(ActionEvent event){ //Method that handles all the button presses.
       if(event.getSource() == editButton){
          if(editButton.getText() != "Save") {
             editButton.setText("Save");
@@ -93,85 +92,38 @@ public class ProfileController {
             }catch (Exception e){e.printStackTrace();}
          }
       }
-      if(event.getSource() == editInfoButton){
-         if(editInfoButton.getText() != "Save") {
+      if(event.getSource() == editInfoButton){ //When user presses the edit button next to weight and height.
+         if(editInfoButton.getText() != "Save") { //If the button says "Edit"
             editInfoButton.setText("Save");
             heightField.setEditable(true);
             weightField.setEditable(true);
             weightField.setStyle("-fx-background-color: WHITE;");
             heightField.setStyle("-fx-background-color: WHITE;");
          }
-         else {
+         else { //IF the button says "Save"
             editInfoButton.setText("Edit");
             heightField.setEditable(false);
             weightField.setEditable(false);
             weightField.setStyle("-fx-background-color: TRANSPARENT;");
             heightField.setStyle("-fx-background-color: TRANSPARENT;");
-            if(Double.parseDouble(weightField.getText()) != weight && Double.parseDouble(heightField.getText()) != height) {
-               System.out.println("Info changed.");
-               Connection con = null;
-               PreparedStatement stmt = null;
-               try {
-                  con = Database.getDatabase();
-                  con.setAutoCommit(false);
-                  System.out.println("Database Connected.");
-                  System.out.println(userId);
-                  String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
-                  stmt = con.prepareStatement(sql);
-                  String path = pictureUrlField.getText();
-                  System.out.println(pictureUrlField.getText());
-                  stmt.setDouble(1, Double.parseDouble(heightField.getText()));
-                  stmt.setDouble(2, Double.parseDouble(weightField.getText()));
-                  stmt.setInt(3, userId);
-
-                  stmt.executeUpdate();
-                  stmt.close();
-                  con.commit();
-                  con.close();
-               } catch (Exception e) {
-                  e.printStackTrace();
-                  System.err.println(e.getClass().getName() + ": " + e.getMessage());
-               }
+            if(Double.parseDouble(weightField.getText()) != weight && Double.parseDouble(heightField.getText()) != height) { //Checks if both fields are empty
+               setWeightHeight(); //Calls method that updates the users weight and height.
             }
          }
       }
       if(event.getSource() == changeButton){ //Handles the events when user presses Change button.
-         if(changeButton.getText() != "Save") {
+         if(changeButton.getText() != "Save") { //Enables the user to edit the image url.
             pictureUrlField.setVisible(true);
             changeButton.setText("Save");
             lblUrlTip.setVisible(true);
          }
-         else {
-            if(!pictureUrlField.getText().isEmpty()) {
+         else { //When the user wants to save the changes.
+            if(!pictureUrlField.getText().isEmpty()) { //IF the URL field isn't empty.
                pictureUrlField.setVisible(false);
                changeButton.setText("Change");
-               Connection con = null;
-               PreparedStatement stmt = null;
-               try {
-                  con = Database.getDatabase();
-                  con.setAutoCommit(false);
-                  System.out.println("Database Connected.");
-                  System.out.println(userId);
-                  String sql = ("UPDATE \"User\" SET profile_picture = ? WHERE user_id = ?");
-                  stmt = con.prepareStatement(sql);
-                  String path = pictureUrlField.getText();
-                  System.out.println(pictureUrlField.getText());
-                  stmt.setString(1, path);
-                  stmt.setInt(2, userId);
-
-
-                  stmt.executeUpdate();
-                  stmt.close();
-                  con.commit();
-                  con.close();
-                  lblUrlTip.setVisible(false);
-               } catch (Exception e) {
-                  e.printStackTrace();
-                  System.err.println(e.getClass().getName() + ": " + e.getMessage());
-               }
-               profileImage.setImage(new Image(pictureUrlField.getText()));
+               setProfileImage(); //Calls the method that updates the profile picture in the Database.
             }
-            else {
+            else { //IF textfield is empty nothing is updated or sent to the database.
                pictureUrlField.setVisible(false);
                changeButton.setText("Edit");
                lblUrlTip.setVisible(false);
@@ -194,11 +146,11 @@ public class ProfileController {
 
    public Parent getParent(){
       return profilePane;
-   }
+   } //Returns the loaded FXML Parent
 
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePane.fxml"));
-      loader.setController(this);
+      loader.setController(this); //Sets the current insance as the controller class for the FXML interface.
       profilePane = loader.load();
    }
 
@@ -221,13 +173,13 @@ public class ProfileController {
       weightField.setText("" + weight);
       defaultStyle = backgroundPane.getStyle();
       slider.setTranslateX(-658);
+      //Sets the animation boundaries and effect.
       show.setOnAction(event -> {
          TranslateTransition slide = new TranslateTransition();
          slide.setDuration(Duration.seconds(0.4));
          slide.setNode(slider);
          slide.setToX(0);
          slide.play();
-
          slider.setTranslateX(-658);
 
          slide.setOnFinished(event1 -> {
@@ -247,7 +199,7 @@ public class ProfileController {
             show.setVisible(true);
             hide.setVisible(false);
          });
-      });
+      }); //End of animation settings
    }
    private void showProfilePic(){
       System.out.println(profilePicture);
@@ -257,29 +209,67 @@ public class ProfileController {
          profileImage.setImage(new Image("icon.png"));
       }
    }
-   private void getUserInfo(){
-      Connection con = null;
+   private void setProfileImage(){ //Handles requests to update the users profile picture
       PreparedStatement stmt = null;
-      try {con = Database.getDatabase();
+      try (Connection con = Database.getDatabase()) {
          con.setAutoCommit(false);
-         System.out.println("Database Connected.");
-         System.out.println(userId);
-         String sql = ("SELECT username, weight, height, profile_picture FROM \"User\" WHERE user_id = ?");
+
+         String sql = ("UPDATE \"User\" SET profile_picture = ? WHERE user_id = ?");
+         String path = pictureUrlField.getText(); //Gets the url from the textfield
+         stmt = con.prepareStatement(sql);
+         stmt.setString(1, path);
+         stmt.setInt(2, userId);
+
+         stmt.executeUpdate(); //Pushing the update
+         stmt.close(); //Closing the statement
+         con.commit(); //Committing the UPDATE.
+         con.close(); //Closing the connection.
+         lblUrlTip.setVisible(false); //Hides the label showing the tip.
+      } catch (Exception e) {
+         e.printStackTrace();
+         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      }
+      profileImage.setImage(new Image(pictureUrlField.getText()));
+   }
+
+   private void setWeightHeight() {
+      PreparedStatement stmt = null;
+      try (Connection con = Database.getDatabase()) {
+         con.setAutoCommit(false);
+
+         String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
+         stmt = con.prepareStatement(sql);
+         stmt.setDouble(1, Double.parseDouble(heightField.getText()));
+         stmt.setDouble(2, Double.parseDouble(weightField.getText()));
+         stmt.setInt(3, userId);
+
+         stmt.executeUpdate();
+         stmt.close();
+         con.commit();
+      } catch (Exception e) {
+         e.printStackTrace();
+         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      }
+   }
+   private void getUserInfo(){ //Method that fetches the logged in users information.
+      PreparedStatement stmt = null;
+      try (Connection con = Database.getDatabase()) {
+         con.setAutoCommit(false);
+         String sql = ("SELECT username, weight, height, profile_picture, personal_goal FROM \"User\" WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
          stmt.setInt(1, userId);
 
-         ResultSet result = stmt.executeQuery();
-         if (result.next()){
+         ResultSet result = stmt.executeQuery(); //Executing the SQL query
+         if (result.next()){ //Fetching results
             username = result.getString("username");
             height = result.getDouble("height");
             weight = result.getDouble("weight");
             profilePicture = result.getString("profile_picture");
+            goalsText.setText(result.getString("personal_goal"));
          }
 
          stmt.close();
          con.commit();
-         con.close();
-
       } catch (Exception e) {
          e.printStackTrace();
          System.err.println(e.getClass().getName() + ": " + e.getMessage());
