@@ -46,7 +46,6 @@ public class ExerciseController {
       //Adds listener for choosing option in muscleGroupSorter
       muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
       //currentWeight.valueProperty().addListener( (v, oldValue, newValue) ->  );
-      currentWeight = new Spinner<>(1, 100, 50);
    }
 
    public void populateExercises(){
