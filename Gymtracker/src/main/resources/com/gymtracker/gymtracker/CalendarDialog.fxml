@@ -47,16 +47,17 @@
             </TableView>
          </children>
       </HBox>
-      <HBox layoutX="23.0" layoutY="558.0" prefHeight="39.0" prefWidth="761.0">
+      <HBox layoutX="23.0" layoutY="558.0" prefHeight="39.0" prefWidth="760.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="364.0">
                <children>
                   <Button fx:id="backButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Back" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="439.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="558.0" spacing="10.0">
                <children>
                   <Text fx:id="joinedStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="218.0" />
+                  <Button mnemonicParsing="false" onAction="#leaveWorkout" prefHeight="25.0" prefWidth="117.0" text="Leave Workout" />
                   <Button mnemonicParsing="false" onAction="#joinWorkout" prefHeight="25.0" prefWidth="117.0" text="Join Workout" />
                </children>
             </HBox>

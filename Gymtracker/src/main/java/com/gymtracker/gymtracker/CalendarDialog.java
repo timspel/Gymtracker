@@ -3,7 +3,6 @@ package com.gymtracker.gymtracker;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,17 +13,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,12 +65,13 @@ public class CalendarDialog {
         backButton.setOnAction(this::handleBackButtonClick);
     }
 
+
     public void populateWorkoutParticipant(int workoutId) {
         workoutParticipants = new ArrayList<>();
 
         participantName.setCellValueFactory(new PropertyValueFactory<>("participantName"));
 
-        String sql = "SELECT DISTINCT u.username " +
+        String sql = "SELECT DISTINCT u.username, u.user_id " +
                 "FROM workout_participants wp " +
                 "JOIN \"User\" u ON wp.user_id = u.user_id " +
                 "WHERE wp.workout_id = (SELECT workout_id FROM workout WHERE workout_id = ?)";
@@ -90,13 +83,26 @@ public class CalendarDialog {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String participantName = rs.getString("username");
-                    workoutParticipants.add(new WorkoutParticipant(participantName));
+                    int id = rs.getInt("user_id");
+                    workoutParticipants.add(new WorkoutParticipant(participantName, id));
                 }
             }
 
             participantsTable.setItems(FXCollections.observableList(workoutParticipants));
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void removeParticipant(int participantId) {
+        WorkoutParticipant participantToRemove = null;
+        for (WorkoutParticipant participant : workoutParticipants) {
+            if (participant.getId() == participantId) {
+                participantToRemove = participant;
+                break;
+            }
+        }
+        if (participantToRemove != null) {
+            workoutParticipants.remove(participantToRemove);
         }
     }
 
@@ -166,56 +172,128 @@ public class CalendarDialog {
 
 
 // WORK IN PROGRESS
-    public void joinWorkout(){
+public void joinWorkout() {
+    int userId = Singleton.getInstance().getUserId();
+    int newWorkoutId = -1;
+
+    try (Connection conn = Database.getDatabase()) {
+        // Check if the user is already a participant of the workout
+        String sqlCheck = "SELECT * FROM workout_participants WHERE workout_id = ? AND user_id = ?";
+        PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
+        stmtCheck.setInt(1, workoutId);
+        stmtCheck.setInt(2, userId);
+        ResultSet rs = stmtCheck.executeQuery();
+        if (rs.next()) {
+            setJoinedStatus("You have already joined " + selectedWorkoutName.getText() + "!");
+            joinedStatus.setFill(Color.RED);
+            return;
+        }
+
+        // Insert a new row in the workout_participants table
+        String sql = "INSERT INTO workout_participants (workout_id, user_id) VALUES (?, ?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, workoutId);
+        stmt.setInt(2, userId);
+        int affectedRows = stmt.executeUpdate();
+        if (affectedRows == 1) {
+            setJoinedStatus("You have joined " + selectedWorkoutName.getText() + "!");
+            joinedStatus.setFill(Color.BLUE);
+            populateWorkoutParticipant(workoutId);
+        }
+
+        // Insert a new row in the workout table
+        String insertSql = "INSERT INTO workout (user_id, workout_name, workout_description, workout_type_id, date, is_original) " +
+                "SELECT ?, workout_name, workout_description, workout_type_id, date, false FROM workout WHERE workout_id = ?";
+        PreparedStatement insertStmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
+        insertStmt.setInt(1, userId);
+        insertStmt.setInt(2, workoutId);
+        int insertAffectedRows = insertStmt.executeUpdate();
+        if (insertAffectedRows == 1) {
+            System.out.println("New workout added successfully");
+
+            // Get the ID of the newly inserted workout
+            try (ResultSet generatedKeys = insertStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    newWorkoutId = generatedKeys.getInt(1);
+
+                    // Copy and insert exercise_set entries connected to the original workout
+                    String exerciseSetSql = "INSERT INTO exercise_set (workout_id, exercise_id, set_number, reps, weight) " +
+                            "SELECT ?, exercise_id, set_number, reps, weight FROM exercise_set WHERE workout_id = ?";
+                    PreparedStatement exerciseSetStmt = conn.prepareStatement(exerciseSetSql);
+                    exerciseSetStmt.setInt(1, newWorkoutId);
+                    exerciseSetStmt.setInt(2, workoutId);
+                    int exerciseSetAffectedRows = exerciseSetStmt.executeUpdate();
+                    System.out.println("Copied " + exerciseSetAffectedRows + " exercise_set entries to the new workout.");
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+
+    System.out.println("New workout ID: " + newWorkoutId);
+}
+
+
+    public void leaveWorkout() {
         int userId = Singleton.getInstance().getUserId();
 
         try (Connection conn = Database.getDatabase()) {
-            // Check if the user is already a participant of the workout
+            // Check if the user is a participant of the workout
             String sqlCheck = "SELECT * FROM workout_participants WHERE workout_id = ? AND user_id = ?";
             PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
             stmtCheck.setInt(1, workoutId);
             stmtCheck.setInt(2, userId);
             ResultSet rs = stmtCheck.executeQuery();
-            if (rs.next()) {
-                setJoinedStatus("You have already joined " + selectedWorkoutName.getText() + "!");
+            if (!rs.next()) {
+                setJoinedStatus("You haven't joined " + selectedWorkoutName.getText() + "!");
                 joinedStatus.setFill(Color.RED);
                 return;
             }
 
-            // Insert a new row in the workout_participants table
-            String sql = "INSERT INTO workout_participants (workout_id, user_id) VALUES (?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, workoutId);
-            stmt.setInt(2, userId);
-            int affectedRows = stmt.executeUpdate();
+            // Delete the participant's row from workout_participants table
+            String deleteSql = "DELETE FROM workout_participants WHERE workout_id = ? AND user_id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteSql);
+            deleteStmt.setInt(1, workoutId);
+            deleteStmt.setInt(2, userId);
+            int affectedRows = deleteStmt.executeUpdate();
             if (affectedRows == 1) {
-                setJoinedStatus("You have joined " + selectedWorkoutName.getText() + "!");
-                joinedStatus.setFill(Color.BLUE);
+                setJoinedStatus("You have left " + selectedWorkoutName.getText() + "!");
+                joinedStatus.setFill(Color.GREEN);
+                removeParticipant(userId);
+                populateWorkoutParticipant(workoutId);
             }
 
-            // Insert a new row in the workout table
-            String insertSql = "INSERT INTO workout (user_id, workout_name, workout_description, workout_type_id, is_original) " +
-                    "SELECT ?, workout_name, workout_description, workout_type_id, false FROM workout WHERE workout_id = ?";
-            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-            insertStmt.setInt(1, userId);
-            insertStmt.setInt(2, workoutId);
-            int insertAffectedRows = insertStmt.executeUpdate();
-            if (insertAffectedRows == 1) {
-                System.out.println("New workout added successfully");
+            // Get the copied workout ID based on workout name and time
+            String selectCopiedWorkoutSql = "SELECT workout_id FROM workout WHERE workout_name = ? AND user_id = ? AND is_original = false ORDER BY date DESC LIMIT 1";
+            PreparedStatement selectCopiedWorkoutStmt = conn.prepareStatement(selectCopiedWorkoutSql);
+            selectCopiedWorkoutStmt.setString(1, selectedWorkoutName.getText());
+            selectCopiedWorkoutStmt.setInt(2, userId);
+            ResultSet copiedWorkoutRs = selectCopiedWorkoutStmt.executeQuery();
+            if (copiedWorkoutRs.next()) {
+                int copiedWorkoutId = copiedWorkoutRs.getInt("workout_id");
 
-                // Copy and insert exercise_set entries connected to the original workout
-                String exerciseSetSql = "INSERT INTO exercise_set (workout_id, exercise_id, set_number, reps, weight) " +
-                        "SELECT ?, exercise_id, set_number, reps, weight FROM exercise_set WHERE workout_id = ?";
-                PreparedStatement exerciseSetStmt = conn.prepareStatement(exerciseSetSql);
-                exerciseSetStmt.setInt(1, workoutId);
-                exerciseSetStmt.setInt(2, workoutId);
-                int exerciseSetAffectedRows = exerciseSetStmt.executeUpdate();
-                System.out.println("Copied " + exerciseSetAffectedRows + " exercise_set entries to the new workout.");
+                // Delete the exercise_set entries associated with the copied workout
+                String deleteExerciseSetSql = "DELETE FROM exercise_set WHERE workout_id = ?";
+                PreparedStatement deleteExerciseSetStmt = conn.prepareStatement(deleteExerciseSetSql);
+                deleteExerciseSetStmt.setInt(1, copiedWorkoutId);
+                int deleteExerciseSetAffectedRows = deleteExerciseSetStmt.executeUpdate();
+                System.out.println("Deleted " + deleteExerciseSetAffectedRows + " exercise_set entries from the copied workout.");
+
+                // Delete the copied workout
+                String deleteWorkoutSql = "DELETE FROM workout WHERE workout_id = ?";
+                PreparedStatement deleteWorkoutStmt = conn.prepareStatement(deleteWorkoutSql);
+                deleteWorkoutStmt.setInt(1, copiedWorkoutId);
+                int deleteWorkoutAffectedRows = deleteWorkoutStmt.executeUpdate();
+                System.out.println("Deleted the copied workout with ID: " + copiedWorkoutId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
     private void handleBackButtonClick(ActionEvent event) {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
