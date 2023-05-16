@@ -50,28 +50,26 @@ public class ExerciseController {
       private String desc;
       private String pic;
       private String mGroup;
-      public Worker(int index, int id, String name, String desc, String pic, String mgroup){
+      public Worker(int id, String name, String desc, String pic, String mgroup){
          this.id = id;
          this.name = name;
          this.desc = desc;
          this.pic = pic;
          this.mGroup = mgroup;
-         this.index = index;
       }
 
       @Override
       public void run() {
          System.out.println("Creating exer");
-         addExer(index, new Exercise(id, name, desc, new Image(pic), mGroup));
+         addExer(new Exercise(id, name, desc, new Image(pic), mGroup));
          System.out.println("Exer added");
       }
    }
-   private Exercise createExercise(int id, String name, String desc, String pic, String mGroup){
-      return new Exercise(id, name, desc, new Image(pic), mGroup);
-   }
-   private synchronized void addExer(int index, Exercise exercise){
+
+   private synchronized void addExer(Exercise exercise){
       exercises.add(exercise);
    }
+
    public void populateExercises(){
       Connection con = null;
       PreparedStatement stmt = null;
@@ -92,11 +90,10 @@ public class ExerciseController {
             String pic = result.getString("exercise_picture");
             String muscleGroup = result.getString("workout_type_name");
 
-            Worker worker = new Worker(index, id, name, desc, pic, muscleGroup);
+            Worker worker = new Worker(id, name, desc, pic, muscleGroup);
             worker.start();
             System.out.println("thread started");
             threads.add(worker);
-            index++;
          }
          stmt.close();
          con.commit();
