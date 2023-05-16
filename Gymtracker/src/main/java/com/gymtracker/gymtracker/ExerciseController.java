@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -32,16 +33,45 @@ public class ExerciseController {
    private ChoiceBox muscleGroupSorter = new ChoiceBox();
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
    private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getMuscleGroup);
+   private ArrayList<Worker> threads = new ArrayList<>();
 
    public void initialize() {
       populateExercises();
       exercisesList.setItems(exercises);
       exercises.sort(listSort);
       populateMuscleGroups(muscleGroupSorter);
-      populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
-      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString())); //Adds listener for choosing option in muscleGroupSorter
+       //Adds listener for choosing option in muscleGroupSorter
    }
+   private class Worker extends Thread {
+      private Exercise exercise;
+      private int index;
+      private int id;
+      private String name;
+      private String desc;
+      private String pic;
+      private String mGroup;
+      public Worker(int index, int id, String name, String desc, String pic, String mgroup){
+         this.id = id;
+         this.name = name;
+         this.desc = desc;
+         this.pic = pic;
+         this.mGroup = mgroup;
+         this.index = index;
+      }
 
+      @Override
+      public void run() {
+         System.out.println("Creating exer");
+         addExer(index, new Exercise(id, name, desc, new Image(pic), mGroup));
+         System.out.println("Exer added");
+      }
+   }
+   private Exercise createExercise(int id, String name, String desc, String pic, String mGroup){
+      return new Exercise(id, name, desc, new Image(pic), mGroup);
+   }
+   private synchronized void addExer(int index, Exercise exercise){
+      exercises.add(exercise);
+   }
    public void populateExercises(){
       Connection con = null;
       PreparedStatement stmt = null;
@@ -54,7 +84,7 @@ public class ExerciseController {
          String sql = ("SELECT exercise_id, exercise_name, exercise_description, exercise_picture, workout_type.workout_type_name FROM exercise, workout_type WHERE exercise.workout_type_id = workout_type.workout_type_id");
          stmt = con.prepareStatement(sql);
          result = stmt.executeQuery();
-
+         int index = 0;
          while(result.next()){
             int id = result.getInt("exercise_id");
             String name = result.getString("exercise_name");
@@ -62,8 +92,11 @@ public class ExerciseController {
             String pic = result.getString("exercise_picture");
             String muscleGroup = result.getString("workout_type_name");
 
-            Exercise exercise = new Exercise(id, name, desc, new Image(pic), muscleGroup);
-            exercises.add(exercise);
+            Worker worker = new Worker(index, id, name, desc, pic, muscleGroup);
+            worker.start();
+            System.out.println("thread started");
+            threads.add(worker);
+            index++;
          }
          stmt.close();
          con.commit();
@@ -72,6 +105,25 @@ public class ExerciseController {
       }catch (Exception e){
          throw new RuntimeException(e);
       }
+      System.out.println("Reached loop");
+      boolean go = false;
+      int index = -1;
+      while(!go){
+         int i = 0;
+         for(Thread t : threads){
+            if(t.isAlive()){
+               index = 1;
+            }
+            i++;
+         }
+         go = index == -1;
+         index = -1;
+         try{
+            Thread.sleep(100);
+         }catch (InterruptedException e){}
+      }
+      populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
+      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
    }
 
    public void populateMuscleGroups(ChoiceBox choiceBox){
