@@ -102,7 +102,7 @@ public class LoginController implements Initializable {
    private void handleLogin(ActionEvent event){
       if (loginAttempt()){
          PreparedStatement stmt = null;
-         try (Connection con = Database.getDatabase();) {
+         try (Connection con = Database.getDatabase()) {
             String sql = ("SELECT user_id FROM \"User\" WHERE username = ? AND password = ?");
 
             stmt = con.prepareStatement(sql);
