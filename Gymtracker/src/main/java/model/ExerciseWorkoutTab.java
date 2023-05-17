@@ -99,4 +99,24 @@ public class ExerciseWorkoutTab {
     public List<Set> getSets() {
         return sets;
     }
+    public int getNumberOfSets(){
+        int numberOfSets = 0;
+
+        if(set1 != null){
+            numberOfSets++;
+        }
+        if(set2 != null){
+            numberOfSets++;
+        }
+        if(set3 != null){
+            numberOfSets++;
+        }
+        if(set4 != null){
+            numberOfSets++;
+        }
+        if(set5 != null){
+            numberOfSets++;
+        }
+        return numberOfSets;
+    }
 }
