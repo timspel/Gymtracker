@@ -130,6 +130,8 @@ public class ControllerWorkouts implements Initializable{
     private boolean loadedWorkout = false;
     private List<ExerciseWorkoutTab> loadedWorkoutExercises;
     private List<Set> loadedWorkoutSets;
+    private boolean created;
+    private boolean removed;
 
     public ControllerWorkouts() {}
 
@@ -251,8 +253,11 @@ public class ControllerWorkouts implements Initializable{
             else{
                 saveWorkout();
             }
-            populateWorkoutChoiceBox();
-            clearWorkoutSection();
+
+            if(created){
+                populateWorkoutChoiceBox();
+                clearWorkoutSection();
+            }
         }
         if(e.getSource() == removeExerciseButton){
             removeExercise();
@@ -291,7 +296,11 @@ public class ControllerWorkouts implements Initializable{
         }
         if(e.getSource() == removeWorkoutButton){
             removeWorkout();
-            clearWorkoutSection();
+
+            if(removed){
+                populateWorkoutChoiceBox();
+                clearWorkoutSection();
+            }
         }
         if(e.getSource() == loadWorkoutButton){
             loadWorkout();
@@ -755,7 +764,6 @@ public class ControllerWorkouts implements Initializable{
             LocalDateTime dateTime = LocalDateTime.parse(formattedDateTime, formatter);
             timestamp = Timestamp.valueOf(dateTime);
         } catch (Exception e){
-            e.printStackTrace();
             return false;
         }
 
@@ -832,119 +840,125 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void saveWorkout(){
-        int categoryId = switch (categoriesChoiceBox.getValue()) {
-            case Chest -> 1;
-            case Back -> 2;
-            case Legs -> 3;
-            case Arms -> 4;
-            case Shoulders -> 5;
-            case Push -> 6;
-            case Pull -> 7;
-            case Abs -> 8;
-            default -> 0;
-        };
+        int categoryId;
+        try{
+            categoryId = switch (categoriesChoiceBox.getValue()) {
+                case Chest -> 1;
+                case Back -> 2;
+                case Legs -> 3;
+                case Arms -> 4;
+                case Shoulders -> 5;
+                case Push -> 6;
+                case Pull -> 7;
+                case Abs -> 8;
+            };
 
-        boolean created = false;
+            created = false;
+            if(exercises.size() > 0 || loadedWorkoutExercises.size() > 0 || loadedTemplateExercises.size() > 0){
+                if(workoutNameTextField.getText().length() > 1 && workoutDescriptionTextField.getText().length() > 1 && workoutDatePicker.getValue() != null && workoutTimeTextField.getText().length() > 1){
+                    created = newWorkoutRegistered(Singleton.getInstance().getUserId(), workoutNameTextField.getText(), workoutDescriptionTextField.getText(), categoryId, workoutDatePicker.getValue(), workoutTimeTextField.getText(), true);
 
-        if(workoutNameTextField.getText().length() > 1 && workoutDescriptionTextField.getText().length() > 1 && categoryId > 0 && workoutDatePicker.getValue() != null && workoutTimeTextField.getText().length() > 1){
-            created = newWorkoutRegistered(Singleton.getInstance().getUserId(), workoutNameTextField.getText(), workoutDescriptionTextField.getText(), categoryId, workoutDatePicker.getValue(), workoutTimeTextField.getText(), true);
+                    if(created){
+                        boolean addParticipant = addParticipantToWorkout(workoutId, Singleton.getInstance().getUserId());
 
-            boolean addParticipant = addParticipantToWorkout(workoutId, Singleton.getInstance().getUserId());
+                        if(addParticipant){
+                            if(loadedTemplate){
+                                for(int i = 0; i < loadedTemplateExercises.size(); i++){
+                                    boolean addedExercise = false;
+                                    boolean addedSet = false;
 
-            if(!addParticipant){
-                System.out.println("Could not add participant");
-            }
-            if(loadedTemplate){
-                if(loadedTemplateExercises.size() > 0){
-                    for(int i = 0; i < loadedTemplateExercises.size(); i++){
-                        boolean addedExercise = false;
-                        boolean addedSet = false;
+                                    addedExercise = addExerciseToWorkout(workoutId, loadedTemplateExercises.get(i).getExerciseName());
 
-                        addedExercise = addExerciseToWorkout(workoutId, loadedTemplateExercises.get(i).getExerciseName());
+                                    if(addedExercise){
+                                        for(int j = 0; j < loadedTemplateExercises.get(i).getSets().size(); j++){
+                                            addedSet = addSetToExercise(workoutId, loadedTemplateExercises.get(i).getExerciseName(), loadedTemplateExercises.get(i).getSets().get(j).getSetNumber(), loadedTemplateExercises.get(i).getSets().get(j).getRepetitions(), loadedTemplateExercises.get(i).getSets().get(j).getWeight());
 
-                        if(!addedExercise){
-                            System.out.println("could not add exercise to workout");
+                                            if(!addedSet){
+                                                System.out.println("could not add set to exercise");
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        System.out.println("could not add exercise to workout");
+                                    }
+                                }
+                            }
+                            if(loadedWorkout){
+                                for(int i = 0; i < loadedWorkoutExercises.size(); i++){
+                                    boolean addedExercise = false;
+                                    boolean addedSet = false;
+
+                                    addedExercise = addExerciseToWorkout(workoutId, loadedWorkoutExercises.get(i).getExerciseName());
+
+                                    if(addedExercise){
+                                        for(int j = 0; j < loadedWorkoutExercises.get(i).getSets().size(); j++){
+                                            addedSet = addSetToExercise(workoutId, loadedWorkoutExercises.get(i).getExerciseName(), loadedWorkoutExercises.get(i).getSets().get(j).getSetNumber(), loadedWorkoutExercises.get(i).getSets().get(j).getRepetitions(), loadedWorkoutExercises.get(i).getSets().get(j).getWeight());
+
+                                            if(!addedSet){
+                                                System.out.println("could not add set to exercise");
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        System.out.println("could not add exercise to workout");
+                                    }
+                                }
+                            }
+                            else{
+                                for(int i = 0; i < exercises.size(); i++){
+                                    boolean addedExercise = false;
+                                    boolean addedSet = false;
+
+                                    addedExercise = addExerciseToWorkout(workoutId, exercises.get(i).getExerciseName());
+
+                                    if(addedExercise){
+                                        for(int j = 0; j < exercises.get(i).getSets().size(); j++){
+                                            addedSet = addSetToExercise(workoutId, exercises.get(i).getExerciseName(), exercises.get(i).getSets().get(j).getSetNumber(), exercises.get(i).getSets().get(j).getRepetitions(), exercises.get(i).getSets().get(j).getWeight());
+
+                                            if(!addedSet){
+                                                System.out.println("could not add set to exercise");
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        System.out.println("could not add exercise to workout");
+                                    }
+                                }
+                            }
                         }
-
-                        for(int j = 0; j < loadedTemplateExercises.get(i).getSets().size(); j++){
-                            addedSet = addSetToExercise(workoutId, loadedTemplateExercises.get(i).getExerciseName(), loadedTemplateExercises.get(i).getSets().get(j).getSetNumber(), loadedTemplateExercises.get(i).getSets().get(j).getRepetitions(), loadedTemplateExercises.get(i).getSets().get(j).getWeight());
+                        else{
+                            System.out.println("could not add participant");
                         }
-
-                        if(!addedSet){
-                            System.out.println("could not add set to exercise");
-                        }
+                    }
+                    else{
+                        showErrorMessage(2);
                     }
                 }
-            }
-            if(loadedWorkout){
-                if(loadedWorkoutExercises.size() > 0){
-                    for(int i = 0; i < loadedWorkoutExercises.size(); i++){
-                        boolean addedExercise = false;
-                        boolean addedSet = false;
-
-                        addedExercise = addExerciseToWorkout(workoutId, loadedWorkoutExercises.get(i).getExerciseName());
-
-                        if(!addedExercise){
-                            System.out.println("could not add exercise to workout");
-                        }
-
-                        for(int j = 0; j < loadedWorkoutExercises.get(i).getSets().size(); j++){
-                            addedSet = addSetToExercise(workoutId, loadedWorkoutExercises.get(i).getExerciseName(), loadedWorkoutExercises.get(i).getSets().get(j).getSetNumber(), loadedWorkoutExercises.get(i).getSets().get(j).getRepetitions(), loadedWorkoutExercises.get(i).getSets().get(j).getWeight());
-                        }
-
-                        if(!addedSet){
-                            System.out.println("could not add set to exercise");
-                        }
-                    }
+                else{
+                    showErrorMessage(1);
                 }
             }
             else{
-                if(exercises.size() > 0){
-                    for(int i = 0; i < exercises.size(); i++){
-                        boolean addedExercise = false;
-                        boolean addedSet = false;
-
-                        addedExercise = addExerciseToWorkout(workoutId, exercises.get(i).getExerciseName());
-
-                        if(!addedExercise){
-                            System.out.println("could not add exercise to workout");
-                        }
-
-                        for(int j = 0; j < exercises.get(i).getSets().size(); j++){
-                            addedSet = addSetToExercise(workoutId, exercises.get(i).getExerciseName(), exercises.get(i).getSets().get(j).getSetNumber(), exercises.get(i).getSets().get(j).getRepetitions(), exercises.get(i).getSets().get(j).getWeight());
-                        }
-
-                        if(!addedSet){
-                            System.out.println("could not add set to exercise");
-                        }
-                    }
-                }
+                showErrorMessage(3);
             }
-        }
-        else{
-            System.out.println("fill in all fields");
-        }
 
-        if(!created){
-            System.out.println("could not create workout, try filling in correct time format");
-        }
-        else{
-            System.out.println("workout created");
+        } catch (Exception e){
+            showErrorMessage(1);
         }
     }
 
     public void updateWorkout(){
+        //lägg till if satser som checkar samma som i saveWorkout
         removeWorkout();
         saveWorkout();
     }
 
     public void removeWorkout(){
         int workoutId = getWorkoutId(workoutChoiceBox.getValue(), Singleton.getInstance().getUserId());
-        boolean removed = workoutRemoved(workoutId);
+        removed = workoutRemoved(workoutId);
 
         if(removed){
             System.out.println("Workout successfully removed");
-            populateWorkoutChoiceBox();
         }
         else{
             System.out.println("could not remove workout");
@@ -1270,6 +1284,26 @@ public class ControllerWorkouts implements Initializable{
         // Adjust the horizontal scroll position if needed
         double hValue = 0.0; // Set the desired horizontal scroll position
         scrollPane.setHvalue(hValue);
+    }
+
+    public void showErrorMessage(int errorCode){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Please fill in all fields");
+
+        switch (errorCode){
+            case 1:
+                alert.setContentText("Please fill in all fields");
+                break;
+            case 2:
+                alert.setContentText("Please enter correct time format");
+                break;
+            case 3:
+                alert.setContentText("Please add at least one exercise");
+        }
+
+        alert.showAndWait();
     }
 
 }
