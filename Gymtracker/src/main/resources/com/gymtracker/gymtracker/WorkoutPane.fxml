@@ -36,6 +36,8 @@
             </Label>
             <Button fx:id="loadTemplateButton" layoutX="684.0" layoutY="651.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="110.0" text="Load template" />
             <Button fx:id="removeTemplateButton" layoutX="540.0" layoutY="651.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="118.0" text="Remove template" />
+            <Label fx:id="errorRemoveTemplateLabel" layoutX="540.0" layoutY="689.0" text="errorRemoveTemplate" />
+            <Label fx:id="errorLoadTemplateLabel" layoutX="684.0" layoutY="689.0" text="errorLoadTemplate" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="399.0" prefHeight="520.0" prefWidth="1228.0" style="-fx-background-color: #D3D3D3;">
@@ -81,6 +83,13 @@
             <Button fx:id="removeExerciseButton" layoutX="440.0" layoutY="463.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
             <Button fx:id="newWorkoutButton" layoutX="920.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="99.0" text="New workout" />
             <Button fx:id="loadedAddExerciseButton" layoutX="162.0" layoutY="463.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add new exercise" />
+            <Label fx:id="errorAddSetLabel" layoutX="301.0" layoutY="178.0" text="errorAddSet" />
+            <Label fx:id="errorAddExerciseWorkoutLabel" layoutX="287.0" layoutY="498.0" text="errorAddExercise" />
+            <Label fx:id="errorAddNewExerciseLabel" layoutX="162.0" layoutY="498.0" text="errorAddNewExercise" />
+            <Label fx:id="errorRemoveSetLabel" layoutX="30.0" layoutY="498.0" text="errorRemoveSet" />
+            <Label fx:id="errorRemoveExerciseWorkoutLabel" layoutX="440.0" layoutY="498.0" text="errorRemoveExercise" />
+            <Label fx:id="errorNewWorkoutLabel" layoutX="920.0" layoutY="498.0" text="errorNewWorkout" />
+            <Label fx:id="errorSaveWorkoutLabel" layoutX="1043.0" layoutY="498.0" text="errorSaveWorkout" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="262.0" prefHeight="116.0" prefWidth="1228.0" style="-fx-background-color: #D3D3D3;">
@@ -149,6 +158,9 @@
             <Button fx:id="templateAddExerciseButton" layoutX="278.0" layoutY="204.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add exercise" />
             <Button fx:id="saveTemplateButton" layoutX="263.0" layoutY="650.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="98.0" text="Save template" />
             <Button fx:id="templateRemoveExerciseButton" layoutX="29.0" layoutY="655.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
+            <Label fx:id="errorAddExerciseTemplateLabel" layoutX="119.0" layoutY="183.0" text="errorAddExercise" />
+            <Label fx:id="errorSaveTemplateLabel" layoutX="264.0" layoutY="689.0" text="errorSaveTemplate" />
+            <Label fx:id="errorRemoveExerciseTemplateLabel" layoutX="29.0" layoutY="689.0" text="errorRemoveExercise" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="413.0" layoutY="1154.0" prefHeight="22.0" prefWidth="25.0" style="-fx-background-color: #D3D3D3;" />
@@ -192,6 +204,7 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
+            <Label fx:id="errorUpdateWorkoutLabel" layoutX="92.0" layoutY="94.0" text="errorUpdateWorkout" />
          </children>
       </AnchorPane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" layoutX="638.0" layoutY="1037.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="494.0">

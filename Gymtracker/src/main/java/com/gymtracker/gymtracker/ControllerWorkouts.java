@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import model.*;
 import model.Set;
 import model.Template;
@@ -112,6 +113,32 @@ public class ControllerWorkouts implements Initializable{
     private Button newWorkoutButton;
     @FXML
     private Button loadedAddExerciseButton;
+    @FXML
+    private Label errorAddSetLabel;
+    @FXML
+    private Label errorRemoveSetLabel;
+    @FXML
+    private Label errorAddNewExerciseLabel;
+    @FXML
+    private Label errorAddExerciseWorkoutLabel;
+    @FXML
+    private Label errorRemoveExerciseWorkoutLabel;
+    @FXML
+    private Label errorNewWorkoutLabel;
+    @FXML
+    private Label errorSaveWorkoutLabel;
+    @FXML
+    private Label errorUpdateWorkoutLabel;
+    @FXML
+    private Label errorAddExerciseTemplateLabel;
+    @FXML
+    private Label errorRemoveExerciseTemplateLabel;
+    @FXML
+    private Label errorSaveTemplateLabel;
+    @FXML
+    private Label errorRemoveTemplateLabel;
+    @FXML
+    private Label errorLoadTemplateLabel;
     private Set set;
     private int numberOfSets = 0;
     private List<Set> sets;
@@ -137,6 +164,7 @@ public class ControllerWorkouts implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        disableAllErrorMessages();
         loadedAddExerciseButton.setVisible(false);
         categoriesChoiceBox.getItems().setAll(Category.values());
         categoriesTemplateChoiceBox.getItems().setAll(Category.values());
@@ -1287,23 +1315,38 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void showErrorMessage(int errorCode){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText("Please fill in all fields");
-
         switch (errorCode){
             case 1:
-                alert.setContentText("Please fill in all fields");
+                errorSaveWorkoutLabel.setText("Please fill in all fields");
+                errorSaveWorkoutLabel.setTextFill(Color.RED);
+                errorSaveWorkoutLabel.setVisible(true);
                 break;
             case 2:
-                alert.setContentText("Please enter correct time format");
+                errorSaveWorkoutLabel.setText("Please enter correct time format");
+                errorSaveWorkoutLabel.setTextFill(Color.RED);
+                errorSaveWorkoutLabel.setVisible(true);
                 break;
             case 3:
-                alert.setContentText("Please add at least one exercise");
+                errorSaveWorkoutLabel.setText("Please add at least one exercise");
+                errorSaveWorkoutLabel.setTextFill(Color.RED);
+                errorSaveWorkoutLabel.setVisible(true);
         }
+    }
 
-        alert.showAndWait();
+    public void disableAllErrorMessages(){
+        errorAddSetLabel.setVisible(false);
+        errorRemoveSetLabel.setVisible(false);
+        errorAddNewExerciseLabel.setVisible(false);
+        errorAddExerciseWorkoutLabel.setVisible(false);
+        errorRemoveExerciseWorkoutLabel.setVisible(false);
+        errorNewWorkoutLabel.setVisible(false);
+        errorSaveWorkoutLabel.setVisible(false);
+        errorUpdateWorkoutLabel.setVisible(false);
+        errorAddExerciseTemplateLabel.setVisible(false);
+        errorRemoveExerciseTemplateLabel.setVisible(false);
+        errorSaveTemplateLabel.setVisible(false);
+        errorRemoveTemplateLabel.setVisible(false);
+        errorLoadTemplateLabel.setVisible(false);
     }
 
 }
