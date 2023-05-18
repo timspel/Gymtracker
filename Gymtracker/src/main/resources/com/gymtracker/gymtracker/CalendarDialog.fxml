@@ -63,7 +63,7 @@
             </HBox>
          </children>
       </HBox>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="18.0" layoutY="-5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="814.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="18.0" layoutY="-5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="849.0" AnchorPane.bottomAnchor="587.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-35.0" AnchorPane.topAnchor="-5.0">
          <fill>
             <LinearGradient endX="1.0" endY="1.0">
                <stops>
