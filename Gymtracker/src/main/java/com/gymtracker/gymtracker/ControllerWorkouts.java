@@ -143,9 +143,9 @@ public class ControllerWorkouts implements Initializable{
     private int numberOfSets = 0;
     private List<Set> sets;
     private List<ExerciseWorkoutTab> exercises;
-    private int selectedSetRow;
+    private int selectedSetRow = -1;
     private int selectedTemplateRow = -1;
-    private int selectedExerciseRow;
+    private int selectedExerciseRow = -1;
     private int selectedExerciseTemplateRow;
     private ExerciseWorkoutTab exercise;
     private int templateId;
@@ -159,6 +159,7 @@ public class ControllerWorkouts implements Initializable{
     private List<Set> loadedWorkoutSets;
     private boolean created;
     private boolean removed;
+    private boolean exerciseAdded = false;
 
     public ControllerWorkouts() {}
 
@@ -166,6 +167,8 @@ public class ControllerWorkouts implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         disableAllErrorMessages();
         loadedAddExerciseButton.setVisible(false);
+        workoutDatePicker.setEditable(false);
+        repetitionsSpinner.setEditable(false);
         categoriesChoiceBox.getItems().setAll(Category.values());
         categoriesTemplateChoiceBox.getItems().setAll(Category.values());
         populateExerciseChoiceBox();
@@ -302,7 +305,10 @@ public class ControllerWorkouts implements Initializable{
         }
         if(e.getSource() == addExerciseButton){
             addExercise();
-            clearExerciseSection();
+
+            if(exerciseAdded){
+                clearExerciseSection();
+            }
         }
         if(e.getSource() == removeTemplateButton){
             removeTemplate();
@@ -311,7 +317,7 @@ public class ControllerWorkouts implements Initializable{
             loadTemplate();
         }
         if(e.getSource() == newWorkoutButton){
-            clearWorkoutSection();
+            newWorkout();
         }
         if(e.getSource() == templateRemoveExerciseButton){
             removeTemplateExercise();
@@ -332,6 +338,31 @@ public class ControllerWorkouts implements Initializable{
         }
         if(e.getSource() == loadWorkoutButton){
             loadWorkout();
+        }
+    }
+
+    public void newWorkout(){
+        try{
+            if(exercises.get(0).getExerciseName() != null || loadedWorkoutExercises.get(0).getExerciseName() != null || loadedTemplateExercises.get(0).getExerciseName() != null){
+                clearWorkoutSection();
+                disableAllErrorMessages();
+            }
+            else if(sets.get(0).getSetNumber() > 0 || loadedWorkoutSets.get(0).getSetNumber() > 0){
+                clearWorkoutSection();
+                disableAllErrorMessages();
+            }
+        } catch (IndexOutOfBoundsException e){
+            if(workoutNameTextField.getText().length() > 1 || workoutDescriptionTextField.getText().length() > 1 || workoutDatePicker.getValue() != null || workoutTimeTextField.getText().length() > 1 || categoriesChoiceBox.getValue() != null){
+                clearWorkoutSection();
+                disableAllErrorMessages();
+            }
+            else if(exercisesChoiceBox.getValue() != null || repetitionsSpinner.getValue() > 0 || weightTextField.getText().length() > 0){
+                clearWorkoutSection();
+                disableAllErrorMessages();
+            }
+            else{
+                showErrorMessage(4);
+            }
         }
     }
 
@@ -882,7 +913,7 @@ public class ControllerWorkouts implements Initializable{
             };
 
             created = false;
-            if(exercises.size() > 0 || loadedWorkoutExercises.size() > 0 || loadedTemplateExercises.size() > 0){
+            if(exercises.get(0).getExerciseName() != null || loadedWorkoutExercises.get(0).getExerciseName() != null || loadedTemplateExercises.get(0).getExerciseName() != null){
                 if(workoutNameTextField.getText().length() > 1 && workoutDescriptionTextField.getText().length() > 1 && workoutDatePicker.getValue() != null && workoutTimeTextField.getText().length() > 1){
                     created = newWorkoutRegistered(Singleton.getInstance().getUserId(), workoutNameTextField.getText(), workoutDescriptionTextField.getText(), categoryId, workoutDatePicker.getValue(), workoutTimeTextField.getText(), true);
 
@@ -966,12 +997,11 @@ public class ControllerWorkouts implements Initializable{
                     showErrorMessage(1);
                 }
             }
-            else{
-                showErrorMessage(3);
-            }
 
-        } catch (Exception e){
+        } catch (NullPointerException e){
             showErrorMessage(1);
+        } catch (IndexOutOfBoundsException e){
+            showErrorMessage(3);
         }
     }
 
@@ -1042,32 +1072,52 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void addSet(){
-        if(numberOfSets < 5){
-            if(loadedWorkout){
-                set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Double.parseDouble(weightTextField.getText()));
-                loadedWorkoutSets.add(set);
-                setsTable.setItems(FXCollections.observableArrayList(loadedWorkoutSets));
+        try{
+            if(repetitionsSpinner.getValue() > 0){
+                if(numberOfSets < 5){
+                    if(loadedWorkout){
+                        set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Double.parseDouble(weightTextField.getText()));
+                        loadedWorkoutSets.add(set);
+                        setsTable.setItems(FXCollections.observableArrayList(loadedWorkoutSets));
+                    }
+                    else{
+                        set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Double.parseDouble(weightTextField.getText()));
+                        sets.add(set);
+                        setsTable.setItems(FXCollections.observableArrayList(sets));
+                    }
+                    numberOfSets++;
+                    disableAllErrorMessages();
+                }
+                else{
+                    showErrorMessage(6);
+                }
             }
             else{
-                set = new Set((numberOfSets + 1), repetitionsSpinner.getValue(), Double.parseDouble(weightTextField.getText()));
-                sets.add(set);
-                setsTable.setItems(FXCollections.observableArrayList(sets));
+                showErrorMessage(5);
             }
-            numberOfSets++;
+        } catch (Exception e){
+            showErrorMessage(5);
         }
     }
 
     public void removeSet(){
-        if(loadedWorkout){
-            loadedWorkoutSets.remove(selectedSetRow);
-            loadedWorkoutSets.sort(new SetComparator());
+        if(selectedSetRow > -1){
+            if(loadedWorkout){
+                loadedWorkoutSets.remove(selectedSetRow);
+                loadedWorkoutSets.sort(new SetComparator());
+            }
+            else{
+                sets.remove(selectedSetRow);
+                sets.sort(new SetComparator());
+            }
+            numberOfSets--;
+            updateSetsTable();
+            selectedSetRow = -1;
+            disableAllErrorMessages();
         }
         else{
-            sets.remove(selectedSetRow);
-            sets.sort(new SetComparator());
+            showErrorMessage(7);
         }
-        numberOfSets--;
-        updateSetsTable();
     }
 
     public void updateSetsTable(){
@@ -1094,52 +1144,70 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void addExercise(){
-        if(loadedWorkout){
-            if(numberOfSets == 1){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets);
-            }
-            if(numberOfSets == 2){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets);
-            }
-            if(numberOfSets == 3){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets);
-            }
-            if(numberOfSets == 4){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets);
-            }
-            if(numberOfSets == 5){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets.get(4).toString(), loadedWorkoutSets);
-            }
-            loadedWorkoutExercises.remove(selectedExerciseRow);
-            loadedWorkoutExercises.add(selectedExerciseRow, exercise);
-            exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
-        }
-        else{
-            if(numberOfSets == 1){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets);
-            }
-            if(numberOfSets == 2){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets);
-            }
-            if(numberOfSets == 3){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets);
-            }
-            if(numberOfSets == 4){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets);
-            }
-            if(numberOfSets == 5){
-                exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets.get(4).toString(), sets);
-            }
-        }
+        try{
+            if(exercisesChoiceBox.getValue() != null){
+                if(sets.get(0).getSetNumber() > 0 || loadedWorkoutSets.get(0).getSetNumber() > 0){
+                    if(loadedWorkout){
+                        if(numberOfSets == 1){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets);
+                        }
+                        if(numberOfSets == 2){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets);
+                        }
+                        if(numberOfSets == 3){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets);
+                        }
+                        if(numberOfSets == 4){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets);
+                        }
+                        if(numberOfSets == 5){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets.get(4).toString(), loadedWorkoutSets);
+                        }
+                        loadedWorkoutExercises.remove(selectedExerciseRow);
+                        loadedWorkoutExercises.add(selectedExerciseRow, exercise);
+                        exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
+                    }
+                    else{
+                        if(numberOfSets == 1){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets);
+                        }
+                        if(numberOfSets == 2){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets);
+                        }
+                        if(numberOfSets == 3){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets);
+                        }
+                        if(numberOfSets == 4){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets);
+                        }
+                        if(numberOfSets == 5){
+                            exercise = new ExerciseWorkoutTab(exercisesChoiceBox.getValue(), sets.get(0).toString(), sets.get(1).toString(), sets.get(2).toString(), sets.get(3).toString(), sets.get(4).toString(), sets);
+                        }
+                    }
 
-        if(loadedTemplate){
-            loadedTemplateExercises.remove(selectedExerciseRow);
-            loadedTemplateExercises.add(selectedExerciseRow, exercise);
-            exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
-        }
-        if(!loadedWorkout && !loadedTemplate){
-            exercises.add(exercise);
-            exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+                    if(loadedTemplate){
+                        loadedTemplateExercises.remove(selectedExerciseRow);
+                        loadedTemplateExercises.add(selectedExerciseRow, exercise);
+                        exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
+                    }
+                    if(!loadedWorkout && !loadedTemplate){
+                        exercises.add(exercise);
+                        exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+                    }
+
+                    exercise = null;
+                    numberOfSets = 0;
+                    sets = new ArrayList<>();
+                    loadedWorkoutSets = new ArrayList<>();
+                    disableAllErrorMessages();
+                    exerciseAdded = true;
+                }
+            }
+            else{
+                showErrorMessage(9);
+            }
+        } catch (Exception e){
+            showErrorMessage(10);
         }
     }
 
@@ -1229,17 +1297,24 @@ public class ControllerWorkouts implements Initializable{
     }
 
     public void removeExercise(){
-        if(loadedTemplate){
-            loadedTemplateExercises.remove(selectedExerciseRow);
-            exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
-        }
-        if(loadedWorkout){
-            loadedWorkoutExercises.remove(selectedExerciseRow);
-            exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
+        if(selectedExerciseRow > -1){
+            if(loadedTemplate){
+                loadedTemplateExercises.remove(selectedExerciseRow);
+                exercisesTable.setItems(FXCollections.observableArrayList(loadedTemplateExercises));
+            }
+            if(loadedWorkout){
+                loadedWorkoutExercises.remove(selectedExerciseRow);
+                exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
+            }
+            else{
+                exercises.remove(selectedExerciseRow);
+                exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+            }
+            selectedExerciseRow = -1;
+            disableAllErrorMessages();
         }
         else{
-            exercises.remove(selectedExerciseRow);
-            exercisesTable.setItems(FXCollections.observableArrayList(exercises));
+            showErrorMessage(8);
         }
     }
 
@@ -1330,6 +1405,42 @@ public class ControllerWorkouts implements Initializable{
                 errorSaveWorkoutLabel.setText("Please add at least one exercise");
                 errorSaveWorkoutLabel.setTextFill(Color.RED);
                 errorSaveWorkoutLabel.setVisible(true);
+                break;
+            case 4:
+                errorNewWorkoutLabel.setText("Workout is already cleared");
+                errorNewWorkoutLabel.setTextFill(Color.RED);
+                errorNewWorkoutLabel.setVisible(true);
+                break;
+            case 5:
+                errorAddSetLabel.setText("Please fill in weight and reps");
+                errorAddSetLabel.setTextFill(Color.RED);
+                errorAddSetLabel.setVisible(true);
+                break;
+            case 6:
+                errorAddSetLabel.setText("Max number of sets are 5");
+                errorAddSetLabel.setTextFill(Color.RED);
+                errorAddSetLabel.setVisible(true);
+                break;
+            case 7:
+                errorRemoveSetLabel.setText("Please select a set");
+                errorRemoveSetLabel.setTextFill(Color.RED);
+                errorRemoveSetLabel.setVisible(true);
+                break;
+            case 8:
+                errorRemoveExerciseWorkoutLabel.setText("Please select a exercise");
+                errorRemoveExerciseWorkoutLabel.setTextFill(Color.RED);
+                errorRemoveExerciseWorkoutLabel.setVisible(true);
+                break;
+            case 9:
+                errorAddExerciseWorkoutLabel.setText("Please select exercise");
+                errorAddExerciseWorkoutLabel.setTextFill(Color.RED);
+                errorAddExerciseWorkoutLabel.setVisible(true);
+                break;
+            case 10:
+                errorAddExerciseWorkoutLabel.setText("Please add at least one set");
+                errorAddExerciseWorkoutLabel.setTextFill(Color.RED);
+                errorAddExerciseWorkoutLabel.setVisible(true);
+                break;
         }
     }
 
