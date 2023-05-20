@@ -136,8 +136,17 @@ public class ExerciseController {
 
    public void populateInfoPanel(Exercise selectedExercise) {
       infoPanelName.setText(selectedExercise.getName());
-      infoPanelDescription.setText(selectedExercise.getDescription());
+      infoPanelDescription.setText(formatDescriptionText(selectedExercise.getDescription()));
       infoPanelImage.setImage(selectedExercise.getImage());
+   }
+
+   public String formatDescriptionText(String exerciseDesc){
+      String formattedString = "";
+      String[] splitString = exerciseDesc.split("\\. ");
+      for(String s : splitString){
+         formattedString += "- " + s + "\n";
+      }
+      return formattedString;
    }
 
    public void removeExercise(){
