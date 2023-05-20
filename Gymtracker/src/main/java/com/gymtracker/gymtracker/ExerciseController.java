@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -30,22 +31,16 @@ public class ExerciseController {
    private ImageView infoPanelImage;
    @FXML
    private ChoiceBox muscleGroupSorter = new ChoiceBox();
-   @FXML
-   private Spinner<Integer> currentWeight;
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
    private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getMuscleGroup);
-
+   private ArrayList<Worker> threads = new ArrayList<>();
 
    public void initialize() {
       populateExercises();
       exercisesList.setItems(exercises);
       exercises.sort(listSort);
       populateMuscleGroups(muscleGroupSorter);
-      //To immediately choose load in the first exercise so that it's viewed when you open the tab
-      populateInfoPanel(exercises.get(0));
-      //Adds listener for choosing option in muscleGroupSorter
-      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
-      //currentWeight.valueProperty().addListener( (v, oldValue, newValue) ->  );
+       //Adds listener for choosing option in muscleGroupSorter
    }
 
    public void populateExercises(){
@@ -60,7 +55,7 @@ public class ExerciseController {
          String sql = ("SELECT exercise_id, exercise_name, exercise_description, exercise_picture, workout_type.workout_type_name FROM exercise, workout_type WHERE exercise.workout_type_id = workout_type.workout_type_id");
          stmt = con.prepareStatement(sql);
          result = stmt.executeQuery();
-
+         
          while(result.next()){
             int id = result.getInt("exercise_id");
             String name = result.getString("exercise_name");
@@ -68,8 +63,10 @@ public class ExerciseController {
             String pic = result.getString("exercise_picture");
             String muscleGroup = result.getString("workout_type_name");
 
-            Exercise exercise = new Exercise(id, name, desc, new Image(pic), muscleGroup);
-            exercises.add(exercise);
+            Worker worker = new Worker(id, name, desc, pic, muscleGroup);
+            worker.start();
+            System.out.println("thread started");
+            threads.add(worker);
          }
          stmt.close();
          con.commit();
@@ -78,6 +75,25 @@ public class ExerciseController {
       }catch (Exception e){
          throw new RuntimeException(e);
       }
+      System.out.println("Reached loop");
+      boolean go = false;
+      int index = -1;
+      while(!go){
+         int i = 0;
+         for(Thread t : threads){
+            if(t.isAlive()){
+               index = 1;
+            }
+            i++;
+         }
+         go = index == -1;
+         index = -1;
+         try{
+            Thread.sleep(100);
+         }catch (InterruptedException e){}
+      }
+      populateInfoPanel(exercises.get(0)); //To immediately choose load in the first exercise so that it's viewed when you open the tab
+      muscleGroupSorter.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> sortExercises(newValue.toString()));
    }
 
    public void populateMuscleGroups(ChoiceBox choiceBox){
@@ -127,17 +143,9 @@ public class ExerciseController {
    }
 
    public void populateInfoPanel(Exercise selectedExercise) {
-      //To split up description, making it more readable
-      String StringToSplit = selectedExercise.getDescription();
-      String newString = "";
-      String[] splitString = StringToSplit.split("\\. ");
-      for (String s : splitString) {
-         newString += "- " + s + "\n";
-      }
-
       infoPanelName.setText(selectedExercise.getName());
-      infoPanelDescription.setText(newString);
-      infoPanelImage.setImage(selectedExercise.getImage());
+      infoPanelDescription.setText(selectedExercise.getDescription());
+      infoPanelImage.setImage(selectedExercise.getPicture());
    }
 
    public void removeExercise(){
@@ -234,6 +242,29 @@ public class ExerciseController {
          errorAlert.setHeaderText(null);
          errorAlert.setContentText("An exercise must be selected before it can be edited");
          errorAlert.showAndWait();
+      }
+   }
+
+   private class Worker extends Thread {
+      private int id;
+      private String name;
+      private String desc;
+      private String image;
+      private String mGroup;
+
+      public Worker(int id, String name, String desc, String image, String muscleGroup){
+         this.id = id;
+         this.name = name;
+         this.desc = desc;
+         this.image = image;
+         this.mGroup = muscleGroup;
+      }
+
+      @Override
+      public void run() {
+         System.out.println("Creating exer");
+         exercises.add(new Exercise(id, name, desc, new Image(image), mGroup));
+         System.out.println("Exer added");
       }
    }
 
