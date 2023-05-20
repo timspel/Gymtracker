@@ -42,33 +42,6 @@ public class ExerciseController {
       populateMuscleGroups(muscleGroupSorter);
        //Adds listener for choosing option in muscleGroupSorter
    }
-   private class Worker extends Thread {
-      private Exercise exercise;
-      private int index;
-      private int id;
-      private String name;
-      private String desc;
-      private String pic;
-      private String mGroup;
-      public Worker(int id, String name, String desc, String pic, String mgroup){
-         this.id = id;
-         this.name = name;
-         this.desc = desc;
-         this.pic = pic;
-         this.mGroup = mgroup;
-      }
-
-      @Override
-      public void run() {
-         System.out.println("Creating exer");
-         addExer(new Exercise(id, name, desc, new Image(pic), mGroup));
-         System.out.println("Exer added");
-      }
-   }
-
-   private synchronized void addExer(Exercise exercise){
-      exercises.add(exercise);
-   }
 
    public void populateExercises(){
       Connection con = null;
@@ -82,7 +55,7 @@ public class ExerciseController {
          String sql = ("SELECT exercise_id, exercise_name, exercise_description, exercise_picture, workout_type.workout_type_name FROM exercise, workout_type WHERE exercise.workout_type_id = workout_type.workout_type_id");
          stmt = con.prepareStatement(sql);
          result = stmt.executeQuery();
-         int index = 0;
+         
          while(result.next()){
             int id = result.getInt("exercise_id");
             String name = result.getString("exercise_name");
@@ -269,6 +242,29 @@ public class ExerciseController {
          errorAlert.setHeaderText(null);
          errorAlert.setContentText("An exercise must be selected before it can be edited");
          errorAlert.showAndWait();
+      }
+   }
+
+   private class Worker extends Thread {
+      private int id;
+      private String name;
+      private String desc;
+      private String image;
+      private String mGroup;
+
+      public Worker(int id, String name, String desc, String image, String muscleGroup){
+         this.id = id;
+         this.name = name;
+         this.desc = desc;
+         this.image = image;
+         this.mGroup = muscleGroup;
+      }
+
+      @Override
+      public void run() {
+         System.out.println("Creating exer");
+         exercises.add(new Exercise(id, name, desc, new Image(image), mGroup));
+         System.out.println("Exer added");
       }
    }
 
