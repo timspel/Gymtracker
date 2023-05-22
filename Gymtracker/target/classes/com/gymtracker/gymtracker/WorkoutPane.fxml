@@ -159,7 +159,7 @@
             <Button fx:id="saveTemplateButton" layoutX="263.0" layoutY="650.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="98.0" text="Save template" />
             <Button fx:id="templateRemoveExerciseButton" layoutX="29.0" layoutY="655.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
             <Label fx:id="errorAddExerciseTemplateLabel" layoutX="119.0" layoutY="183.0" text="errorAddExercise" />
-            <Label fx:id="errorSaveTemplateLabel" layoutX="264.0" layoutY="689.0" text="errorSaveTemplate" />
+            <Label fx:id="errorSaveTemplateLabel" layoutX="220.0" layoutY="689.0" text="errorSaveTemplate" />
             <Label fx:id="errorRemoveExerciseTemplateLabel" layoutX="29.0" layoutY="689.0" text="errorRemoveExercise" />
          </children>
       </AnchorPane>
