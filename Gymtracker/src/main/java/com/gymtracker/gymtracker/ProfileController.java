@@ -89,7 +89,7 @@ public class ProfileController {
     *
     * @param event Button pressed event
     */
-   public void buttonHandler(ActionEvent event){ //Method that handles all the button presses.
+   public void buttonHandler(ActionEvent event){
       if(event.getSource() == editButton){
          if(editButton.getText() != "Save") {
             editButton.setText("Save");
@@ -102,23 +102,7 @@ public class ProfileController {
          }
       }
       if(event.getSource() == editInfoButton){ //When user presses the edit button next to weight and height.
-         if(editInfoButton.getText() != "Save") { //If the button says "Edit"
-            editInfoButton.setText("Save");
-            heightField.setEditable(true);
-            weightField.setEditable(true);
-            weightField.setStyle("-fx-background-color: WHITE;");
-            heightField.setStyle("-fx-background-color: WHITE;");
-         }
-         else { //IF the button says "Save"
-            editInfoButton.setText("Edit");
-            heightField.setEditable(false);
-            weightField.setEditable(false);
-            weightField.setStyle("-fx-background-color: TRANSPARENT;");
-            heightField.setStyle("-fx-background-color: TRANSPARENT;");
-            if(Double.parseDouble(weightField.getText()) != weight && Double.parseDouble(heightField.getText()) != height) { //Checks if both fields are empty
-               setWeightHeight(Double.parseDouble(weightField.getText()), Double.parseDouble(heightField.getText())); //Calls method that updates the users weight and height.
-            }
-         }
+         setWeightHeight(); //Calls method that updates the users weight and height.
       }
       if(event.getSource() == changeButton){ //Handles the events when user presses Change button.
          if(changeButton.getText() != "Save") { //Enables the user to edit the image url.
@@ -262,26 +246,39 @@ public class ProfileController {
 
    /**
     * Updates the User's Weight & Height in the Database.
-    * @param weight - The new weight.
-    * @param height - The new height.
     */
-   private void setWeightHeight(double weight, double height) {
-      PreparedStatement stmt = null;
-      try (Connection con = Database.getDatabase()) {
-         con.setAutoCommit(false);
+   private void setWeightHeight() {
+      if(editInfoButton.getText() != "Save") { //If the button says "Edit"
+         editInfoButton.setText("Save");
+         heightField.setEditable(true);
+         weightField.setEditable(true);
+         weightField.setStyle("-fx-background-color: WHITE;");
+         heightField.setStyle("-fx-background-color: WHITE;");
+      }
+      else { //IF the button says "Save"
+         editInfoButton.setText("Edit");
+         heightField.setEditable(false);
+         weightField.setEditable(false);
+         weightField.setStyle("-fx-background-color: TRANSPARENT;");
+         heightField.setStyle("-fx-background-color: TRANSPARENT;");
+         if (Double.parseDouble(weightField.getText()) != weight && Double.parseDouble(heightField.getText()) != height) { //Checks if both fields are empty
+            PreparedStatement stmt = null;
+            try (Connection con = Database.getDatabase()) {
+               con.setAutoCommit(false);
+               String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
+               stmt = con.prepareStatement(sql);
+               stmt.setDouble(1, Double.parseDouble(heightField.getText()));
+               stmt.setDouble(2, Double.parseDouble(weightField.getText()));
+               stmt.setInt(3, userId);
 
-         String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
-         stmt = con.prepareStatement(sql);
-         stmt.setDouble(1, height);
-         stmt.setDouble(2, weight);
-         stmt.setInt(3, userId);
-
-         stmt.executeUpdate();
-         stmt.close();
-         con.commit();
-      } catch (Exception e) {
-         e.printStackTrace();
-         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+               stmt.executeUpdate();
+               stmt.close();
+               con.commit();
+            } catch (Exception e) {
+               e.printStackTrace();
+               System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            }
+         }
       }
    }
 
