@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 /**
  * This class controls the friendslisttab, it has the function to search, add and preview other peoples accounts and
  * add them as friends.
+ *  @author Villie Brandt, Tim Do
  */
 public class FriendsListController implements Initializable {
 

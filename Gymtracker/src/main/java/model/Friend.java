@@ -2,6 +2,7 @@ package model;
 
 /**
  * This class is a Friends object that us used in the FriendsListController.
+ * @author Villie Brandt
  */
 public class Friend {
 
