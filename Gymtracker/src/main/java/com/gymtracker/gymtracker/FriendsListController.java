@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * This class controls the friendslisttab, it has the function to search, add and preview other peoples accounts and
+ * add them as friends.
+ */
 public class FriendsListController implements Initializable {
 
 
@@ -66,7 +70,11 @@ public class FriendsListController implements Initializable {
     private String  userFriendPicture;
     private  String friendUsername;
 
-
+    /**
+     *  This initializes all the needed code for when the tab is activated, it starts all the pending/friends lists.
+     * @param url represents the location of the FXML file.
+     * @param resourceBundle used to localize and accessing resources.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         friendsColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -97,6 +105,12 @@ public class FriendsListController implements Initializable {
         });
     }
 
+    /**
+     * This is the method for the search button, it contains the events for when you press different buttons
+     * in the panel. You can search, addfriend, removefriend also remove a friendrequest and accept a friendrequest.
+     * @param event The actionlistner what happens.
+     * @throws IOException
+     */
     public void searchButtonClicked(ActionEvent event) throws IOException{
         if (event.getSource() == searchButton){
             search = searchField.getText();
@@ -136,6 +150,12 @@ public class FriendsListController implements Initializable {
 
         }
     }
+
+    /**
+     * The method for searching for a friend that makes a connection to the database and searches for the username that was
+     * inputted in the searchbar and it gives back user_id, weight, height and a profile picture.
+     * @param search The searched name.
+     */
     public void searchFriends(String search){
 
         Connection con = null;
@@ -144,7 +164,7 @@ public class FriendsListController implements Initializable {
             PreparedStatement stmt = con.prepareStatement("SELECT user_id, username, weight, height, profile_picture FROM \"User\" WHERE username = ?"); {
                 stmt.setString(1, search); // Set the first parameter of the prepared statement to the search string + a wildcard
                 ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
+                if (rs.next()) {
                     friendUsername = rs.getString("username");
                     double weight = rs.getDouble("weight");
                     double height = rs.getDouble("height");
@@ -154,6 +174,9 @@ public class FriendsListController implements Initializable {
                     userFriendPicture =  rs.getString("profile_picture");
                     setFriendInformation(friendUsername, weight, height, userFriendPicture);
 
+                } else {
+                    setAlert("No user by that username was found");
+                    clearFriendInformation();
                 }
                 stmt.close();
                 //con.commit();
@@ -163,13 +186,39 @@ public class FriendsListController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     *  Method to set the username, weight, height, profilpicture for a user and display it.
+     * @param friendUsername The username for a user.
+     * @param weight The chosen weight for a user.
+     * @param height The chosen height for a user.
+     * @param image Either a chosen image or a default image.
+     */
     public void setFriendInformation(String friendUsername, double weight, double height ,String image){
         selectedUsername.setText(friendUsername);
         userWeight.setText(String.valueOf(weight)+" kg");
         userHeight.setText(String.valueOf(height)+" cm");
-        profilePicture.setImage(new Image(image));
+        if (image.equals("")){
+            profilePicture.setImage(new Image("icon.png"));
+        }else
+            profilePicture.setImage(new Image(image));
     }
 
+    /**
+     * This method is used for clearing all the information from the display labels and reset them.
+     */
+    public void clearFriendInformation(){
+        selectedUsername.setText("");
+        userWeight.setText("");
+        userHeight.setText("");
+        profilePicture.setImage(new Image("icon.png"));
+    }
+
+    /**
+     * This method is for adding a friend and making a friendship and insert it into the pendingfriendshiplist.
+     * @param user1Id The user id.
+     * @param user2Id The friends id.
+     */
     public void addFriendship(int user1Id, int user2Id) {
         String friendCheckSQL = "SELECT COUNT(*) FROM Friendship WHERE (user1_id = ? AND user2_id = ? AND status != 'pending') OR (user1_id = ? AND user2_id = ? AND status != 'pending')";
         try (Connection con = Database.getDatabase();
@@ -214,8 +263,11 @@ public class FriendsListController implements Initializable {
         }
     }
 
-
-
+    /**
+     * Used to populate a users friendslist it happens instantly in initialize and it searches for all the users friends
+     * and populates the friendsarraylist.
+     * @param userId The user that gets it's friendslist populated.
+     */
     public void populateFriendsList(int userId){
         friendsArrayList.clear(); // Clear the pendingArrayList before populating it
 
@@ -243,6 +295,12 @@ public class FriendsListController implements Initializable {
 
     }
 
+    /**
+     * This method is made for removing a friendshiprequest and if the friendshiprequest is in pending it allow the user
+     * to delete it.
+     * @param friendshipId the id off the friendship.
+     * @param userId the user.
+     */
     public void removeFriendshipRequest(int friendshipId, int userId) {
         try (Connection con = Database.getDatabase();
              PreparedStatement selectStmt = con.prepareStatement("SELECT user1_id, user2_id, status FROM Friendship WHERE friendship_id = ?")) {
@@ -298,6 +356,10 @@ public class FriendsListController implements Initializable {
         }
     }
 
+    /**
+     * This method is similar to the method above except this method removes a friends instead of a friendshiprequest.
+     * @param friendshipId The id of the friendship.
+     */
     public void removeFriendship(int friendshipId) {
         try (Connection con = Database.getDatabase();
              PreparedStatement selectStmt = con.prepareStatement("SELECT status FROM Friendship WHERE friendship_id = ?")) {
@@ -348,9 +410,12 @@ public class FriendsListController implements Initializable {
         }
     }
 
-
-
-
+    /**
+     * This method is for accepting a friendship, it makes checks for the status of the two users friendship and it does
+     * several checks for example if they are already friends, if it's the right person that accepts it.
+     * @param friendshipId the id for the friendship.
+     * @param userId the user.
+     */
     public void acceptFriendship(int friendshipId, int userId) {
         try (Connection con = Database.getDatabase();
              PreparedStatement selectStmt = con.prepareStatement("SELECT user2_id, status FROM Friendship WHERE friendship_id = ?")) {
@@ -407,8 +472,10 @@ public class FriendsListController implements Initializable {
         }
     }
 
-
-
+    /**
+     * This method is similar to the populatefriends but this method populates the list with pending friends requests.
+     * @param userId the user.
+     */
     public void populatePendingFriendRequest(int userId) {
         pendingArrayList.clear(); // Clear the pendingArrayList before populating it
 
@@ -434,6 +501,12 @@ public class FriendsListController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method is used to send messages for example if there is a error how the user is trying to interact with the
+     * friendlist.
+     * @param message the message that gets sent.
+     */
     public void setAlert(String message){
         alert.setText(message);
     }
