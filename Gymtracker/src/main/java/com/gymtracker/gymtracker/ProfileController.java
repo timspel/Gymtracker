@@ -17,6 +17,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * @author Alexander Fleming
+ *
+ * Controller for the Profile Tab's UI.
+ * Handles all interactions witht he ProfilePane FXML file.
+ */
 public class ProfileController {
    //<editor-fold desc="Instance Variables">
    @FXML
@@ -61,16 +67,28 @@ public class ProfileController {
    private boolean toggle;
    private String defaultStyle;
    //</editor-fold
+
+   /**
+    * Constructor, loads in FXML file and sets up components
+    *
+    * @param mainController Takes an instance of the MainController
+    * @throws IOException
+    */
    public ProfileController(MainController mainController) throws IOException {
       this.mainController = mainController;
       loadFXML();
       userId = Singleton.getInstance().getUserId();
 
-      getUserInfo();
-      showProfilePic();
-      initComponents();
+      getUserInfo(); //Fetches user info.
+      showProfilePic(); //Displays profile picture
+      initComponents(); //Initializes components.
    }
 
+   /**
+    * Handles all button pressed events from GUI.
+    *
+    * @param event Button pressed event
+    */
    public void buttonHandler(ActionEvent event){ //Method that handles all the button presses.
       if(event.getSource() == editButton){
          if(editButton.getText() != "Save") {
@@ -80,16 +98,7 @@ public class ProfileController {
          else {
             goalsText.setEditable(false);
             editButton.setText("Edit");
-            Connection conn = null;
-            try{
-               conn = Database.getDatabase();
-               PreparedStatement stmt = conn.prepareStatement("UPDATE \"User\" SET personal_goal = ? WHERE user_id = ? ");
-               stmt.setString(1, goalsText.getText());
-               stmt.setInt(2, userId);
-               stmt.executeUpdate();
-               stmt.close();
-               conn.close();
-            }catch (Exception e){e.printStackTrace();}
+            updateGoalsText(goalsText.getText());
          }
       }
       if(event.getSource() == editInfoButton){ //When user presses the edit button next to weight and height.
@@ -107,7 +116,7 @@ public class ProfileController {
             weightField.setStyle("-fx-background-color: TRANSPARENT;");
             heightField.setStyle("-fx-background-color: TRANSPARENT;");
             if(Double.parseDouble(weightField.getText()) != weight && Double.parseDouble(heightField.getText()) != height) { //Checks if both fields are empty
-               setWeightHeight(); //Calls method that updates the users weight and height.
+               setWeightHeight(Double.parseDouble(weightField.getText()), Double.parseDouble(heightField.getText())); //Calls method that updates the users weight and height.
             }
          }
       }
@@ -130,7 +139,7 @@ public class ProfileController {
             }
          }
       }
-      if(event.getSource() == darkmodeButton){
+      if(event.getSource() == darkmodeButton){ //Work in progress. Changes theme to darkmode.
          if(toggle == true){
             toggle = false;
             backgroundPane.setStyle(defaultStyle);
@@ -144,16 +153,28 @@ public class ProfileController {
       }
    }
 
+   /**
+    * Returns the Node containing the FXML AnchorPane
+    * @return the FXML file Node.
+    */
    public Parent getParent(){
       return profilePane;
    } //Returns the loaded FXML Parent
 
+   /**
+    * Loads in the FXML file and sets the controller
+    * @throws IOException
+    */
    private void loadFXML() throws IOException{ //Loads FXML file and assigns it to parent variable.
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePane.fxml"));
       loader.setController(this); //Sets the current insance as the controller class for the FXML interface.
       profilePane = loader.load();
    }
 
+   /**
+    * Initializes all the components. Sets the style and feel as well as starting appearance.
+    * Sets up the animation pattern.
+    */
    private void initComponents(){ //Initializes the components such as buttons and text fields.
       goalsText.setEditable(false);
       weightField.setEditable(false);
@@ -201,14 +222,21 @@ public class ProfileController {
          });
       }); //End of animation settings
    }
+
+   /**
+    * Displays the profile picture fetched from the Database.
+    */
    private void showProfilePic(){
-      System.out.println(profilePicture);
       if (!profilePicture.isEmpty()) {
          profileImage.setImage(new Image(profilePicture));
       } else {
          profileImage.setImage(new Image("icon.png"));
       }
    }
+
+   /**
+    * Updates the User's profile picture in the Database.
+    */
    private void setProfileImage(){ //Handles requests to update the users profile picture
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
@@ -232,15 +260,20 @@ public class ProfileController {
       profileImage.setImage(new Image(pictureUrlField.getText()));
    }
 
-   private void setWeightHeight() {
+   /**
+    * Updates the User's Weight & Height in the Database.
+    * @param weight - The new weight.
+    * @param height - The new height.
+    */
+   private void setWeightHeight(double weight, double height) {
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
          con.setAutoCommit(false);
 
          String sql = ("UPDATE \"User\" SET height = ?, weight = ? WHERE user_id = ?");
          stmt = con.prepareStatement(sql);
-         stmt.setDouble(1, Double.parseDouble(heightField.getText()));
-         stmt.setDouble(2, Double.parseDouble(weightField.getText()));
+         stmt.setDouble(1, height);
+         stmt.setDouble(2, weight);
          stmt.setInt(3, userId);
 
          stmt.executeUpdate();
@@ -251,6 +284,29 @@ public class ProfileController {
          System.err.println(e.getClass().getName() + ": " + e.getMessage());
       }
    }
+
+   /**
+    * Updates the User's personal goals in the database.
+    * @param goals - The new personal goals.
+    */
+   private void updateGoalsText(String goals){
+     if(!goals.isEmpty()) {
+        try (Connection conn = Database.getDatabase()) {
+           PreparedStatement stmt = conn.prepareStatement("UPDATE \"User\" SET personal_goal = ? WHERE user_id = ? ");
+           stmt.setString(1, goalsText.getText());
+           stmt.setInt(2, userId);
+           stmt.executeUpdate();
+           stmt.close();
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+     }
+   }
+
+   /**
+    * Gets all the info regarding the logged-in user to be displayed in the page.
+    * Assigns the instance variables the respective values.
+    */
    private void getUserInfo(){ //Method that fetches the logged in users information.
       PreparedStatement stmt = null;
       try (Connection con = Database.getDatabase()) {
@@ -267,7 +323,6 @@ public class ProfileController {
             profilePicture = result.getString("profile_picture");
             goalsText.setText(result.getString("personal_goal"));
          }
-
          stmt.close();
          con.commit();
       } catch (Exception e) {
