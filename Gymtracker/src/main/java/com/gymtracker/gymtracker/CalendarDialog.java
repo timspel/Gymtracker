@@ -276,27 +276,16 @@ public class CalendarDialog {
             }
 
 
-            // Check the number of participants in the workout
-            String countParticipantsSql = "SELECT COUNT(*) AS num_participants FROM workout_participants WHERE workout_id = ?";
-            PreparedStatement countParticipantsStmt = conn.prepareStatement(countParticipantsSql);
-            countParticipantsStmt.setInt(1, workoutId);
-            ResultSet countParticipantsRs = countParticipantsStmt.executeQuery();
-            if (countParticipantsRs.next()) {
-                int numParticipants = countParticipantsRs.getInt("num_participants");
-                if (numParticipants > 1) {
-                    // There are more than 1 person in workout_participants
-                    // Check if the user is the original creator of the workout
-                    String sqlCheckCreator = "SELECT user_id FROM workout WHERE workout_id = ? AND is_original = true";
-                    PreparedStatement stmtCheckCreator = conn.prepareStatement(sqlCheckCreator);
-                    stmtCheckCreator.setInt(1, workoutId);
-                    ResultSet creatorRs = stmtCheckCreator.executeQuery();
-                    if (creatorRs.next()) {
-                        int creatorId = creatorRs.getInt("user_id");
-                        if (creatorId == userId) {
-                            setJoinedStatus("There are already " + numParticipants + " participants signed up for the workout. Please go to workout to remove the workout");
-                            return;
-                        }
-                    }
+            // Check if the user is the original creator of the workout
+            String sqlCheckCreator = "SELECT user_id FROM workout WHERE workout_id = ? AND is_original = true";
+            PreparedStatement stmtCheckCreator = conn.prepareStatement(sqlCheckCreator);
+            stmtCheckCreator.setInt(1, workoutId);
+            ResultSet creatorRs = stmtCheckCreator.executeQuery();
+            if (creatorRs.next()) {
+                int creatorId = creatorRs.getInt("user_id");
+                if (creatorId == userId) {
+                    setJoinedStatus("You are the owner of the workout, please remove it from the workout tab");
+                    return;
                 }
             }
             // Delete the participant's row from workout_participants table
