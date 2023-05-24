@@ -1795,6 +1795,7 @@ public class ControllerWorkouts implements Initializable{
 /**
  * Comparator implementation for comparing Set objects.
  * Sets are compared based on their set number in descending order.
+ * @author Samuel Carlsson
  */
 class SetComparator implements Comparator<Set>{
 
