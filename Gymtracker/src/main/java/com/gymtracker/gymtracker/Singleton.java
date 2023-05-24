@@ -1,5 +1,4 @@
 package com.gymtracker.gymtracker;
-
 import javafx.scene.control.ScrollPane;
 
 /**

@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import model.*;
 import model.Set;
 import model.Template;
-
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
