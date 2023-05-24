@@ -24,6 +24,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * This class is responsible for handling events and actions related to the workout tab.
+ * @author Samuel Carlsson
+ */
 public class ControllerWorkouts implements Initializable{
     @FXML
     private Button saveWorkoutButton;
@@ -162,8 +166,10 @@ public class ControllerWorkouts implements Initializable{
     private boolean exerciseAdded = false;
     private boolean exerciseRemoved = false;
 
-    public ControllerWorkouts() {}
-
+    /**
+     * Initializes the controller class.
+     * Creates all arrayes, sets default values for components, sets the users saved templates and adds listeners for when clicking in the tables.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         disableAllErrorMessages();
@@ -279,6 +285,10 @@ public class ControllerWorkouts implements Initializable{
         });
     }
 
+    /**
+     * Handles the button press events.
+     * @param e The ActionEvent object representing the button press event.
+     */
     @FXML
     public void buttonPressed(ActionEvent e){
         disableAllErrorMessages();
@@ -359,6 +369,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Clears the workout section and disables error messages if there are exercises or sets present.
+     * Shows an error message if there are missing inputs.
+     */
     public void newWorkout(){
         if(exercises.size() > 0 || loadedWorkoutExercises.size() > 0 || loadedTemplateExercises.size() > 0){
             clearWorkoutSection();
@@ -381,6 +395,11 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Loads a selected workout.
+     * Clears the workout section and loads the selected workout if available.
+     * Shows an error message if no workout is selected.
+     */
     public void loadWorkout(){
         if(workoutChoiceBox.getValue() != null){
             clearWorkoutSection();
@@ -399,6 +418,12 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Checks if a workout is successfully loaded when trying to retrieve its details from the database.
+     * @param workoutName The name of the workout that should load.
+     * @param userId The ID of the user associated with the workout.
+     * @return True if the workout is successfully loaded, false otherwise.
+     */
     public boolean workoutLoaded(String workoutName, int userId){
         int workoutTypeId;
         Time workoutTime;
@@ -495,6 +520,11 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Loads a selected template.
+     * Clears the workout section and loads the selected template if available.
+     * Shows an error message if no template is selected.
+     */
     public void loadTemplate(){
         if(selectedTemplateRow != -1){
             clearWorkoutSection();
@@ -519,6 +549,12 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Checks if a template is successfully loaded when trying to retrieve its details from the database.
+     * @param templateName The name of the loaded template.
+     * @param userId The ID of the user associated with the template.
+     * @return True if the template is successfully loaded, false otherwise.
+     */
     public boolean templateLoaded(String templateName, int userId){
         int templateId = 0;
         int exerciseId = 0;
@@ -557,6 +593,11 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Adds an exercise to the template.
+     * Shows the added exercise in the template table.
+     * Shows an error message if no exercise is selected.
+     */
     public void addExerciseToTemplate(){
         if(exercisesTemplateChoiceBox.getValue() != null){
             exercisesTemplate.add(new ExerciseWorkoutTab(exercisesTemplateChoiceBox.getValue()));
@@ -568,6 +609,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Tries saving the template to the database.
+     * Clears the template section if the template is successfully saved.
+     */
     public void saveTemplate(){
         int categoryId = 0;
         try{
@@ -620,6 +665,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Removes the selected template from the list and updates the templates table.
+     * If no template is selected, an error message is shown.
+     */
     public void removeTemplate(){
         if(selectedTemplateRow != -1) {
             boolean deleted = false;
@@ -654,6 +703,11 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Retrieves the template ID for the given template name from the database.
+     * @param templateName the name of the template
+     * @return the template ID
+     */
     public int getTemplateId(String templateName){
         int templateId = 0;
         try(Connection conn = Database.getDatabase()){
@@ -673,6 +727,12 @@ public class ControllerWorkouts implements Initializable{
         return templateId;
     }
 
+    /**
+     * Retrieves the exercises associated with the selected template from the database.
+     * @param templateName the name of the template
+     * @param userId the ID of the user
+     * @return a list of ExerciseWorkoutTab objects representing the template exercises
+     */
     public ArrayList<ExerciseWorkoutTab> getSelectedTemplateExercises(String templateName, int userId){
         ArrayList<ExerciseWorkoutTab> exercises = new ArrayList<>();
         PreparedStatement stmt = null;
@@ -700,6 +760,11 @@ public class ControllerWorkouts implements Initializable{
         return exercises;
     }
 
+    /**
+     * Retrieves and sets the templates for the specified user.
+     * @param userId the ID of the user
+     * @return true if the templates are added to the array successfully, false otherwise
+     */
     public boolean setTemplates(int userId){
         try (Connection conn = Database.getDatabase()){
             // Prepare the SQL query with a parameter for the user ID
@@ -729,6 +794,12 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Inserts a template with the given template ID and exercise name to the database.
+     * @param templateId the ID of the template
+     * @param exerciseName the name of the exercise
+     * @return true if the template is registered, false otherwise
+     */
     public boolean templateRegistered(int templateId, String exerciseName) {
         try (Connection con = Database.getDatabase()) {
             String sql = "SELECT exercise_id FROM Exercise WHERE exercise_name = ?";
@@ -757,6 +828,11 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Deletes the template with the specified template ID.
+     * @param templateId the ID of the template to be deleted
+     * @return true if the template is deleted successfully, false otherwise
+     */
     public boolean templateDeleted(int templateId){
         try (Connection con = Database.getDatabase()) {
 
@@ -782,6 +858,12 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Adds an exercise to the specified workout.
+     * @param workoutId the ID of the workout
+     * @param exerciseName the name of the exercise to be added
+     * @return true if the exercise is added successfully, false otherwise
+     */
     public boolean addExerciseToWorkout(int workoutId, String exerciseName) {
         try (Connection con = Database.getDatabase()) {
             String sql = "SELECT exercise_id FROM Exercise WHERE exercise_name = ?";
@@ -811,6 +893,15 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Adds a set to the specified exercise in the workout.
+     * @param workoutId the ID of the workout
+     * @param exerciseName the name of the exercise
+     * @param setNumber the set number
+     * @param reps the number of repetitions
+     * @param weight the weight lifted
+     * @return true if the set is added successfully, false otherwise
+     */
     public boolean addSetToExercise(int workoutId, String exerciseName, int setNumber, int reps, double weight){
         try(Connection con = Database.getDatabase()){
             String sql = "SELECT exercise_id FROM Exercise WHERE exercise_name = ?";
@@ -842,6 +933,17 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Inserts a new workout in the database.
+     * @param userId the ID of the user registering the workout
+     * @param workoutName the name of the workout
+     * @param workoutDescription the description of the workout
+     * @param categoryId the ID of the workout category
+     * @param date the date of the workout
+     * @param time the time of the workout
+     * @param isOriginal indicates that the workout belongs to the user who created it
+     * @return true if the workout is successfully registered, false otherwise
+     */
     public boolean newWorkoutRegistered(int userId, String workoutName, String workoutDescription, int categoryId, LocalDate date, String time, boolean isOriginal) {
         Timestamp timestamp = null;
         try{
@@ -890,6 +992,14 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Registers a new template in the database.
+     * @param userId the ID of the user registering the template
+     * @param templateName the name of the template
+     * @param templateDescription the description of the template
+     * @param categoryId the ID of the template category
+     * @return true if the template is successfully registered, false otherwise
+     */
     public boolean newTemplateRegistered(int userId, String templateName, String templateDescription, int categoryId) {
         try (Connection con = Database.getDatabase()) {
             // Insert a new workout
@@ -918,6 +1028,12 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Adds the user as a participant to a workout.
+     * @param workoutId the ID of the workout
+     * @param userId the ID of the participant
+     * @return true if the participant is successfully added, false otherwise
+     */
     public boolean addParticipantToWorkout(int workoutId, int userId){
         try(Connection conn = Database.getDatabase()){
             String query = "INSERT INTO Workout_participants (workout_id, user_id) VALUES (?,?)";
@@ -933,6 +1049,10 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Saves the workout data to the database.
+     * Checks that all fields are filled in and exercises are added to the workout.
+     */
     public void saveWorkout(){
         int categoryId;
         try{
@@ -1043,6 +1163,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Updates the existing workout in the database by first removing the old values and then adding new.
+     * Checks that all fields are filled in and exercises are added to the workout.
+     */
     public void updateWorkout(){
         try{
             if(loadedWorkoutExercises.get(0).getExerciseName() != null) {
@@ -1061,6 +1185,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Removes a workout from the database.
+     * Checks that a workout is selected.
+     */
     public void removeWorkout(){
         if(workoutChoiceBox.getValue() != null){
             int workoutId = getWorkoutId(workoutChoiceBox.getValue(), Singleton.getInstance().getUserId());
@@ -1078,6 +1206,12 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Retrieves the ID of a workout based on its name and user ID.
+     * @param workoutName the name of the workout
+     * @param userId the ID of the user
+     * @return the ID of the workout, or 0 if not found
+     */
     public int getWorkoutId(String workoutName, int userId){
         int workoutId = 0;
         try(Connection conn = Database.getDatabase()){
@@ -1097,6 +1231,11 @@ public class ControllerWorkouts implements Initializable{
         return workoutId;
     }
 
+    /**
+     * Tries to remove a workout from the database.
+     * @param workoutId the ID of the workout to be removed
+     * @return true if the workout is successfully removed, false otherwise
+     */
     public boolean workoutRemoved(int workoutId){
         try(Connection conn = Database.getDatabase()){
             String query = "DELETE FROM Workout_exercise where workout_id = ?";
@@ -1126,6 +1265,10 @@ public class ControllerWorkouts implements Initializable{
         return true;
     }
 
+    /**
+     * Adds a set to the workout.
+     * Validates the number of repetitions and the maximum number of sets allowed.
+     */
     public void addSet(){
         try{
             if(repetitionsSpinner.getValue() > 0){
@@ -1155,6 +1298,9 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Removes a set from the workout and checks that a set is selected.
+     */
     public void removeSet(){
         if(selectedSetRow > -1){
             if(loadedWorkout){
@@ -1175,6 +1321,9 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Updates the sets table by reordering the sets and updating the table view.
+     */
     public void updateSetsTable(){
         numberOfSets = 0;
 
@@ -1198,6 +1347,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Adds an exercise to the workout.
+     * Validates that an exercise is selected and the presence of sets.
+     */
     public void addExercise(){
         exerciseAdded = false;
         try{
@@ -1267,6 +1420,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Adds an exercise to the workout when the user has loaded a saved workout.
+     * Validates that an exercise is selected and the presence of sets.
+     */
     public void loadedAddExercise(){
         exerciseAdded = false;
         if(exercisesChoiceBox.getValue() != null) {
@@ -1322,6 +1479,9 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Populates the exercise choice box with exercise names from the database.
+     */
     public void populateExerciseChoiceBox(){
         try(Connection conn = Database.getDatabase()){
             Statement stmt = conn.createStatement();
@@ -1343,6 +1503,9 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Populates the workout choice box with workout names connected to the user from the database.
+     */
     public void populateWorkoutChoiceBox(){
         workoutChoiceBox.getItems().clear();
         try(Connection conn = Database.getDatabase()){
@@ -1364,6 +1527,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Removes an exercise from the workout.
+     * Checks that an exercise is selected and what type of workout is being edited.
+     */
     public void removeExercise(){
         if(selectedExerciseRow > -1){
             if(loadedTemplate){
@@ -1387,6 +1554,12 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Removes the selected exercise from a template.
+     * If an exercise is selected, it will be removed from the list of exercises.
+     * The table view will be updated accordingly.
+     * If no exercise is selected, an error message will be shown.
+     */
     public void removeTemplateExercise(){
         if(selectedExerciseTemplateRow != -1){
             exercisesTemplate.remove(selectedExerciseTemplateRow);
@@ -1398,6 +1571,11 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Clears the workout section.
+     * Resets all fields and variables related to the workout section.
+     * Resets all ArrayLists and tableViews.
+     */
     public void clearWorkoutSection(){
         workoutNameTextField.clear();
         workoutDescriptionTextField.clear();
@@ -1434,6 +1612,11 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Clears the exercise section.
+     * Resets all fields and variables related to the exercise section.
+     * Resets all ArrayLists and the set table.
+     */
     public void clearExerciseSection(){
         if(loadedWorkout){
             loadedWorkoutSets = new ArrayList<>();
@@ -1449,6 +1632,11 @@ public class ControllerWorkouts implements Initializable{
         repetitionsSpinner.getValueFactory().setValue(0);
     }
 
+    /**
+     * Clears the template section.
+     * Resets all fields and variables related to the template section.
+     * Resets the exercise-ArrayList and the exercise table for templates.
+     */
     public void clearTemplateSection(){
         exercisesTemplate = new ArrayList<>();
         exercisesTemplateTable.setItems(FXCollections.observableArrayList(exercisesTemplate));
@@ -1458,13 +1646,16 @@ public class ControllerWorkouts implements Initializable{
         categoriesTemplateChoiceBox.setValue(null);
     }
 
+    /**
+     * Scrolls to the specified position within the scroll pane.
+     * @param scrollPane The scroll pane to scroll.
+     * @param position   The desired position to scroll to.
+     */
     public void scrollToPosition(ScrollPane scrollPane, int position) {
         javafx.scene.Node content = scrollPane.getContent();
         AnchorPane anchorPaneContent = (AnchorPane) content;
         Bounds bounds = anchorPaneContent.getBoundsInLocal();
         double contentHeight = bounds.getHeight();
-
-        // Calculate the position within the AnchorPane based on the desired position
 
         // Adjust the vertical scroll position
         double vValue = position / contentHeight;
@@ -1475,6 +1666,10 @@ public class ControllerWorkouts implements Initializable{
         scrollPane.setHvalue(hValue);
     }
 
+    /**
+     * Shows an error message based on the given error code.
+     * @param errorCode The error code indicating the type of error.
+     */
     public void showErrorMessage(int errorCode){
         switch (errorCode){
             case 1:
@@ -1575,6 +1770,10 @@ public class ControllerWorkouts implements Initializable{
         }
     }
 
+    /**
+     * Disables all error messages.
+     * Hides all error message labels.
+     */
     public void disableAllErrorMessages(){
         errorAddSetLabel.setVisible(false);
         errorRemoveSetLabel.setVisible(false);
@@ -1593,7 +1792,18 @@ public class ControllerWorkouts implements Initializable{
 
 }
 
+/**
+ * Comparator implementation for comparing Set objects.
+ * Sets are compared based on their set number in descending order.
+ */
 class SetComparator implements Comparator<Set>{
+
+    /**
+     * Compares two Set objects based on their set numbers.
+     * @param a the first Set object to compare
+     * @param b the second Set object to compare
+     * @return a negative integer, zero, or a positive integer as the first Set is less than, equal to, or greater than the second Set
+     */
     @Override
     public int compare(Set a, Set b) {
         return b.getSetNumber() - a.getSetNumber();
