@@ -21,7 +21,6 @@ public class ExerciseWorkoutTab {
         this.set5 = set5;
         this.sets = sets;
     }
-
     public ExerciseWorkoutTab(String exerciseName, String set1, String set2, String set3, String set4, List<Set> sets) {
         this.exerciseName = exerciseName;
         this.set1 = set1;
@@ -30,7 +29,6 @@ public class ExerciseWorkoutTab {
         this.set4 = set4;
         this.sets = sets;
     }
-
     public ExerciseWorkoutTab(String exerciseName, String set1, String set2, String set3, List<Set> sets) {
         this.exerciseName = exerciseName;
         this.set1 = set1;
@@ -38,20 +36,17 @@ public class ExerciseWorkoutTab {
         this.set3 = set3;
         this.sets = sets;
     }
-
     public ExerciseWorkoutTab(String exerciseName, String set1, String set2, List<Set> sets) {
         this.exerciseName = exerciseName;
         this.set1 = set1;
         this.set2 = set2;
         this.sets = sets;
     }
-
     public ExerciseWorkoutTab(String exerciseName, String set1, List<Set> sets) {
         this.exerciseName = exerciseName;
         this.set1 = set1;
         this.sets = sets;
     }
-
     public ExerciseWorkoutTab(String exerciseName){
         this.exerciseName = exerciseName;
     }
