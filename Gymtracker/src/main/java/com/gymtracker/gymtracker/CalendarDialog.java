@@ -293,7 +293,7 @@ public class CalendarDialog {
                     if (creatorRs.next()) {
                         int creatorId = creatorRs.getInt("user_id");
                         if (creatorId == userId) {
-                            setJoinedStatus("There are already " + numParticipants + " participants signed up for the workout. Cannot leave workout.");
+                            setJoinedStatus("There are already " + numParticipants + " participants signed up for the workout. Please go to workout to remove the workout");
                             return;
                         }
                     }
