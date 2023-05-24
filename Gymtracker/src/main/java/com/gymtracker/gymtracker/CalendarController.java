@@ -55,6 +55,13 @@ public class CalendarController implements Initializable {
         today = ZonedDateTime.now();
         drawCalendar();
     }
+
+    @FXML
+    void currentMonth(ActionEvent event) {
+        dateFocus = ZonedDateTime.now();
+        today = ZonedDateTime.now();
+        drawCalendar();
+    }
     /**
 
      Handles the event when the "Back" button is clicked to navigate to the previous month.
