@@ -508,7 +508,6 @@ public class ControllerWorkouts implements Initializable{
                         exercise = new ExerciseWorkoutTab(exerciseName, loadedWorkoutSets.get(0).toString(), loadedWorkoutSets.get(1).toString(), loadedWorkoutSets.get(2).toString(), loadedWorkoutSets.get(3).toString(), loadedWorkoutSets.get(4).toString(), loadedWorkoutSets);
                     }
                     loadedWorkoutExercises.add(exercise);
-
                     exercisesTable.setItems(FXCollections.observableArrayList(loadedWorkoutExercises));
                 }
             }
@@ -584,6 +583,7 @@ public class ControllerWorkouts implements Initializable{
                 if(result.next()){
                     loadedTemplateExercises.add(new ExerciseWorkoutTab(result.getString("exercise_name")));
                 }
+
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -1797,7 +1797,6 @@ public class ControllerWorkouts implements Initializable{
  * @author Samuel Carlsson
  */
 class SetComparator implements Comparator<Set>{
-
     /**
      * Compares two Set objects based on their set numbers.
      * @param a the first Set object to compare
