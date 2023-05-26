@@ -1,5 +1,10 @@
 package com.gymtracker.gymtracker;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
 import model.Exercise;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,9 +50,11 @@ public class ExerciseController {
    private Button cancelEditButton;
    @FXML
    private Button updateEditButton;
+   @FXML
+   private Label exerciseImplementMessage;
 
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
-   private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getId);
+   private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getMuscleGroup);
    private ArrayList<exerciseCreator> threads = new ArrayList<>();
    private ArrayList<ExerciseRecord> exerciseRecords = new ArrayList<>();
 
@@ -151,11 +158,6 @@ public class ExerciseController {
       }
    }
 
-   public void readInNewExercise(Exercise exercise){
-      exercises.add(exercise);
-      exercises.sort(listSort);
-   }
-
    public Exercise getExercise(){
       if(exercisesList.getSelectionModel().getSelectedItem() != null){
          int exerciseID;
@@ -170,6 +172,44 @@ public class ExerciseController {
          }
       }
       return null;
+   }
+
+   public void viewSelectedExercise(){
+      populateInfoPanel(getExercise());
+   }
+
+   public void populateInfoPanel(Exercise selectedExercise) {
+      infoPanelMuscleGroup.setText(selectedExercise.getMuscleGroup());
+      infoPanelName.setText(selectedExercise.getName());
+      infoPanelDescription.setText(formatDescriptionText(selectedExercise.getDescription()));
+      infoPanelImage.setImage(selectedExercise.getImage());
+      currentSetsField.setText(getExerciseRecordInfo(selectedExercise, "s"));
+      currentRepsField.setText(getExerciseRecordInfo(selectedExercise, "r"));
+      currentWeightField.setText(getExerciseRecordInfo(selectedExercise, "w"));
+   }
+
+   public String formatDescriptionText(String exerciseDesc){
+      String formattedString = "";
+      String[] splitString = exerciseDesc.split("\\. ");
+      for(String s : splitString){
+         formattedString += "- " + s + "\n";
+      }
+      return formattedString;
+   }
+
+   public void sortExercises(String muscleGroupToSortBy){
+      if(muscleGroupToSortBy.equals("Show all exercises")){
+         exercisesList.setItems(exercises);
+      }else{
+         ObservableList<Exercise> sortedMuscleGroup = FXCollections.observableArrayList();
+
+         for (Exercise exercise : exercises) {
+            if (exercise.getMuscleGroup().equals(muscleGroupToSortBy)) {
+               sortedMuscleGroup.add(exercise);
+            }
+         }
+         exercisesList.setItems(sortedMuscleGroup);
+      }
    }
 
    public void editRecords(){
@@ -264,29 +304,6 @@ public class ExerciseController {
       changeRecordFieldsVisibility();
    }
 
-   public void viewSelectedExercise(){
-      populateInfoPanel(getExercise());
-   }
-
-   public void populateInfoPanel(Exercise selectedExercise) {
-      infoPanelMuscleGroup.setText(selectedExercise.getMuscleGroup());
-      infoPanelName.setText(selectedExercise.getName());
-      infoPanelDescription.setText(formatDescriptionText(selectedExercise.getDescription()));
-      infoPanelImage.setImage(selectedExercise.getImage());
-      currentSetsField.setText(getExerciseRecordInfo(selectedExercise, "s"));
-      currentRepsField.setText(getExerciseRecordInfo(selectedExercise, "r"));
-      currentWeightField.setText(getExerciseRecordInfo(selectedExercise, "w"));
-   }
-
-   public String formatDescriptionText(String exerciseDesc){
-      String formattedString = "";
-      String[] splitString = exerciseDesc.split("\\. ");
-      for(String s : splitString){
-         formattedString += "- " + s + "\n";
-      }
-      return formattedString;
-   }
-
    public String getExerciseRecordInfo(Exercise selectedExercise, String specifiedRecord){
       for(ExerciseRecord er : exerciseRecords){
          if(selectedExercise.getId() == er.getExerciseID()){
@@ -297,8 +314,6 @@ public class ExerciseController {
                   return String.valueOf(er.getReps());
                case "w":
                   return String.valueOf(er.getWeight());
-               default:
-                  System.out.println("Couldn't find :(");
             }
          }
       }
@@ -338,21 +353,6 @@ public class ExerciseController {
             errorAlert.setContentText("An exercise must be selected before it can be deleted");
             errorAlert.showAndWait();
          }
-      }
-   }
-
-   public void sortExercises(String muscleGroupToSortBy){
-      if(muscleGroupToSortBy.equals("Show all exercises")){
-         exercisesList.setItems(exercises);
-      }else{
-         ObservableList<Exercise> sortedMuscleGroup = FXCollections.observableArrayList();
-
-         for (Exercise exercise : exercises) {
-            if (exercise.getMuscleGroup().equals(muscleGroupToSortBy)) {
-               sortedMuscleGroup.add(exercise);
-            }
-         }
-         exercisesList.setItems(sortedMuscleGroup);
       }
    }
 
@@ -396,6 +396,45 @@ public class ExerciseController {
          errorAlert.setContentText("An exercise must be selected before it can be edited");
          errorAlert.showAndWait();
       }
+   }
+
+   public void readInNewExercise(Exercise exercise){
+      exercises.add(exercise);
+      exercises.sort(listSort);
+      showCompletionMessage("add", exercise.getName());
+   }
+
+   public void updateExercise(int id, String name, String description, Image image, String muscleGroup){
+      for(Exercise exercise : exercises){
+         if(exercise.getId() == id){
+            exercise.setName(name);
+            exercise.setDescription(description);
+            exercise.setImage(image);
+            exercise.setMuscleGroup(muscleGroup);
+         }
+      }
+      exercises.sort(listSort);
+      showCompletionMessage("edit", name);
+   }
+
+   public void showCompletionMessage(String specifyMessage, String exerciseName){
+      if(specifyMessage.equals("add")){
+         exerciseImplementMessage.setText("Successfully added new exercise!");
+         exerciseImplementMessage.setVisible(true);
+      }else if(specifyMessage.equals("edit")){
+         exerciseImplementMessage.setText("Successfully edited exercise:" + exerciseName + "!");
+         exerciseImplementMessage.setVisible(true);
+      }
+      TimerTask showCompletionMessage = new TimerTask() {
+         @Override
+         public void run() {
+            exerciseImplementMessage.setText(null);
+            exerciseImplementMessage.setVisible(false);
+         }
+      };
+      Timer timer = new Timer("messageTimer", true);
+      timer.schedule(showCompletionMessage, 3000);
+      
    }
 
    private class exerciseCreator extends Thread {

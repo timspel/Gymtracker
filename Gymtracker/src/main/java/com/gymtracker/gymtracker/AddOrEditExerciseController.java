@@ -27,7 +27,7 @@ public class AddOrEditExerciseController {
     @FXML
     private TextField imageSourceField;
     @FXML
-    private ChoiceBox<String> muscleGroups = new ChoiceBox<String>();
+    private ChoiceBox<String> muscleGroups = new ChoiceBox<>();
     @FXML
     private TextArea descriptionField;
     @FXML
@@ -45,6 +45,7 @@ public class AddOrEditExerciseController {
     public void initializeWindow(ExerciseController exerciseController, Exercise exercise){
         this.exerciseController = exerciseController;
         exerciseController.populateMuscleGroups(muscleGroups);
+        muscleGroups.getItems().remove(0);
         muscleGroups.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> hideMuscleGroupErrorLabel());
 
         if(exercise == null){
@@ -64,6 +65,7 @@ public class AddOrEditExerciseController {
             nameField.setText(exercise.getName());
             imageSourceField.setText(exercise.getImage().getUrl());
             imagePreview.setImage(exercise.getImage());
+            imageChosen = true;
             muscleGroups.setValue(exercise.getMuscleGroup());
             descriptionField.setText(exercise.getDescription());
 
@@ -129,19 +131,18 @@ public class AddOrEditExerciseController {
 
     public void addNewExercise(){
         if(checkInputFields()){
-            Connection con = null;
-            PreparedStatement stmt = null;
-            ResultSet result = null;
+            PreparedStatement stmt;
+            ResultSet result;
 
-            try {
-                con = Database.getDatabase();
+            try(Connection con = Database.getDatabase()){
                 con.setAutoCommit(false);
+
                 String sql = ("SELECT MAX(exercise_id) FROM exercise");
                 stmt = con.prepareStatement(sql);
                 result = stmt.executeQuery();
-                int higestID = -1;
+                int highestID = -1;
                 if(result.next()){
-                    higestID = (result.getInt(1)) + 1;
+                    highestID = (result.getInt(1)) + 1;
                 }
 
                 sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
@@ -160,7 +161,7 @@ public class AddOrEditExerciseController {
 
                 sql = ("INSERT INTO exercise (exercise_id, exercise_name, exercise_description, exercise_picture, workout_type_id) VALUES (?, ?, ?, ?, ?)");
                 stmt = con.prepareStatement(sql);
-                stmt.setInt(1, higestID);
+                stmt.setInt(1, highestID);
                 stmt.setString(2, name);
                 stmt.setString(3, description);
                 stmt.setString(4, image);
@@ -172,7 +173,7 @@ public class AddOrEditExerciseController {
 
                 System.out.println("Successfully added new exercise");
 
-                Exercise newExercise = new Exercise(higestID, name, description, new Image(image), muscleGroup);
+                Exercise newExercise = new Exercise(highestID, name, description, new Image(image), muscleGroup);
                 exerciseController.readInNewExercise(newExercise);
                 closeWindow();
             } catch (SQLException | URISyntaxException e) {
@@ -184,36 +185,47 @@ public class AddOrEditExerciseController {
     }
 
     public void confirmExerciseEdit(){
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
+        if(checkInputFields()){
+            PreparedStatement stmt;
+            ResultSet result;
 
-        try{
-            con = Database.getDatabase();
-            con.setAutoCommit(false);
+            try(Connection con = Database.getDatabase()){
+                con.setAutoCommit(false);
 
-            String sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
-            stmt = con.prepareStatement(sql);
-            String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
-            System.out.println("IS THIS IT: " + muscleGroup);
-            stmt.setString(1, muscleGroup);
-            result = stmt.executeQuery();
-            int muscleGroupID = -1;
-            if(result.next()){
-                muscleGroupID = result.getInt("workout_type_id");
+                String sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
+                stmt = con.prepareStatement(sql);
+
+                String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem();
+                stmt.setString(1, muscleGroup);
+                result = stmt.executeQuery();
+                int muscleGroupID = -1;
+                if(result.next()){
+                    muscleGroupID = result.getInt("workout_type_id");
+                }
+
+                String name = nameField.getText();
+                String description = descriptionField.getText();
+                String image = String.valueOf(imageURL.toURI());
+
+                sql = ("UPDATE exercise SET exercise_name = ?, exercise_description = ?, exercise_picture = ?, workout_type_id = ?" +
+                        "WHERE exercise_id = ?");
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, name);
+                stmt.setString(2, description);
+                stmt.setString(3, image);
+                stmt.setInt(4, muscleGroupID);
+                stmt.setInt(5, exerciseToEdit.getId());
+                stmt.executeUpdate();
+                stmt.close();
+                con.commit();
+
+                exerciseController.updateExercise(exerciseToEdit.getId(), name, description, new Image(image), muscleGroup);
+                closeWindow();
+            } catch (SQLException | URISyntaxException e) {
+                throw new RuntimeException(e);
             }
-
-            String name = nameField.getText();
-            String description = descriptionField.getText();
-            String image = String.valueOf(imageURL.toURI());
-
-            System.out.println(muscleGroupID + " | " + name + " | " + description + " | " + image);
-
-            stmt.close();
-            con.commit();
-            con.close();
-        } catch (SQLException | URISyntaxException e) {
-            throw new RuntimeException(e);
+        }else{
+            throwInputFieldError();
         }
     }
 
