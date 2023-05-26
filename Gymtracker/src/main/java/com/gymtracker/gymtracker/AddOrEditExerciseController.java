@@ -27,7 +27,7 @@ public class AddOrEditExerciseController {
     @FXML
     private TextField imageSourceField;
     @FXML
-    private ChoiceBox muscleGroups = new ChoiceBox();
+    private ChoiceBox<String> muscleGroups = new ChoiceBox<String>();
     @FXML
     private TextArea descriptionField;
     @FXML
@@ -122,7 +122,9 @@ public class AddOrEditExerciseController {
     }
 
     public void hideMuscleGroupErrorLabel(){
-        invalidMuscleGroup.setVisible(false);
+        if(invalidMuscleGroup.visibleProperty().get()){
+            invalidMuscleGroup.setVisible(false);
+        }
     }
 
     public void addNewExercise(){

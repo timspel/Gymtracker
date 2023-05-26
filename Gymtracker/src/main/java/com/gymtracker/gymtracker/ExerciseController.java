@@ -1,6 +1,5 @@
 package com.gymtracker.gymtracker;
 
-import javafx.scene.chart.PieChart;
 import model.Exercise;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,14 +17,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
+import java.sql.Date;
 
 public class ExerciseController {
    @FXML
    private ListView<Exercise> exercisesList = new ListView<>();
+   @FXML
+   private Label infoPanelMuscleGroup;
    @FXML
    private Label infoPanelName;
    @FXML
@@ -33,21 +32,27 @@ public class ExerciseController {
    @FXML
    private ImageView infoPanelImage;
    @FXML
-   private ChoiceBox muscleGroupSorter = new ChoiceBox();
+   private ChoiceBox<String> muscleGroupSorter = new ChoiceBox<>();
    @FXML
-   private Spinner currentSetsSpinner;
+   private TextField currentSetsField;
    @FXML
-   private Spinner currentRepsSpinner;
+   private TextField currentRepsField;
    @FXML
-   private Spinner currentWeightSpinner;
+   private TextField currentWeightField;
+   @FXML
+   private Button editRecordButton;
+   @FXML
+   private Button cancelEditButton;
+   @FXML
+   private Button updateEditButton;
 
    private ObservableList<Exercise> exercises = FXCollections.observableArrayList();
-   private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getMuscleGroup);
+   private Comparator<Exercise> listSort = Comparator.comparing(Exercise::getId);
    private ArrayList<exerciseCreator> threads = new ArrayList<>();
    private ArrayList<ExerciseRecord> exerciseRecords = new ArrayList<>();
 
    public void initialize(){
-      initializeSpinner();
+      populateExerciseRecords();
       populateExercises();
       exercisesList.setItems(exercises);
       exercises.sort(listSort);
@@ -98,8 +103,10 @@ public class ExerciseController {
    }
 
    public void populateMuscleGroups(ChoiceBox choiceBox){
-      PreparedStatement stmt = null;
-      ResultSet result = null;
+      choiceBox.getItems().add("Show all exercises");
+
+      PreparedStatement stmt;
+      ResultSet result;
 
       try(Connection con = Database.getDatabase()){
          con.setAutoCommit(false);
@@ -118,21 +125,9 @@ public class ExerciseController {
       }
    }
 
-   public void initializeSpinner(){
-      SpinnerValueFactory<Integer> setsFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 4);
-      currentSetsSpinner.setValueFactory(setsFactory);
-      currentSetsSpinner.setEditable(true);
-
-      SpinnerValueFactory<Integer> repsFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 8);
-      currentRepsSpinner.setValueFactory(repsFactory);
-      currentRepsSpinner.setEditable(true);
-
-      SpinnerValueFactory<Integer> weightValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200, 100);
-      currentWeightSpinner.setValueFactory(weightValueFactory);
-      currentWeightSpinner.setEditable(true);
-
-      PreparedStatement stmt = null;
-      ResultSet result = null;
+   public void populateExerciseRecords(){
+      PreparedStatement stmt;
+      ResultSet result;
 
       try(Connection con = Database.getDatabase()){
          con.setAutoCommit(false);
@@ -170,7 +165,6 @@ public class ExerciseController {
          for (Exercise exercise : exercises) {
             if (exercise.getId() == exerciseID) {
                selectedExercise = exercise;
-               populateInfoPanel(selectedExercise);
                return selectedExercise;
             }
          }
@@ -178,40 +172,110 @@ public class ExerciseController {
       return null;
    }
 
-   public void setNewOrUpdateCurrentRecords(){
+   public void editRecords(){
+      changeRecordFieldsVisibility();
+   }
+
+   public void cancelEdit(){
+      changeRecordFieldsVisibility();
+      populateInfoPanel(getExercise());
+   }
+
+   public void changeRecordFieldsVisibility(){
+      boolean visible = editRecordButton.visibleProperty().get();
+      editRecordButton.setVisible(!visible);
+      cancelEditButton.setVisible(visible);
+      updateEditButton.setVisible(visible);
+      currentSetsField.setEditable(visible);
+      currentRepsField.setEditable(visible);
+      currentWeightField.setEditable(visible);
+   }
+
+   public void createOrUpdateRecords(){
+      boolean foundRecord = false;
+      int exerciseID = getExercise().getId();
+
       for(ExerciseRecord er : exerciseRecords){
-         if(getExercise().getId() == er.getExerciseID()){
-            //If there are previously saved sets, update them
-            System.out.println("To update exercise records");
+         if(exerciseID == er.getExerciseID()){
+            foundRecord = true;
+
+            PreparedStatement stmt;
+
+            try(Connection con = Database.getDatabase()){
+               con.setAutoCommit(false);
+
+               long time = System.currentTimeMillis();
+               Date date = new Date(time);
+               int sets = Integer.parseInt(currentSetsField.getText());
+               int reps = Integer.parseInt(currentRepsField.getText());
+               int weight = Integer.parseInt(currentWeightField.getText());
+
+               String sql = ("UPDATE exercise_record SET date = ?, sets = ?, reps = ?, weight = ? WHERE user_id = ? AND exercise_id = ?");
+               stmt = con.prepareStatement(sql);
+               stmt.setDate(1, date);
+               stmt.setInt(2, sets);
+               stmt.setInt(3, reps);
+               stmt.setInt(4, weight);
+               stmt.setInt(5, Singleton.getInstance().getUserId());
+               stmt.setInt(6, er.getExerciseID());
+               stmt.executeUpdate();
+               System.out.println("Update successful");
+               stmt.close();
+               con.commit();
+
+               er.setSets(sets);
+               er.setReps(reps);
+               er.setWeight(weight);
+            } catch (SQLException e) {
+               throw new RuntimeException(e);
+            }
          }
       }
 
-      System.out.println("To create new exercise records");
-
-      /*if(){
+      if(!foundRecord){
          PreparedStatement stmt = null;
-         ResultSet result = null;
 
          try(Connection con = Database.getDatabase()){
             con.setAutoCommit(false);
 
-            String sql = ("INSERT INTO exercise_record(record_id, user_id, exercise_id, date, sets, reps, weight)");
+            long time = System.currentTimeMillis();
+            Date date = new Date(time);
+            int sets = Integer.parseInt(currentSetsField.getText());
+            int reps = Integer.parseInt(currentRepsField.getText());
+            int weight = Integer.parseInt(currentWeightField.getText());
 
-         }catch (SQLException e) {
+            String sql = ("INSERT INTO exercise_record(user_id, exercise_id, date, sets, reps, weight)" +
+                    "VALUES (?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Singleton.getInstance().getUserId());
+            stmt.setInt(2, exerciseID);
+            stmt.setDate(3, date);
+            stmt.setInt(4, sets);
+            stmt.setInt(5, reps);
+            stmt.setInt(6, weight);
+            stmt.executeUpdate();
+            stmt.close();
+            con.commit();
+            exerciseRecords.add(new ExerciseRecord(exerciseID, sets, reps, weight));
+         } catch (SQLException e) {
             throw new RuntimeException(e);
          }
-      }else{
+      }
+      changeRecordFieldsVisibility();
+   }
 
-      }*/
+   public void viewSelectedExercise(){
+      populateInfoPanel(getExercise());
    }
 
    public void populateInfoPanel(Exercise selectedExercise) {
+      infoPanelMuscleGroup.setText(selectedExercise.getMuscleGroup());
       infoPanelName.setText(selectedExercise.getName());
       infoPanelDescription.setText(formatDescriptionText(selectedExercise.getDescription()));
       infoPanelImage.setImage(selectedExercise.getImage());
-      currentSetsSpinner.getValueFactory().setValue(getExerciseRecordInfo(selectedExercise, 1));
-      currentRepsSpinner.getValueFactory().setValue(getExerciseRecordInfo(selectedExercise, 2));
-      currentWeightSpinner.getValueFactory().setValue(getExerciseRecordInfo(selectedExercise, 3));
+      currentSetsField.setText(getExerciseRecordInfo(selectedExercise, "s"));
+      currentRepsField.setText(getExerciseRecordInfo(selectedExercise, "r"));
+      currentWeightField.setText(getExerciseRecordInfo(selectedExercise, "w"));
    }
 
    public String formatDescriptionText(String exerciseDesc){
@@ -223,22 +287,22 @@ public class ExerciseController {
       return formattedString;
    }
 
-   public int getExerciseRecordInfo(Exercise selectedExercise, int specifiedValue){
+   public String getExerciseRecordInfo(Exercise selectedExercise, String specifiedRecord){
       for(ExerciseRecord er : exerciseRecords){
          if(selectedExercise.getId() == er.getExerciseID()){
-            switch (specifiedValue){
-               case 1:
-                  return er.getSets();
-               case 2:
-                  return er.getReps();
-               case 3:
-                  return er.getWeight();
+            switch (specifiedRecord){
+               case "s":
+                  return String.valueOf(er.getSets());
+               case "r":
+                  return String.valueOf(er.getReps());
+               case "w":
+                  return String.valueOf(er.getWeight());
                default:
                   System.out.println("Couldn't find :(");
             }
          }
       }
-      return -1;
+      return null;
    }
 
    public void removeExercise(){
@@ -262,9 +326,7 @@ public class ExerciseController {
             stmt.executeUpdate();
             stmt.close();
             con.commit();
-            con.close();
-
-            getExercise();
+            populateInfoPanel(getExercise());
          } catch (SQLException e) {
             throw new RuntimeException(e);
          }
@@ -280,18 +342,18 @@ public class ExerciseController {
    }
 
    public void sortExercises(String muscleGroupToSortBy){
-      ObservableList<Exercise> sortedMuscleGroup = FXCollections.observableArrayList();
+      if(muscleGroupToSortBy.equals("Show all exercises")){
+         exercisesList.setItems(exercises);
+      }else{
+         ObservableList<Exercise> sortedMuscleGroup = FXCollections.observableArrayList();
 
-      for (Exercise exercise : exercises) {
-         if (exercise.getMuscleGroup().equals(muscleGroupToSortBy)) {
-            sortedMuscleGroup.add(exercise);
+         for (Exercise exercise : exercises) {
+            if (exercise.getMuscleGroup().equals(muscleGroupToSortBy)) {
+               sortedMuscleGroup.add(exercise);
+            }
          }
+         exercisesList.setItems(sortedMuscleGroup);
       }
-      exercisesList.setItems(sortedMuscleGroup);
-   }
-
-   public void resetExerciseSort(){
-      exercisesList.setItems(exercises);
    }
 
    public void openAddExerciseWindow(){

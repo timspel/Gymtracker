@@ -5,8 +5,8 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,10 +21,10 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <ListView fx:id="exercisesList" fixedCellSize="30.0" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
+      <ListView fx:id="exercisesList" fixedCellSize="30.0" layoutX="40.0" layoutY="270.0" onMouseClicked="#viewSelectedExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="infoPanelName" layoutX="35.0" layoutY="40.0" text="Exercise name">
+            <Label fx:id="infoPanelName" layoutX="35.0" layoutY="50.0" text="Exercise name">
                <font>
                   <Font name="AppleGothic Regular" size="25.0" />
                </font>
@@ -58,10 +58,17 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Spinner fx:id="currentSetsSpinner" layoutX="540.0" layoutY="25.0" />
-            <Spinner fx:id="currentRepsSpinner" layoutX="540.0" layoutY="65.0" />
-            <Spinner fx:id="currentWeightSpinner" layoutX="540.0" layoutY="105.0" />
-            <Button layoutX="700.0" layoutY="65.0" mnemonicParsing="false" onAction="#setOrUpdateCurrentWeight" prefWidth="70.0" text="Update all" />
+            <TextField fx:id="currentSetsField" editable="false" layoutX="540.0" layoutY="25.0" />
+            <TextField fx:id="currentRepsField" editable="false" layoutX="540.0" layoutY="65.0" />
+            <TextField fx:id="currentWeightField" editable="false" layoutX="540.0" layoutY="105.0" />
+            <Button fx:id="updateEditButton" layoutX="700.0" layoutY="85.0" mnemonicParsing="false" onAction="#createOrUpdateRecords" prefWidth="70.0" text="Update" visible="false" />
+            <Button fx:id="cancelEditButton" layoutX="700.0" layoutY="45.0" mnemonicParsing="false" onAction="#cancelEdit" prefHeight="26.0" prefWidth="70.0" text="Cancel" visible="false" />
+            <Button fx:id="editRecordButton" layoutX="700.0" layoutY="65.0" mnemonicParsing="false" onAction="#editRecords" prefHeight="26.0" prefWidth="70.0" text="Edit" />
+            <Label fx:id="infoPanelMuscleGroup" layoutX="35.0" layoutY="30.0" text="Muscle group">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Button layoutX="40.0" layoutY="730.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
@@ -80,9 +87,11 @@
             </AnchorPane>
          </children>
       </HBox>
-      <ChoiceBox fx:id="muscleGroupSorter" layoutX="80.0" layoutY="238.0" prefHeight="25.0" prefWidth="180.0" />
-      <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetExerciseSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
-      <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="242.0" prefHeight="17.0" prefWidth="30.0" text="Filter:" />
+      <ChoiceBox fx:id="muscleGroupSorter" layoutX="118.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="242.0" prefHeight="17.0" prefWidth="40.0" text="Filter:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
    </children>
    <padding>
       <Insets top="1.0" />
