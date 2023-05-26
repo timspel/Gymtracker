@@ -434,7 +434,7 @@ public class ExerciseController {
       };
       Timer timer = new Timer("messageTimer", true);
       timer.schedule(showCompletionMessage, 3000);
-      
+
    }
 
    private class exerciseCreator extends Thread {
