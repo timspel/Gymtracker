@@ -85,6 +85,13 @@ public class CalendarController implements Initializable {
         calendar.getChildren().clear();
         drawCalendar();
     }
+
+    @FXML
+    void refreshCalendar() {
+        calendar.getChildren().clear();
+        drawCalendar();
+    }
+
     /**
 
      Draws the calendar for the selected month.
@@ -102,6 +109,8 @@ public class CalendarController implements Initializable {
         double spacingV = calendar.getVgap();
 
         Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(dateFocus);
+
+
         int monthMaxDate = dateFocus.getMonth().maxLength();
         if (dateFocus.getYear() % 4 != 0 && monthMaxDate == 29){
             monthMaxDate= 28;
@@ -147,6 +156,7 @@ public class CalendarController implements Initializable {
             }
         }
     }
+
     /**
 
      Creates calendar activity boxes and populates them with activities for a specific date.
