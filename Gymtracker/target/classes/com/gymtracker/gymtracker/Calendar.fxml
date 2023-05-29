@@ -17,7 +17,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" layoutY="-20.0" prefHeight="109.0" prefWidth="1327.0" spacing="20.0" AnchorPane.bottomAnchor="700.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-15.0" AnchorPane.topAnchor="-20.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="75.0" text="Today">
+            <Button mnemonicParsing="false" onAction="#currentMonth" prefHeight="40.0" prefWidth="75.0" text="Today">
                <font>
                   <Font size="14.0" />
                </font>
