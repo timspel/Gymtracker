@@ -2,6 +2,10 @@ package model;
 
 import javafx.scene.image.Image;
 
+/**
+ * A class that stores values from the database as objects, allowing for easier and more frequent access than what
+ * the database allows
+ */
 public class Exercise {
     private int id;
     private String name;
@@ -57,6 +61,10 @@ public class Exercise {
         this.muscleGroup = muscleGroup;
     }
 
+    /**
+     * Necessary as it determines the formatting of the exercises names in the program
+     * @return Name of exercise as String
+     */
     @Override
     public String toString() {
         return String.format("%s", name);

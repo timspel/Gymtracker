@@ -87,7 +87,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <ChoiceBox fx:id="muscleGroupSorter" layoutX="118.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <ChoiceBox fx:id="muscleGroupFilter" layoutX="118.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
       <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="242.0" prefHeight="17.0" prefWidth="40.0" text="Filter:">
          <font>
             <Font size="14.0" />

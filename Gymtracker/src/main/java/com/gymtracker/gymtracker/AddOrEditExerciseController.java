@@ -42,6 +42,12 @@ public class AddOrEditExerciseController {
     private URL imageURL;
     private boolean imageChosen = false;
 
+    /**
+     * Initializes window based on werther choice was made to add Exercise or to edit one. Gives blank slate if add was
+     * selected but fills in fields if edit was selected.
+     * @param exerciseController The ExerciseController used to call readInNewExercise() and updateExercise()
+     * @param exercise Exercises passed if you chose to edit an exercise
+     */
     public void initializeWindow(ExerciseController exerciseController, Exercise exercise){
         this.exerciseController = exerciseController;
         exerciseController.populateMuscleGroups(muscleGroups);
@@ -74,10 +80,14 @@ public class AddOrEditExerciseController {
         }
     }
 
+    /**
+     * Called when you choose an image. Checks if the source of the image is a URL and, if it is, displays said image.
+     * If the URL is invalid an error message is displayed
+     */
     public void chooseImage(){
         if(imageSourceField != null){
             try{
-                imageURL = new URL(imageSourceField.getText()); //Set to URL-variable to verify input as URL
+                imageURL = new URL(imageSourceField.getText());
 
                 if(invalidURLMessage.isVisible()){
                     invalidURLMessage.setVisible(false);
@@ -86,18 +96,24 @@ public class AddOrEditExerciseController {
                 imagePreview.setImage(new Image(String.valueOf(imageURL.toURI())));
                 imageChosen = true;
             } catch (MalformedURLException | URISyntaxException e) {
-                //throw new RuntimeException(e);
                 imagePreview.setImage(null);
                 invalidURLMessage.setVisible(true);
             }
         }
     }
 
+    /**
+     * Gets stage via FXML-element and closes it down
+     */
     public void closeWindow(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Checks input fields for empty strings and null values. If invalid values are found, return a boolean reflecting this
+     * @return A boolean reflecting if missing/invalid values were found
+     */
     public boolean checkInputFields(){
         if(nameField.getText().equals("") || !imageChosen || muscleGroups.getSelectionModel().getSelectedItem() == null || descriptionField.getText().equals("")){
             return false;
@@ -108,6 +124,9 @@ public class AddOrEditExerciseController {
         return true;
     }
 
+    /**
+     * Throws errors depending on which input fields have invalid values.
+     */
     public void throwInputFieldError(){
         if(nameField.getText().equals("")){
             nameField.setText("Name can't be empty");
@@ -123,12 +142,20 @@ public class AddOrEditExerciseController {
         }
     }
 
+    /**
+     * Specifically hides error label for missing muscle group
+     */
     public void hideMuscleGroupErrorLabel(){
         if(invalidMuscleGroup.visibleProperty().get()){
             invalidMuscleGroup.setVisible(false);
         }
     }
 
+    /**
+     * Adds a new exercise to the database and the ObservableList in the ExerciseController. An extra call is made to
+     * the database to get the muscle group id (workout_type_id) from a separate table. Throws error if any field is
+     * empty or invalid
+     */
     public void addNewExercise(){
         if(checkInputFields()){
             PreparedStatement stmt;
@@ -147,7 +174,7 @@ public class AddOrEditExerciseController {
 
                 sql = ("SELECT workout_type_id FROM workout_type WHERE workout_type_name = ?");
                 stmt = con.prepareStatement(sql);
-                String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem().toString();
+                String muscleGroup = muscleGroups.getSelectionModel().getSelectedItem();
                 stmt.setString(1, muscleGroup);
                 result = stmt.executeQuery();
                 int muscleGroupID = -1;
@@ -184,6 +211,11 @@ public class AddOrEditExerciseController {
         }
     }
 
+    /**
+     * Confirms edit of an Exercise, updating its values in the database and in the ObservableList in the
+     * ExerciseController. An extra call is made to the database to get the muscle group id (workout_type_id) from a
+     * separate table. Throws error if any field is empty or invalid
+     */
     public void confirmExerciseEdit(){
         if(checkInputFields()){
             PreparedStatement stmt;
@@ -228,5 +260,4 @@ public class AddOrEditExerciseController {
             throwInputFieldError();
         }
     }
-
 }

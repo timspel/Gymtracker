@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * A class that stores values from the database as objects, allowing for easier and more frequent access than what
+ * the database allows
+ */
 public class ExerciseRecord {
     private int exerciseID;
     private int sets;
@@ -43,10 +47,5 @@ public class ExerciseRecord {
 
     public void setWeight(int weight) {
         this.weight = weight;
-    }
-
-    @Override
-    public String toString(){
-        return String.format("ID: %s | Sets: %s | Reps: %s | Weight: %s", exerciseID, sets, reps, weight);
     }
 }
