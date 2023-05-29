@@ -411,6 +411,8 @@ public class ExerciseController {
             exercise.setDescription(description);
             exercise.setImage(image);
             exercise.setMuscleGroup(muscleGroup);
+            populateInfoPanel(exercise);
+            break;
          }
       }
       exercises.sort(listSort);
@@ -422,19 +424,15 @@ public class ExerciseController {
          exerciseImplementMessage.setText("Successfully added new exercise!");
          exerciseImplementMessage.setVisible(true);
       }else if(specifyMessage.equals("edit")){
-         exerciseImplementMessage.setText("Successfully edited exercise:" + exerciseName + "!");
+         exerciseImplementMessage.setText("Successfully edited exercise: " + exerciseName + "!");
          exerciseImplementMessage.setVisible(true);
       }
-      TimerTask showCompletionMessage = new TimerTask() {
-         @Override
-         public void run() {
-            exerciseImplementMessage.setText(null);
-            exerciseImplementMessage.setVisible(false);
-         }
-      };
-      Timer timer = new Timer("messageTimer", true);
-      timer.schedule(showCompletionMessage, 3000);
-
+      
+      Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4),e -> {
+         exerciseImplementMessage.setVisible(false);
+      }));
+      timeline.setCycleCount(1);
+      timeline.play();
    }
 
    private class exerciseCreator extends Thread {
