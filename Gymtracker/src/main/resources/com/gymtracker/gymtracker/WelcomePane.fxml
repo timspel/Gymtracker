@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1647.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="2601.0" prefWidth="1260.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" layoutX="5.0" layoutY="671.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -22,7 +23,7 @@
             </ImageView>
          </children>
       </HBox>
-      <ImageView fitHeight="868.0" fitWidth="1297.0" layoutX="-3.0" layoutY="785.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="785.0">
+      <ImageView fitHeight="868.0" fitWidth="1297.0" layoutX="-25.0" layoutY="2012.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="2012.0">
          <image>
             <Image url="@../../../images/mainimage.jpg" />
          </image>
@@ -44,36 +45,36 @@
             <Image url="@../../../icon.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="99.0" fitWidth="106.0" layoutX="1153.0" layoutY="1531.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="336.0" fitWidth="279.0" layoutX="795.0" layoutY="1465.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../icon.png" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER_LEFT" layoutX="779.0" layoutY="1033.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: Black;" AnchorPane.rightAnchor="150.0">
+      <VBox alignment="CENTER_LEFT" layoutX="647.0" layoutY="2279.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="287.0">
          <children>
-            <Label alignment="CENTER" prefHeight="55.0" prefWidth="369.0" text="Inspiration:" textFill="WHITE">
+            <Label alignment="CENTER" prefHeight="55.0" prefWidth="369.0" text="Inspiration:">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Gym App" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Gym App">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="Gym thing" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="Gym thing">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="Influencer" textFill="WHITE">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="Influencer">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
          </children>
       </VBox>
-      <VBox alignment="CENTER_LEFT" layoutX="139.0" layoutY="1035.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: Black;" AnchorPane.leftAnchor="139.0">
+      <VBox alignment="CENTER_LEFT" layoutX="323.0" layoutY="2279.0" prefHeight="380.0" prefWidth="326.0" style="-fx-background-color: Black;" AnchorPane.leftAnchor="323.0">
          <children>
             <Label alignment="CENTER" prefHeight="55.0" prefWidth="369.0" text="Credits:" textFill="WHITE">
                <font>
@@ -116,5 +117,148 @@
             </ImageView>
          </children>
       </HBox>
+      <Label layoutX="378.0" layoutY="465.0" text="Your one stop app for tracking your gym progress">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="526.0" layoutY="638.0" text="Scroll down for more info">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" layoutY="968.0" prefHeight="360.0" prefWidth="1260.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="475.0" prefWidth="483.0" spacing="10.0">
+               <children>
+                  <Label text="Exercise">
+                     <font>
+                        <Font name="Arial Bold" size="37.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="478.0" text="- See a list of exercises " textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="84.0" layoutY="56.0" prefWidth="420.0" text="- Se how to perform you exercises and track you weight records" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="475.0" prefWidth="483.0" spacing="10.0">
+               <children>
+                  <Label text="Workouts">
+                     <font>
+                        <Font name="Arial Bold" size="37.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="502.0" text="- Create your very own workout" textAlignment="CENTER">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="37.0" layoutY="56.0" prefHeight="75.0" prefWidth="420.0" text="- Create Workout templates for easier and faster workout creation" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" prefHeight="75.0" prefWidth="420.0" text="- Add your own combination of exercises, sets, reps and weight" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="475.0" prefWidth="483.0" spacing="10.0">
+               <children>
+                  <Label text="Friends">
+                     <font>
+                        <Font name="Arial Bold" size="37.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" text="- Keep track of your friends" textAlignment="CENTER">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="62.0" layoutY="66.0" text="- See when your friends have planned to workout" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" text="- Join your friends workouts and train together" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <Label layoutX="382.0" layoutY="841.0" text="About this program">
+         <font>
+            <Font name="Arial Bold" size="53.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" layoutX="62.0" layoutY="1403.0" prefHeight="486.0" prefWidth="617.0" spacing="10.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="46.0" prefWidth="298.0" text="How to Template">
+               <font>
+                  <Font name="Arial Bold" size="37.0" />
+               </font>
+            </Label>
+            <Label prefHeight="34.0" prefWidth="478.0" text="Save time by using Templates" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="84.0" layoutY="56.0" prefHeight="34.0" prefWidth="489.0" text="1. Enter template name &amp; description" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="110.0" prefHeight="34.0" prefWidth="495.0" text="2. Choose category for workout category" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="154.0" prefHeight="34.0" prefWidth="497.0" text="3. Add exercises" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="198.0" prefHeight="34.0" prefWidth="502.0" text="4. Save template" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label contentDisplay="TOP" layoutX="15.0" layoutY="242.0" prefHeight="74.0" prefWidth="488.0" text="Done! You can now use this template everytime you want to create a workout" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label contentDisplay="TOP" layoutX="15.0" layoutY="286.0" prefHeight="114.0" prefWidth="488.0" text="You can load and edit previous templates by selecting a template and pressing load template." wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </VBox>
+      <Line endX="1053.0" layoutX="207.0" layoutY="1329.0" startX="-206.99998474121094" />
    </children>
 </AnchorPane>
