@@ -149,7 +149,8 @@ public class CalendarController implements Initializable {
                         }
                     }
                     if (today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth() && today.getDayOfMonth() == currentDate) {
-                        rectangle.setStroke(Color.BLUE);
+                        rectangle.setStroke(Color.FORESTGREEN);
+                        rectangle.setFill(Color.LIGHTGRAY);
                     }
                 }
                 calendar.getChildren().add(stackPane);
