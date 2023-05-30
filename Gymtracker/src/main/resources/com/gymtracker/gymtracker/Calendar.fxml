@@ -51,6 +51,11 @@
                   <Insets />
                </HBox.margin>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#refreshCalendar" prefHeight="40.0" prefWidth="75.0" text="Refresh">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
             <Text fx:id="month" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
                   <Font size="25.0" />
