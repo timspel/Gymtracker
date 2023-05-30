@@ -6,10 +6,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="789.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymtracker.gymtracker.ExerciseController">
@@ -19,10 +21,10 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <ListView fx:id="exercisesList" layoutX="40.0" layoutY="270.0" onMouseClicked="#getExercise" prefHeight="442.0" prefWidth="300.0" />
+      <ListView fx:id="exercisesList" fixedCellSize="30.0" layoutX="40.0" layoutY="270.0" onMouseClicked="#viewSelectedExercise" prefHeight="442.0" prefWidth="300.0" />
       <AnchorPane id="infoPanel" layoutX="388.0" layoutY="238.0" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="infoPanelName" layoutX="14.0" layoutY="29.0" text="Exercise name">
+            <Label fx:id="infoPanelName" layoutX="35.0" layoutY="50.0" text="Exercise name">
                <font>
                   <Font name="AppleGothic Regular" size="25.0" />
                </font>
@@ -31,16 +33,42 @@
                <children>
                   <TextArea fx:id="infoPanelDescription" editable="false" prefHeight="350.0" prefWidth="310.0" wrapText="true">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="16.0" />
                      </font>
                   </TextArea>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="400.0" layoutY="100.0" style="-fx-border-color: black;">
-               <children>
-                  <ImageView fx:id="infoPanelImage" fitHeight="350.0" fitWidth="369.0" layoutX="-4.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </AnchorPane>
+            <ImageView fx:id="infoPanelImage" fitHeight="300.0" fitWidth="370.0" layoutX="400.0" layoutY="146.0" pickOnBounds="true" />
+            <Line endX="230.7928466796875" endY="-1.207122802734375" layoutX="538.0" layoutY="146.0" startX="-138.0" />
+            <Line endX="232.7071533203125" endY="-0.2928466796875" layoutX="538.0" layoutY="450.0" startX="-138.0" />
+            <Line endX="-84.0" endY="200.0" layoutX="484.0" layoutY="250.0" startX="-84.70709228515625" startY="-105.91424560546875" />
+            <Line endX="-84.0" endY="200.0" layoutX="854.0" layoutY="249.0" startX="-84.5" startY="-104.91424560546875" />
+            <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="65.0" prefHeight="27.0" prefWidth="130.0" text="Current reps:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="25.0" prefHeight="27.0" prefWidth="130.0" text="Current sets:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="105.0" prefHeight="27.0" prefWidth="130.0" text="Highest weight:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="currentSetsField" editable="false" layoutX="540.0" layoutY="25.0" />
+            <TextField fx:id="currentRepsField" editable="false" layoutX="540.0" layoutY="65.0" />
+            <TextField fx:id="currentWeightField" editable="false" layoutX="540.0" layoutY="105.0" />
+            <Button fx:id="updateEditButton" layoutX="700.0" layoutY="85.0" mnemonicParsing="false" onAction="#createOrUpdateRecords" prefWidth="70.0" text="Update" visible="false" />
+            <Button fx:id="cancelEditButton" layoutX="700.0" layoutY="45.0" mnemonicParsing="false" onAction="#cancelEdit" prefHeight="26.0" prefWidth="70.0" text="Cancel" visible="false" />
+            <Button fx:id="editRecordButton" layoutX="700.0" layoutY="65.0" mnemonicParsing="false" onAction="#editRecords" prefHeight="26.0" prefWidth="70.0" text="Edit" />
+            <Label fx:id="infoPanelMuscleGroup" layoutX="35.0" layoutY="30.0" text="Muscle group">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Button layoutX="40.0" layoutY="730.0" mnemonicParsing="false" onAction="#openAddExerciseWindow" text="Add exercise" />
@@ -59,9 +87,16 @@
             </AnchorPane>
          </children>
       </HBox>
-      <ChoiceBox fx:id="muscleGroupSorter" layoutX="80.0" layoutY="238.0" prefHeight="25.0" prefWidth="180.0" />
-      <Button layoutX="265.0" layoutY="238.0" mnemonicParsing="false" onAction="#resetExerciseSort" prefHeight="25.0" prefWidth="75.0" text="Reset" />
-      <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="242.0" prefHeight="17.0" prefWidth="30.0" text="Filter:" />
+      <ChoiceBox fx:id="muscleGroupFilter" layoutX="118.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="242.0" prefHeight="17.0" prefWidth="40.0" text="Filter:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label fx:id="exerciseImplementMessage" alignment="CENTER" layoutX="338.0" layoutY="180.0" prefHeight="18.0" prefWidth="600.0" visible="false">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
    </children>
    <padding>
       <Insets top="1.0" />

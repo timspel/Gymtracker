@@ -27,6 +27,10 @@ import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.*;
 
+/**
+
+ The CalendarController class implements the Initializable interface and handles the calendar view.
+ */
 public class CalendarController implements Initializable {
 
     ZonedDateTime dateFocus;
@@ -39,7 +43,12 @@ public class CalendarController implements Initializable {
     @FXML
     private FlowPane calendar;
 
+    /**
 
+     Initializes the calendar view.
+     @param url The location used to resolve relative paths for the root object.
+     @param resourceBundle The resources used to localize the root object.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dateFocus = ZonedDateTime.now();
@@ -48,12 +57,28 @@ public class CalendarController implements Initializable {
     }
 
     @FXML
+    void currentMonth(ActionEvent event) {
+        dateFocus = ZonedDateTime.now();
+        today = ZonedDateTime.now();
+        drawCalendar();
+    }
+    /**
+
+     Handles the event when the "Back" button is clicked to navigate to the previous month.
+     @param event The action event triggered by clicking the "Back" button.
+     */
+    @FXML
     void backOneMonth(ActionEvent event){
         dateFocus = dateFocus.minusMonths(1);
         calendar.getChildren().clear();
         drawCalendar();
 
     }
+    /**
+
+     Handles the event when the "Forward" button is clicked to navigate to the next month.
+     @param event The action event triggered by clicking the "Forward" button.
+     */
     @FXML
     void ForwardOneMonth(ActionEvent event){
         dateFocus = dateFocus.plusMonths(1);
@@ -61,6 +86,18 @@ public class CalendarController implements Initializable {
         drawCalendar();
     }
 
+    @FXML
+    void refreshCalendar() {
+        calendar.getChildren().clear();
+        drawCalendar();
+    }
+
+    /**
+
+     Draws the calendar for the selected month.
+
+     Populates the calendar view with dates and activities for the month.
+     */
     private void drawCalendar(){
         year.setText(String.valueOf(dateFocus.getYear()));
         month.setText(dateFocus.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
@@ -72,6 +109,8 @@ public class CalendarController implements Initializable {
         double spacingV = calendar.getVgap();
 
         Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(dateFocus);
+
+
         int monthMaxDate = dateFocus.getMonth().maxLength();
         if (dateFocus.getYear() % 4 != 0 && monthMaxDate == 29){
             monthMaxDate= 28;
@@ -118,6 +157,18 @@ public class CalendarController implements Initializable {
         }
     }
 
+    /**
+
+     Creates calendar activity boxes and populates them with activities for a specific date.
+
+     @param calendarActivities The list of activities for a specific date.
+
+     @param rectangleHeight The height of the rectangle representing a date.
+
+     @param rectangleWidth The width of the rectangle representing a date.
+
+     @param stackPane The StackPane to which the calendar activity boxes will be added.
+     */
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         double boxWidth = (rectangleWidth / 2) * 0.75; // calculate the width of the VBox
@@ -187,7 +238,18 @@ public class CalendarController implements Initializable {
         stackPane.getChildren().add(calendarActivityBox);
     }
 
+    /**
 
+     Loads the dialog box for displaying the details of a selected workout.
+
+     @param workoutName The name of the selected workout.
+
+     @param workoutId The ID of the selected workout.
+
+     @param workoutDate The date of the selected workout.
+
+     @return The dialog box.
+     */
     static Dialog<ButtonType> loadDialog(String workoutName, int workoutId, String workoutDate) {
         try {
             // Load the FXML file
@@ -225,7 +287,14 @@ public class CalendarController implements Initializable {
         }
         return null;
     }
+    /**
 
+     Retrieves the calendar activities for a specific month.
+
+     @param date The date object representing the month.
+
+     @return A map of date to a list of calendar activities.
+     */
     private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime date) {
         Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
 

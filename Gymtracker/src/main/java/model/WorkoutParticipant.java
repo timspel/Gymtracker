@@ -4,8 +4,15 @@ public class WorkoutParticipant {
 
     private String participantName;
 
-    public WorkoutParticipant(String participantName) {
+    public int getId() {
+        return id;
+    }
+
+    private int id;
+
+    public WorkoutParticipant(String participantName, int id) {
         this.participantName = participantName;
+        this.id = id;
     }
 
     public String getParticipantName() {
