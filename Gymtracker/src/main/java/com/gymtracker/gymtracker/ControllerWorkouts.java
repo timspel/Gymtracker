@@ -300,6 +300,7 @@ public class ControllerWorkouts implements Initializable{
             }
 
             if(created){
+                showSuccessMessage(4);
                 populateWorkoutChoiceBox();
                 clearWorkoutSection();
                 created = false;
@@ -316,6 +317,7 @@ public class ControllerWorkouts implements Initializable{
             saveTemplate();
 
             if(created){
+                showSuccessMessage(2);
                 clearTemplateSection();
                 created = false;
             }
@@ -358,6 +360,7 @@ public class ControllerWorkouts implements Initializable{
         if(e.getSource() == removeWorkoutButton){
             removeWorkout();
             if(removed){
+                showSuccessMessage(3);
                 populateWorkoutChoiceBox();
                 clearWorkoutSection();
                 removed = false;
@@ -696,6 +699,7 @@ public class ControllerWorkouts implements Initializable{
                 System.out.println("could not set templates");
             }
             selectedTemplateRow = -1;
+            showSuccessMessage(1);
         }
         else{
             showErrorMessage(17);
@@ -1765,6 +1769,35 @@ public class ControllerWorkouts implements Initializable{
                 errorAddNewExerciseLabel.setText("Please add at least one set");
                 errorAddNewExerciseLabel.setTextFill(Color.RED);
                 errorAddNewExerciseLabel.setVisible(true);
+                break;
+        }
+    }
+
+    /**
+     * Shows a success message based on the given success code.
+     * @param successCode The success code indicating the type of success.
+     */
+    public void showSuccessMessage(int successCode){
+        switch (successCode){
+            case 1:
+                errorRemoveTemplateLabel.setText("Template removed successfully");
+                errorRemoveTemplateLabel.setTextFill(Color.GREEN);
+                errorRemoveTemplateLabel.setVisible(true);
+                break;
+            case 2:
+                errorSaveTemplateLabel.setText("Template saved successfully");
+                errorSaveTemplateLabel.setTextFill(Color.GREEN);
+                errorSaveTemplateLabel.setVisible(true);
+                break;
+            case 3:
+                errorUpdateWorkoutLabel.setText("Workout removed successfully");
+                errorUpdateWorkoutLabel.setTextFill(Color.GREEN);
+                errorUpdateWorkoutLabel.setVisible(true);
+                break;
+            case 4:
+                errorSaveWorkoutLabel.setText("Workout saved successfully");
+                errorSaveWorkoutLabel.setTextFill(Color.GREEN);
+                errorSaveWorkoutLabel.setVisible(true);
                 break;
         }
     }
