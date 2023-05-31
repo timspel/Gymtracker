@@ -57,17 +57,17 @@
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Gym App">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="402.0" text="Zyzz">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="Gym thing">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="374.0" text="ATHLEAN-X">
                <font>
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="Influencer">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="55.0" prefWidth="363.0" text="JPG">
                <font>
                   <Font size="34.0" />
                </font>
@@ -195,7 +195,7 @@
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" text="- Join your friends workouts and train together" textAlignment="CENTER" wrapText="true">
+                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" text="- Join your friends workouts and workout together" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -214,12 +214,12 @@
       </Label>
       <VBox alignment="TOP_CENTER" layoutX="62.0" layoutY="1403.0" prefHeight="486.0" prefWidth="617.0" spacing="10.0">
          <children>
-            <Label alignment="CENTER" prefHeight="46.0" prefWidth="298.0" text="How to Template">
+            <Label prefHeight="46.0" prefWidth="501.0" text="How to Template">
                <font>
                   <Font name="Arial Bold" size="37.0" />
                </font>
             </Label>
-            <Label prefHeight="34.0" prefWidth="478.0" text="Save time by using Templates" textAlignment="CENTER" wrapText="true">
+            <Label prefHeight="34.0" prefWidth="494.0" text="Save time by using Templates" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>

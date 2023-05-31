@@ -7,9 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -27,9 +25,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable{
    //<editor-fold desc="FXML Variables">
    @FXML
-   private Button workoutsButton;
+   private ToggleButton workoutsToggleButton;
    @FXML
-   private Button calendarButton;
+   private ToggleButton calendarToggleButton;
    @FXML
    private StackPane stackPane;
    @FXML
@@ -37,17 +35,18 @@ public class MainController implements Initializable{
    @FXML
    private ScrollPane scrollPane;
    @FXML
-   private Button profileButton;
+   private ToggleButton profileToggleButton;
    @FXML
-   private Button friendsButton;
+   private ToggleButton friendsToggleButton;
    @FXML
-   private Button exercisesButton;
-   @FXML
-   private Button homeButton;
+   private ToggleButton exercisesToggleButton;
    @FXML
    private Button logoutButton;
+   @FXML
+   private ToggleButton homeToggleButton;
    //</editor-fold>
 
+   private ToggleGroup tg = new ToggleGroup();
    private Parent workoutPane;
    private Parent calendarPane;
    private Parent profilePane;
@@ -84,29 +83,29 @@ public class MainController implements Initializable{
     * @throws IOException
     */
    public void buttonPressed(ActionEvent event) throws IOException{ //Handles button presses
-      if(event.getSource() == workoutsButton){
+      if(event.getSource() == workoutsToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(scrollPane);
          scrollPane.setContent(workoutPane);
          Singleton.getInstance().setWorkoutScroll(scrollPane);
       }
-      if(event.getSource() == calendarButton){
+      if(event.getSource() == calendarToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(calendarPane);
       }
-      if(event.getSource() == profileButton){
+      if(event.getSource() == profileToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(profilePane);
       }
-      if(event.getSource() == friendsButton){
+      if(event.getSource() == friendsToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(friendlistPane);
       }
-      if(event.getSource() == exercisesButton){
+      if(event.getSource() == exercisesToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(exercisePane);
       }
-      if(event.getSource() == homeButton){
+      if(event.getSource() == homeToggleButton){
          stackPane.getChildren().removeAll();
          stackPane.getChildren().setAll(scrollPane);
          scrollPane.setContent(scrollContent);
@@ -130,6 +129,13 @@ public class MainController implements Initializable{
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       scrollPane.setContent(scrollContent);
+      homeToggleButton.setToggleGroup(tg);
+      workoutsToggleButton.setToggleGroup(tg);
+      exercisesToggleButton.setToggleGroup(tg);
+      calendarToggleButton.setToggleGroup(tg);
+      friendsToggleButton.setToggleGroup(tg);
+      profileToggleButton.setToggleGroup(tg);
+      homeToggleButton.setSelected(true);
    }
 
    /**

@@ -1,0 +1,17 @@
+.toggle-button {
+    -fx-background-color: TRANSPARENT;
+    -fx-text-fill: transparent;
+}
+.toggle-button:hover {
+    -fx-text-fill: BLACK;
+    -fx-border-color: black;
+    -fx-background-color: #0000006a;
+}
+.toggle-button:selected {
+    -fx-text-fill: BLACK;
+    -fx-background-color: #F4F4F4;
+}
+.toggle-button:focused {
+    -fx-text-fill: BLACK;
+    -fx-background-color: #F4F4F4;
+}
