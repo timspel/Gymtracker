@@ -1642,6 +1642,7 @@ public class ControllerWorkouts implements Initializable{
      */
     public void clearTemplateSection(){
         exercisesTemplate = new ArrayList<>();
+        exercisesTemplateTable.setItems(null);
         exercisesTemplateTable.setItems(FXCollections.observableArrayList(exercisesTemplate));
         exercisesTemplateChoiceBox.setValue(null);
         templateNameTextField.clear();
