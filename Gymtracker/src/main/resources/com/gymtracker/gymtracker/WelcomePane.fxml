@@ -151,24 +151,24 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="475.0" prefWidth="483.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="534.0" spacing="10.0">
                <children>
                   <Label text="Workouts">
                      <font>
                         <Font name="Arial Bold" size="37.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="502.0" text="- Create your very own workout" textAlignment="CENTER">
+                  <Label alignment="CENTER" prefHeight="80.0" prefWidth="550.0" text="- Create your very own workout" textAlignment="CENTER">
                      <font>
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="37.0" layoutY="56.0" prefHeight="75.0" prefWidth="420.0" text="- Create Workout templates for easier and faster workout creation" textAlignment="CENTER" wrapText="true">
+                  <Label alignment="CENTER" layoutX="37.0" layoutY="56.0" prefHeight="80.0" prefWidth="445.0" text="- Create Workout templates for easier and faster workout creation" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" prefHeight="75.0" prefWidth="420.0" text="- Add your own combination of exercises, sets, reps and weight" textAlignment="CENTER" wrapText="true">
+                  <Label alignment="CENTER" layoutX="15.0" layoutY="110.0" prefHeight="80.0" prefWidth="445.0" text="- Add your own combination of exercises, sets, reps and weight" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -214,42 +214,42 @@
       </Label>
       <VBox alignment="TOP_CENTER" layoutX="62.0" layoutY="1403.0" prefHeight="486.0" prefWidth="617.0" spacing="10.0">
          <children>
-            <Label prefHeight="46.0" prefWidth="501.0" text="How to Template">
+            <Label prefHeight="46.0" prefWidth="600.0" text="How to Template">
                <font>
                   <Font name="Arial Bold" size="37.0" />
                </font>
             </Label>
-            <Label prefHeight="34.0" prefWidth="494.0" text="Save time by using Templates" textAlignment="CENTER" wrapText="true">
+            <Label prefHeight="34.0" prefWidth="600.0" text="Save time by using Templates" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label layoutX="84.0" layoutY="56.0" prefHeight="34.0" prefWidth="489.0" text="1. Enter template name &amp; description" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="84.0" layoutY="56.0" prefHeight="34.0" prefWidth="600.0" text="1. Enter template name &amp; description" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label layoutX="42.0" layoutY="110.0" prefHeight="34.0" prefWidth="495.0" text="2. Choose category for workout category" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="42.0" layoutY="110.0" prefHeight="34.0" prefWidth="600.0" text="2. Choose category for workout category" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label layoutX="42.0" layoutY="154.0" prefHeight="34.0" prefWidth="497.0" text="3. Add exercises" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="42.0" layoutY="154.0" prefHeight="34.0" prefWidth="600.0" text="3. Add exercises" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label layoutX="42.0" layoutY="198.0" prefHeight="34.0" prefWidth="502.0" text="4. Save template" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="42.0" layoutY="198.0" prefHeight="34.0" prefWidth="600.0" text="4. Save template" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label contentDisplay="TOP" layoutX="15.0" layoutY="242.0" prefHeight="74.0" prefWidth="488.0" text="Done! You can now use this template everytime you want to create a workout" wrapText="true">
+            <Label contentDisplay="TOP" layoutX="15.0" layoutY="242.0" prefHeight="105.0" prefWidth="600.0" text="Done! You can now use this template everytime you want to create a workout" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label contentDisplay="TOP" layoutX="15.0" layoutY="286.0" prefHeight="114.0" prefWidth="488.0" text="You can load and edit previous templates by selecting a template and pressing load template." wrapText="true">
+            <Label contentDisplay="TOP" layoutX="15.0" layoutY="286.0" prefHeight="114.0" prefWidth="600.0" text="You can load and edit previous templates by selecting a template and pressing load template." wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
