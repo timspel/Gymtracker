@@ -81,7 +81,7 @@
             </TableView>
             <Button fx:id="saveWorkoutButton" layoutX="1043.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="159.0" text="Save workout to calendar" />
             <Button fx:id="removeExerciseButton" layoutX="440.0" layoutY="463.0" mnemonicParsing="false" onAction="#buttonPressed" text="Remove exercise" />
-            <Button fx:id="newWorkoutButton" layoutX="920.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="99.0" text="New workout" />
+            <Button fx:id="newWorkoutButton" layoutX="920.0" layoutY="458.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="99.0" text="Clear" />
             <Button fx:id="loadedAddExerciseButton" layoutX="162.0" layoutY="463.0" mnemonicParsing="false" onAction="#buttonPressed" text="Add new exercise" />
             <Label fx:id="errorAddSetLabel" layoutX="301.0" layoutY="178.0" text="errorAddSet" />
             <Label fx:id="errorAddExerciseWorkoutLabel" layoutX="287.0" layoutY="498.0" text="errorAddExercise" />
